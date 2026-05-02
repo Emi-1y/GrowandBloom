@@ -1,6 +1,6 @@
 <?php
 
-// Author: Equipo Raíces
+// Author: Emily Cardona Casatañeda
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
