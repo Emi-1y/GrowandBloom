@@ -1,79 +1,144 @@
 <?php
 
-// Author: Emily Cardona Castañeda 
+// Author: Emily Cardona Castañeda
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Order\UpdateOrderStatusRequest;
+use App\Http\Requests\Order\CheckoutRequest;
+use App\Models\Item;
 use App\Models\Order;
+use App\Models\Product;
+use App\Services\CartService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class OrderController extends Controller
 {
-    public function index(Request $request): View
+    use AuthorizesRequests;
+
+    private const CART_KEY = 'shopping_cart';
+
+    public function __construct(private readonly CartService $cartService) {}
+
+    public function index(): View
     {
-        $search = $request->query('search');
-        $status = $request->query('status');
+        $authenticatedUserId = (int) Auth::id();
 
-        $query = Order::with('user')->orderByDesc('id');
-
-        if (! empty($search)) {
-            $query->where(function ($subQuery) use ($search) {
-                $subQuery->where('id', 'like', '%'.$search.'%')
-                    ->orWhereHas('user', function ($userQuery) use ($search) {
-                        $userQuery->where('name', 'like', '%'.$search.'%')
-                            ->orWhere('email', 'like', '%'.$search.'%');
-                    });
-            });
-        }
-
-        if (! empty($status)) {
-            $query->where('status', $status);
-        }
-
-        $viewData = [];
-        $viewData['title'] = __('order.admin_list_title');
-        $viewData['subtitle'] = __('order.admin_list_subtitle');
-        $viewData['orders'] = $query->paginate(30)->appends($request->query());
-        $viewData['search'] = $search;
-        $viewData['status'] = $status;
-        $viewData['statuses'] = [
-            'pending' => __('order.status_pending'),
-            'paid' => __('order.status_paid'),
-            'shipped' => __('order.status_shipped'),
-            'delivered' => __('order.status_delivered'),
-            'cancelled' => __('order.status_cancelled'),
+        $viewData = [
+            'orders' => Order::with('items.product')
+                ->where('user_id', $authenticatedUserId)
+                ->orderByDesc('id')
+                ->get(),
+            'title' => __('order.index_title'),
         ];
 
-        return view('admin.order.index')->with('viewData', $viewData);
+        return view('orders.index', ['viewData' => $viewData]);
     }
 
-    public function edit(Order $order): View
+    public function show(Order $order): View
     {
-        $viewData = [];
-        $viewData['title'] = __('order.edit_title');
-        $viewData['subtitle'] = __('order.edit_subtitle');
-        $viewData['order'] = $order->load('user', 'items.product');
-        $viewData['statuses'] = [
-            'pending' => __('order.status_pending'),
-            'paid' => __('order.status_paid'),
-            'shipped' => __('order.status_shipped'),
-            'delivered' => __('order.status_delivered'),
-            'cancelled' => __('order.status_cancelled'),
+        $this->authorize('view', $order);
+        $order->loadMissing('items.product');
+
+        $viewData = [
+            'order' => $order,
+            'title' => __('order.show_title'),
         ];
 
-        return view('admin.order.edit')->with('viewData', $viewData);
+        return view('orders.show', ['viewData' => $viewData]);
     }
 
-    public function update(UpdateOrderStatusRequest $request, Order $order): RedirectResponse
+    public function checkout(): View|RedirectResponse
     {
-        $order->update($request->validated());
+        $cart = Session::get(self::CART_KEY, []);
 
-        return redirect()
-            ->route('admin.order.index')
-            ->with('success', __('order.updated_successfully'));
+        if (count($cart) === 0) {
+            return redirect()->route('cart.index')->with('error', __('order.cart_empty'));
+        }
+
+        $cartItems = $this->cartService->buildCartItems();
+        $user = Auth::user();
+
+        $viewData = [
+            'title' => __('checkout.title'),
+            'cartItems' => $cartItems,
+            'totalQuantity' => $cartItems->sum(fn (Item $item) => $item->getQuantity()),
+            'totalAmount' => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
+            'user' => $user,
+        ];
+
+        return view('checkout.index', ['viewData' => $viewData]);
+    }
+
+    public function store(CheckoutRequest $request): RedirectResponse
+    {
+        $cart = Session::get(self::CART_KEY, []);
+
+        if (count($cart) === 0) {
+            return redirect()->route('cart.index')->with('error', __('order.cart_empty'));
+        }
+
+        $validated = $request->validated();
+        $paymentMethod = (string) $validated['payment_method'];
+        $authenticatedUser = Auth::user();
+
+        $authenticatedUser->setName($validated['name']);
+        $authenticatedUser->setEmail($validated['email']);
+        $authenticatedUser->setPhone($validated['phone']);
+        $authenticatedUser->setAddress($validated['address']);
+        $authenticatedUser->setCity($validated['city']);
+        $authenticatedUser->setPostalCode($validated['postal_code']);
+        $authenticatedUser->save();
+
+        $authenticatedUserId = (int) $authenticatedUser->getId();
+
+        $order = DB::transaction(function () use ($cart, $paymentMethod, $authenticatedUserId) {
+            $order = new Order;
+            $order->setUserId($authenticatedUserId);
+            $order->setPaymentMethod($paymentMethod);
+            $order->setDate(date('Y-m-d'));
+            $order->setStatus('pending');
+            $order->setTotal(0);
+            $order->save();
+
+            $total = 0;
+
+            foreach ($cart as $productId => $quantity) {
+                $product = Product::where('active', true)->find((int) $productId);
+
+                if (! $product || (int) $quantity <= 0) {
+                    continue;
+                }
+
+                $item = new Item;
+                $item->setOrderId($order->getId());
+                $item->setProductId($product->getId());
+                $item->setServiceId(null);
+                $item->setItemType('product');
+                $item->setQuantity((int) $quantity);
+                $item->setPrice($product->getPrice());
+                $item->save();
+
+                $newStock = max(0, $product->getStock() - (int) $quantity);
+                $product->setStock($newStock);
+                $product->save();
+
+                $total += $item->calculateSubTotal();
+            }
+
+            $order->setTotal($total);
+            $order->save();
+
+            return $order;
+        });
+
+        Session::forget(self::CART_KEY);
+
+        return redirect()->route('order.show', $order->getId())
+            ->with('success', __('order.created_successfully'));
     }
 }
