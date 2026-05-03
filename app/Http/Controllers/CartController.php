@@ -1,6 +1,6 @@
 <?php
 
-// Author: Emily Cardona Castañeda 
+// Author: Emily Cardona Castañeda
 
 namespace App\Http\Controllers;
 
@@ -9,6 +9,7 @@ use App\Http\Requests\Cart\RemoveFromCartRequest;
 use App\Http\Requests\Cart\UpdateCartItemRequest;
 use App\Models\Item;
 use App\Models\Product;
+use App\Models\Service;
 use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -22,68 +23,91 @@ class CartController extends Controller
     {
         $cartItems = $this->cartService->buildCartItems();
 
-        $viewData = [];
-        $viewData['title'] = __('order.cart_title');
-        $viewData['cartItems'] = $cartItems;
-        $viewData['totalQuantity'] = $cartItems->sum(fn (Item $item) => $item->getQuantity());
-        $viewData['totalAmount'] = $cartItems->sum(fn (Item $item) => $item->calculateSubTotal());
+        $viewData = [
+            'title'         => 'Carrito de compras',
+            'cartItems'     => $cartItems,
+            'totalQuantity' => $cartItems->sum(fn (Item $item) => $item->getQuantity()),
+            'totalAmount'   => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
+        ];
 
         return view('cart.index', ['viewData' => $viewData]);
     }
 
     public function add(AddToCartRequest $request): RedirectResponse
     {
+        $itemType  = $request->input('item_type', 'product');
+        $quantity  = (int) $request->validated('quantity', 1);
+
+        if ($itemType === 'service') {
+            $serviceId = (int) $request->input('service_id');
+            $service   = Service::where('active', true)->findOrFail($serviceId);
+            $this->cartService->addService($service);
+
+            return redirect()->route('cart.index')
+                ->with('success', 'Servicio agregado al carrito.');
+        }
+
         $productId = (int) $request->validated('product_id', 0);
-        $requestedQuantity = (int) $request->validated('quantity', 1);
+        $product   = Product::where('active', true)->findOrFail($productId);
+        $this->cartService->addProduct($product, $quantity);
 
-        $product = Product::where('active', true)->findOrFail($productId);
-        $this->cartService->addProduct($product, $requestedQuantity);
-
-        return redirect()->route('cart.index')->with('success', __('order.cart_added_successfully'));
+        return redirect()->route('cart.index')
+            ->with('success', 'Producto agregado al carrito.');
     }
 
     public function update(UpdateCartItemRequest $request, Product $product): RedirectResponse|JsonResponse
     {
         $activeProduct = Product::where('active', true)->findOrFail($product->getId());
-        $quantity = (int) $request->validated('quantity');
+        $quantity      = (int) $request->validated('quantity');
 
         $this->cartService->updateProductQuantity($activeProduct, $quantity);
 
         if ($request->expectsJson()) {
             $cartItems = $this->cartService->buildCartItems();
-            $cartItem = $cartItems->firstWhere(fn (Item $item) => $item->getProductId() === $activeProduct->getId());
+            $cartItem  = $cartItems->first(
+                fn (Item $item) => $item->getItemType() === 'product'
+                    && $item->getProductId() === $activeProduct->getId()
+            );
 
             if ($cartItem === null) {
-                return response()->json([
-                    'success' => false,
-                    'message' => __('order.cart_updated_successfully'),
-                ], 404);
+                return response()->json(['success' => false], 404);
             }
 
             return response()->json([
-                'success' => true,
-                'price' => $cartItem->getPrice(),
-                'quantity' => $cartItem->getQuantity(),
-                'subtotal' => $cartItem->calculateSubTotal(),
-                'totalQuantity' => $cartItems->sum(fn (Item $item) => $item->getQuantity()),
-                'totalAmount' => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
+                'success'       => true,
+                'price'         => $cartItem->getPrice(),
+                'quantity'      => $cartItem->getQuantity(),
+                'subtotal'      => $cartItem->calculateSubTotal(),
+                'totalQuantity' => $cartItems->sum(fn (Item $i) => $i->getQuantity()),
+                'totalAmount'   => $cartItems->sum(fn (Item $i) => $i->calculateSubTotal()),
             ]);
         }
 
-        return redirect()->route('cart.index')->with('success', __('order.cart_updated_successfully'));
+        return redirect()->route('cart.index')
+            ->with('success', 'Carrito actualizado.');
     }
 
     public function remove(RemoveFromCartRequest $request, Product $product): RedirectResponse
     {
         $this->cartService->removeProduct($product->getId());
 
-        return redirect()->route('cart.index')->with('success', __('order.cart_removed_successfully'));
+        return redirect()->route('cart.index')
+            ->with('success', 'Producto eliminado del carrito.');
+    }
+
+    public function removeService(int $serviceId): RedirectResponse
+    {
+        $this->cartService->removeService($serviceId);
+
+        return redirect()->route('cart.index')
+            ->with('success', 'Servicio eliminado del carrito.');
     }
 
     public function clear(): RedirectResponse
     {
         $this->cartService->clear();
 
-        return redirect()->route('cart.index')->with('success', __('order.cart_cleared_successfully'));
+        return redirect()->route('cart.index')
+            ->with('success', 'Carrito vaciado.');
     }
 }

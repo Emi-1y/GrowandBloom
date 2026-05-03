@@ -37,6 +37,7 @@ class Service extends Model
         'emoji',
         'active',
         'features',
+        'image',
     ];
 
     public function getId(): int
@@ -149,5 +150,14 @@ class Service extends Model
     public function getFormattedPrice(): string
     {
         return number_format($this->getPrice(), 0, ',', '.').' '.__('product.currency');
+    }
+    public function getImage(): ?string
+    {
+    return $this->attributes['image'] ?? null;
+    }
+
+    public function setImage(?string $image): void
+    {
+    $this->attributes['image'] = $image;
     }
 }

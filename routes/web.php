@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/update/{product}', [CartController::class, 'update'])->name('cart.update');
         Route::delete('/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
         Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+        Route::delete('/remove-service/{serviceId}', [CartController::class, 'removeService'])->name('cart.remove.service');
     });
 
     // Orders

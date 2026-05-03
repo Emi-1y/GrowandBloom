@@ -1,6 +1,6 @@
 <?php
 
-// Author: Emily Cardona Castañeda 
+// Author: Emily Cardona Castañeda
 
 namespace App\Http\Requests\Cart;
 
@@ -15,20 +15,20 @@ class AddToCartRequest extends FormRequest
 
     public function rules(): array
     {
+        $itemType = $this->input('item_type', 'product');
+
+        if ($itemType === 'service') {
+            return [
+                'service_id' => ['required', 'integer', 'exists:services,id'],
+                'quantity'   => ['nullable', 'integer', 'min:1'],
+                'item_type'  => ['required', 'string', 'in:product,service'],
+            ];
+        }
+
         return [
             'product_id' => ['required', 'integer', 'exists:products,id'],
-            'quantity' => ['nullable', 'integer', 'min:1'],
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'product_id.required' => __('validation.product_required'),
-            'product_id.integer' => __('validation.product_integer'),
-            'product_id.exists' => __('validation.product_exists'),
-            'quantity.integer' => __('validation.quantity_integer'),
-            'quantity.min' => __('validation.quantity_min'),
+            'quantity'   => ['nullable', 'integer', 'min:1'],
+            'item_type'  => ['nullable', 'string', 'in:product,service'],
         ];
     }
 }

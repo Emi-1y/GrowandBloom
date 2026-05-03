@@ -60,17 +60,25 @@
                             <td class="subtotal-cell" style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 600; color: var(--c-accent-dk);">
                                 {{ $cartItem->getFormattedSubtotal() }}
                             </td>
-                            <td>
-                                @if($cartItem->getItemType() === 'product')
-                                    <form method="POST" action="{{ route('cart.remove', $cartItem->getProductId()) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            {{ __('order.remove') }}
-                                        </button>
-                                    </form>
-                                @endif
-                            </td>
+                           <td>
+                             @if($cartItem->getItemType() === 'product')
+                                <form method="POST" action="{{ route('cart.remove', $cartItem->getProductId()) }}">
+                              @csrf
+                              @method('DELETE')
+                         <button type="submit" class="btn btn-sm btn-outline-danger">
+                     Eliminar
+                  </button>
+           </form>
+    @else
+        <form method="POST" action="{{ route('cart.remove.service', $cartItem->getServiceId()) }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+                Eliminar
+            </button>
+        </form>
+    @endif
+</td>
                         </tr>
                         @endforeach
                     </tbody>
