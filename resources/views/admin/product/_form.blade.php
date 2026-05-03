@@ -1,10 +1,13 @@
-{{-- Author: Emily Cardona Castañeda  --}}
+{{-- Author: Emily Cardona Castañeda --}}
 
 @php
+    $exclusiveCategory   = $viewData['exclusiveCategory'] ?? null;
     $exclusiveCategoryId = $exclusiveCategory ? $exclusiveCategory->getId() : null;
-    $selectedCategoryId = old('category_id', $product ? $product->getCategoryId() : '');
-    $isExclusive = old('exclusive', $product ? $product->getExclusive() : false);
-    $isActive    = old('active',    $product ? $product->getActive()    : true);
+    $product             = $viewData['product'] ?? null;
+    $categories          = $viewData['categories'] ?? collect();
+    $selectedCategoryId  = old('category_id', $product ? $product->getCategoryId() : '');
+    $isExclusive         = old('exclusive', $product ? $product->getExclusive() : false);
+    $isActive            = old('active',    $product ? $product->getActive()    : true);
 @endphp
 
 <div id="product-form-sync" data-exclusive-category-id="{{ $exclusiveCategoryId }}">
@@ -93,7 +96,9 @@
 
     <div style="display: flex; gap: 0.75rem;">
         <button type="submit" class="btn btn-primary">{{ $submitText }}</button>
-        <a href="{{ route('admin.product.index') }}" class="btn btn-outline-secondary">{{ __('product.back_button') }}</a>
+        <a href="{{ route('admin.product.index') }}" class="btn btn-outline-secondary">
+            {{ __('product.back_button') }}
+        </a>
     </div>
 </div>
 

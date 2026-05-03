@@ -66,7 +66,7 @@
                                                 <span class="badge bg-info" style="margin-left: 0.5rem;">{{ __('order.service_item') }}</span>
                                             @endif
                                         </div>
-                                        <span style="font-family: var(--font-mono); color: var(--c-accent-dk);">{{ $item->getFormattedSubTotal() }}</span>
+                                        <span style="font-family: var(--font-mono); color: var(--c-accent-dk);">{{ $item->getFormattedSubtotal() }}</span>
                                     </div>
                                 @endforeach
                             </div>

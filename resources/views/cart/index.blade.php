@@ -58,7 +58,7 @@
                                 @endif
                             </td>
                             <td class="subtotal-cell" style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 600; color: var(--c-accent-dk);">
-                                {{ $cartItem->getFormattedSubTotal() }}
+                                {{ $cartItem->getFormattedSubtotal() }}
                             </td>
                             <td>
                                 @if($cartItem->getItemType() === 'product')

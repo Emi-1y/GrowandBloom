@@ -169,8 +169,4 @@ class Item extends Model
         return number_format($this->calculateSubTotal(), 0, ',', '.').' '.__('product.currency');
     }
 
-    public function getFormattedSubTotal(): string
-    {
-        return $this->getFormattedSubtotal();
-    }
 }

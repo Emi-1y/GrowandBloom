@@ -70,7 +70,7 @@
                             </td>
                             <td>{{ $item->getQuantity() }}</td>
                             <td style="font-family: var(--font-mono); font-size: 0.85rem;">{{ $item->getFormattedPrice() }}</td>
-                            <td style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--c-accent-dk);">{{ $item->getFormattedSubTotal() }}</td>
+                            <td style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--c-accent-dk);">{{ $item->getFormattedSubtotal() }}</td>
                         </tr>
                         @endforeach
                     </tbody>

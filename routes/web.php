@@ -31,10 +31,10 @@ Route::prefix('services')->group(function () {
 
 // ─── AUTH ─────────────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-    Route::get('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.store');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])
@@ -119,4 +119,3 @@ Route::middleware(['auth', 'checkAdmin'])
             Route::put('/{user}', [AdminUserController::class, 'update'])->name('admin.user.update');
         });
     });
-

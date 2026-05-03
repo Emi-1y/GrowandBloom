@@ -133,7 +133,7 @@
                             <div style="font-size: 0.75rem; color: var(--c-muted);">× {{ $cartItem->getQuantity() }}</div>
                         </div>
                         <div style="font-family: var(--font-mono); color: var(--c-accent-dk); white-space: nowrap; margin-left: 1rem;">
-                            {{ $cartItem->getFormattedSubTotal() }}
+                            {{ $cartItem->getFormattedSubtotal() }}
                         </div>
                     </div>
                 @endforeach
