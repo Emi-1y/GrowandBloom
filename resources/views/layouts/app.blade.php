@@ -20,7 +20,7 @@
     <div class="container">
         <a class="navbar-brand fw-bold text-success" href="{{ route('home.index') }}"
            style="font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-style:italic;">
-            🌿 Raíces
+             Grow And Bloom
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -75,9 +75,9 @@
     @yield('hero')
 @else
     @hasSection('subtitle')
-    <div class="bg-success bg-opacity-10 border-bottom py-4">
+    <div style="background:#fff; border-bottom:1px solid #e2ddd4; padding:1.25rem 0;">
         <div class="container">
-            <h1 class="mb-0" style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:#2d5a3d;">
+            <h1 style="font-family:'Cormorant Garamond',serif; font-size:1.75rem; font-weight:600; color:#1a3a2a; margin:0;">
                 @yield('subtitle')
             </h1>
         </div>

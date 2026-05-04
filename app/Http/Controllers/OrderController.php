@@ -8,6 +8,7 @@ use App\Http\Requests\Order\CheckoutRequest;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Service;
 use App\Services\CartService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +21,8 @@ class OrderController extends Controller
 {
     use AuthorizesRequests;
 
-    private const CART_KEY = 'shopping_cart';
+    private const CART_KEY          = 'shopping_cart';
+    private const CART_SERVICES_KEY = 'shopping_cart_services';
 
     public function __construct(private readonly CartService $cartService) {}
 
@@ -33,7 +35,7 @@ class OrderController extends Controller
                 ->where('user_id', $authenticatedUserId)
                 ->orderByDesc('id')
                 ->get(),
-            'title' => __('order.index_title'),
+            'title' => 'Mis pedidos',
         ];
 
         return view('orders.index', ['viewData' => $viewData]);
@@ -42,11 +44,11 @@ class OrderController extends Controller
     public function show(Order $order): View
     {
         $this->authorize('view', $order);
-        $order->loadMissing('items.product');
+        $order->loadMissing('items.product', 'items.service');
 
         $viewData = [
             'order' => $order,
-            'title' => __('order.show_title'),
+            'title' => 'Detalle del pedido',
         ];
 
         return view('orders.show', ['viewData' => $viewData]);
@@ -54,21 +56,23 @@ class OrderController extends Controller
 
     public function checkout(): View|RedirectResponse
     {
-        $cart = Session::get(self::CART_KEY, []);
+        $cart         = Session::get(self::CART_KEY, []);
+        $cartServices = Session::get(self::CART_SERVICES_KEY, []);
 
-        if (count($cart) === 0) {
-            return redirect()->route('cart.index')->with('error', __('order.cart_empty'));
+        if (count($cart) === 0 && count($cartServices) === 0) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Tu carrito está vacío.');
         }
 
         $cartItems = $this->cartService->buildCartItems();
-        $user = Auth::user();
+        $user      = Auth::user();
 
         $viewData = [
-            'title' => __('checkout.title'),
-            'cartItems' => $cartItems,
+            'title'         => 'Finalizar pedido',
+            'cartItems'     => $cartItems,
             'totalQuantity' => $cartItems->sum(fn (Item $item) => $item->getQuantity()),
-            'totalAmount' => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
-            'user' => $user,
+            'totalAmount'   => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
+            'user'          => $user,
         ];
 
         return view('checkout.index', ['viewData' => $viewData]);
@@ -76,14 +80,16 @@ class OrderController extends Controller
 
     public function store(CheckoutRequest $request): RedirectResponse
     {
-        $cart = Session::get(self::CART_KEY, []);
+        $cart         = Session::get(self::CART_KEY, []);
+        $cartServices = Session::get(self::CART_SERVICES_KEY, []);
 
-        if (count($cart) === 0) {
-            return redirect()->route('cart.index')->with('error', __('order.cart_empty'));
+        if (count($cart) === 0 && count($cartServices) === 0) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Tu carrito está vacío.');
         }
 
-        $validated = $request->validated();
-        $paymentMethod = (string) $validated['payment_method'];
+        $validated         = $request->validated();
+        $paymentMethod     = (string) $validated['payment_method'];
         $authenticatedUser = Auth::user();
 
         $authenticatedUser->setName($validated['name']);
@@ -96,49 +102,72 @@ class OrderController extends Controller
 
         $authenticatedUserId = (int) $authenticatedUser->getId();
 
-        $order = DB::transaction(function () use ($cart, $paymentMethod, $authenticatedUserId) {
-            $order = new Order;
-            $order->setUserId($authenticatedUserId);
-            $order->setPaymentMethod($paymentMethod);
-            $order->setDate(date('Y-m-d'));
-            $order->setStatus('pending');
-            $order->setTotal(0);
-            $order->save();
+        $order = DB::transaction(
+            function () use ($cart, $cartServices, $paymentMethod, $authenticatedUserId) {
+                $order = new Order;
+                $order->setUserId($authenticatedUserId);
+                $order->setPaymentMethod($paymentMethod);
+                $order->setDate(date('Y-m-d'));
+                $order->setStatus('pending');
+                $order->setTotal(0);
+                $order->save();
 
-            $total = 0;
+                $total = 0;
 
-            foreach ($cart as $productId => $quantity) {
-                $product = Product::where('active', true)->find((int) $productId);
+                // ── Productos ─────────────────────────────────────────────
+                foreach ($cart as $productId => $quantity) {
+                    $product = Product::where('active', true)->find((int) $productId);
 
-                if (! $product || (int) $quantity <= 0) {
-                    continue;
+                    if (! $product || (int) $quantity <= 0) {
+                        continue;
+                    }
+
+                    $item = new Item;
+                    $item->setOrderId($order->getId());
+                    $item->setProductId($product->getId());
+                    $item->setServiceId(null);
+                    $item->setItemType('product');
+                    $item->setQuantity((int) $quantity);
+                    $item->setPrice($product->getPrice());
+                    $item->save();
+
+                    $product->setStock(max(0, $product->getStock() - (int) $quantity));
+                    $product->save();
+
+                    $total += $item->calculateSubTotal();
                 }
 
-                $item = new Item;
-                $item->setOrderId($order->getId());
-                $item->setProductId($product->getId());
-                $item->setServiceId(null);
-                $item->setItemType('product');
-                $item->setQuantity((int) $quantity);
-                $item->setPrice($product->getPrice());
-                $item->save();
+                // ── Servicios ─────────────────────────────────────────────
+                foreach ($cartServices as $serviceId => $quantity) {
+                    $service = Service::where('active', true)->find((int) $serviceId);
 
-                $newStock = max(0, $product->getStock() - (int) $quantity);
-                $product->setStock($newStock);
-                $product->save();
+                    if (! $service) {
+                        continue;
+                    }
 
-                $total += $item->calculateSubTotal();
+                    $item = new Item;
+                    $item->setOrderId($order->getId());
+                    $item->setProductId(null);
+                    $item->setServiceId($service->getId());
+                    $item->setItemType('service');
+                    $item->setQuantity(1);
+                    $item->setPrice($service->getPrice());
+                    $item->save();
+
+                    $total += $item->calculateSubTotal();
+                }
+
+                $order->setTotal($total);
+                $order->save();
+
+                return $order;
             }
-
-            $order->setTotal($total);
-            $order->save();
-
-            return $order;
-        });
+        );
 
         Session::forget(self::CART_KEY);
+        Session::forget(self::CART_SERVICES_KEY);
 
         return redirect()->route('order.show', $order->getId())
-            ->with('success', __('order.created_successfully'));
+            ->with('success', 'Pedido realizado con éxito.');
     }
 }

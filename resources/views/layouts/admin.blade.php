@@ -62,11 +62,13 @@
         </div>
     </nav>
 
-    <header class="bg-secondary">
-        <div class="container">
-            <h1 class="h3">@yield('subtitle', __('layout.admin_subtitle'))</h1>
-        </div>
-    </header>
+    <div style="background:#fff; border-bottom:1px solid #e2ddd4; padding:1.25rem 0;">
+    <div class="container">
+        <h1 style="font-family:'Cormorant Garamond',serif; font-size:1.75rem; font-weight:600; color:#1a3a2a; margin:0;">
+            @yield('subtitle', 'Panel de administración')
+        </h1>
+    </div>
+</div>
 
     <main class="container my-4 flex-grow-1">
         @if(session('success'))

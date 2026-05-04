@@ -48,23 +48,6 @@
             </div>
         </div>
 
-        {{-- Stats --}}
-        <div class="row mt-5 pt-4 border-top border-white border-opacity-10">
-            <div class="col-4 text-center text-white">
-                <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:600; color:#a8d5b5;">
-                    {{ $viewData['featuredProducts']->count() }}+
-                </div>
-                <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; opacity:.6;">Productos</div>
-            </div>
-            <div class="col-4 text-center text-white">
-                <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:600; color:#a8d5b5;">5</div>
-                <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; opacity:.6;">Servicios</div>
-            </div>
-            <div class="col-4 text-center text-white">
-                <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:600; color:#a8d5b5;">100%</div>
-                <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; opacity:.6;">Orgánico</div>
-            </div>
-        </div>
     </div>
 </div>
 @endsection
