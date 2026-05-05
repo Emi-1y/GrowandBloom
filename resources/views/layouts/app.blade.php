@@ -20,6 +20,11 @@
     <div class="container">
         <a class="navbar-brand fw-bold text-success" href="{{ route('home.index') }}"
            style="font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-style:italic;">
+
+            <img src="{{ asset('images/logo.png') }}"
+            alt="Logo"
+            style="height:60px; margin-right:15px;">
+
              Grow And Bloom
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
