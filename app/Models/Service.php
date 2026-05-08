@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * $this->attributes['description'] - string - contains the service description
  * $this->attributes['price'] - int - contains the service price
  * $this->attributes['duration'] - string - contains the estimated duration
- * $this->attributes['emoji'] - string - contains the display emoji icon
  * $this->attributes['active'] - bool - indicates whether the service is active
  * $this->attributes['features'] - string - JSON-encoded list of included features
  * $this->attributes['created_at'] - timestamp - contains service creation date
@@ -34,7 +33,6 @@ class Service extends Model
         'description',
         'price',
         'duration',
-        'emoji',
         'active',
         'features',
         'image',
@@ -95,15 +93,6 @@ class Service extends Model
         $this->attributes['duration'] = $duration;
     }
 
-    public function getEmoji(): string
-    {
-        return $this->attributes['emoji'] ?? '🌿';
-    }
-
-    public function setEmoji(string $emoji): void
-    {
-        $this->attributes['emoji'] = $emoji;
-    }
 
     public function getActive(): bool
     {
