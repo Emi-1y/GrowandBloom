@@ -48,20 +48,24 @@ class AuthController extends Controller
         return view('auth.register', ['viewData' => $viewData]);
     }
 
-    public function register(RegisterRequest $request): RedirectResponse
-    {
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'role' => User::ROLE_USER,
-        ]);
+   public function register(RegisterRequest $request): RedirectResponse
+{
+    $user = User::create([
+        'name'        => $request->input('name'),
+        'email'       => $request->input('email'),
+        'phone'       => $request->input('phone'),
+        'address'     => $request->input('address'),
+        'city'        => $request->input('city'),
+        'postal_code' => $request->input('postal_code'),
+        'password'    => Hash::make($request->input('password')),
+        'role'        => User::ROLE_USER,
+    ]);
 
-        Auth::login($user);
+    Auth::login($user);
 
-        return redirect()->route('home.index')
-            ->with('success', __('auth.register_success'));
-    }
+    return redirect()->route('home.index')
+        ->with('success', 'Cuenta creada exitosamente. ¡Bienvenido!');
+}
 
     public function logout(Request $request): RedirectResponse
     {

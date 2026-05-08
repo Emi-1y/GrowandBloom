@@ -13,7 +13,6 @@ use App\Services\CartService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
@@ -31,11 +30,11 @@ class OrderController extends Controller
         $authenticatedUserId = (int) Auth::id();
 
         $viewData = [
-            'orders' => Order::with('items.product')
+            'title'  => 'Mis pedidos',
+            'orders' => Order::with('items.product', 'items.service')
                 ->where('user_id', $authenticatedUserId)
                 ->orderByDesc('id')
                 ->get(),
-            'title' => 'Mis pedidos',
         ];
 
         return view('orders.index', ['viewData' => $viewData]);
@@ -47,8 +46,8 @@ class OrderController extends Controller
         $order->loadMissing('items.product', 'items.service');
 
         $viewData = [
-            'order' => $order,
             'title' => 'Detalle del pedido',
+            'order' => $order,
         ];
 
         return view('orders.show', ['viewData' => $viewData]);
@@ -65,14 +64,13 @@ class OrderController extends Controller
         }
 
         $cartItems = $this->cartService->buildCartItems();
-        $user      = Auth::user();
 
         $viewData = [
             'title'         => 'Finalizar pedido',
             'cartItems'     => $cartItems,
             'totalQuantity' => $cartItems->sum(fn (Item $item) => $item->getQuantity()),
             'totalAmount'   => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
-            'user'          => $user,
+            'user'          => Auth::user(),
         ];
 
         return view('checkout.index', ['viewData' => $viewData]);
@@ -88,81 +86,65 @@ class OrderController extends Controller
                 ->with('error', 'Tu carrito está vacío.');
         }
 
-        $validated         = $request->validated();
-        $paymentMethod     = (string) $validated['payment_method'];
-        $authenticatedUser = Auth::user();
-
-        $authenticatedUser->setName($validated['name']);
-        $authenticatedUser->setEmail($validated['email']);
-        $authenticatedUser->setPhone($validated['phone']);
-        $authenticatedUser->setAddress($validated['address']);
-        $authenticatedUser->setCity($validated['city']);
-        $authenticatedUser->setPostalCode($validated['postal_code']);
-        $authenticatedUser->save();
-
+        $paymentMethod       = (string) $request->validated('payment_method');
+        $authenticatedUser   = Auth::user();
         $authenticatedUserId = (int) $authenticatedUser->getId();
 
-        $order = DB::transaction(
-            function () use ($cart, $cartServices, $paymentMethod, $authenticatedUserId) {
-                $order = new Order;
-                $order->setUserId($authenticatedUserId);
-                $order->setPaymentMethod($paymentMethod);
-                $order->setDate(date('Y-m-d'));
-                $order->setStatus('pending');
-                $order->setTotal(0);
-                $order->save();
+        $order = new Order;
+        $order->setUserId($authenticatedUserId);
+        $order->setPaymentMethod($paymentMethod);
+        $order->setDate(date('Y-m-d'));
+        $order->setStatus('pending');
+        $order->setTotal(0);
+        $order->save();
 
-                $total = 0;
+        $total = 0;
 
-                // ── Productos ─────────────────────────────────────────────
-                foreach ($cart as $productId => $quantity) {
-                    $product = Product::where('active', true)->find((int) $productId);
+        // ── Productos ──────────────────────────────────────────────────────
+        foreach ($cart as $productId => $quantity) {
+            $product = Product::where('active', true)->find((int) $productId);
 
-                    if (! $product || (int) $quantity <= 0) {
-                        continue;
-                    }
-
-                    $item = new Item;
-                    $item->setOrderId($order->getId());
-                    $item->setProductId($product->getId());
-                    $item->setServiceId(null);
-                    $item->setItemType('product');
-                    $item->setQuantity((int) $quantity);
-                    $item->setPrice($product->getPrice());
-                    $item->save();
-
-                    $product->setStock(max(0, $product->getStock() - (int) $quantity));
-                    $product->save();
-
-                    $total += $item->calculateSubTotal();
-                }
-
-                // ── Servicios ─────────────────────────────────────────────
-                foreach ($cartServices as $serviceId => $quantity) {
-                    $service = Service::where('active', true)->find((int) $serviceId);
-
-                    if (! $service) {
-                        continue;
-                    }
-
-                    $item = new Item;
-                    $item->setOrderId($order->getId());
-                    $item->setProductId(null);
-                    $item->setServiceId($service->getId());
-                    $item->setItemType('service');
-                    $item->setQuantity(1);
-                    $item->setPrice($service->getPrice());
-                    $item->save();
-
-                    $total += $item->calculateSubTotal();
-                }
-
-                $order->setTotal($total);
-                $order->save();
-
-                return $order;
+            if (! $product || (int) $quantity <= 0) {
+                continue;
             }
-        );
+
+            $item = new Item;
+            $item->setOrderId($order->getId());
+            $item->setProductId($product->getId());
+            $item->setServiceId(null);
+            $item->setItemType('product');
+            $item->setQuantity((int) $quantity);
+            $item->setPrice($product->getPrice());
+            $item->save();
+
+            $product->setStock(max(0, $product->getStock() - (int) $quantity));
+            $product->save();
+
+            $total += $item->calculateSubTotal();
+        }
+
+        // ── Servicios ──────────────────────────────────────────────────────
+        foreach ($cartServices as $serviceId => $quantity) {
+            $service = Service::where('active', true)->find((int) $serviceId);
+
+            if (! $service) {
+                continue;
+            }
+
+            $item = new Item;
+            $item->setOrderId($order->getId());
+            $item->setProductId(null);
+            $item->setServiceId($service->getId());
+            $item->setItemType('service');
+            $item->setQuantity(1);
+            $item->setPrice($service->getPrice());
+            $item->save();
+
+            $total += $item->calculateSubTotal();
+        }
+
+        $order->setTotal($total);
+        $order->save();
 
         Session::forget(self::CART_KEY);
         Session::forget(self::CART_SERVICES_KEY);
