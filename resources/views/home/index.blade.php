@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center">
-                <div style="font-size: 14rem; opacity:.15; line-height:1; user-select:none;">🌿</div>
+                <div style="font-size: 14rem; opacity:.15; line-height:1; user-select:none;"></div>
             </div>
         </div>
 
@@ -85,7 +85,7 @@
                             <img src="{{ asset('images/products/'.$product->getImage()) }}"
                                  alt="{{ $product->getName() }}" style="height:100%; width:100%; object-fit:cover;">
                         @else
-                            <span style="font-size:3.5rem; opacity:.4;">🌿</span>
+                            <span style="font-size:3.5rem; opacity:.4;"></span>
                         @endif
                         @if($product->getExclusive())
                             <span class="badge position-absolute top-0 start-0 m-2"
@@ -172,8 +172,8 @@
                onmouseout="this.style.borderColor='#d4eddf';this.style.background='#fff';this.style.transform='none';">
                 <div style="font-size:2rem; margin-bottom:.5rem;">
                     @php
-                        $icons = ['Plantas'=>'🌱','Semillas'=>'🌾','Abonos y Fertilizantes'=>'🪣','Herramientas'=>'🛠️','Macetas y Decoración'=>'🪴'];
-                        echo $icons[$category->getName()] ?? '🌿';
+                        $icons = ['Plantas','Semillas','Abonos y Fertilizantes','Herramientas','Macetas y Decoración'];
+                        echo $icons[$category->getName()] ?? '';
                     @endphp
                 </div>
                 <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:#1a3a2a; margin-bottom:.25rem;">

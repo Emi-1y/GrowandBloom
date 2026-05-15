@@ -32,11 +32,11 @@
                         <label for="rating" class="form-label">{{ __('review.rating') }}</label>
                         <select class="form-select @error('rating') is-invalid @enderror" id="rating" name="rating" required>
                             <option value="">{{ __('review.select_rating') }}</option>
-                            <option value="1" @selected(old('rating') == 1)>★ {{ __('review.rating_1') }}</option>
-                            <option value="2" @selected(old('rating') == 2)>★★ {{ __('review.rating_2') }}</option>
-                            <option value="3" @selected(old('rating') == 3)>★★★ {{ __('review.rating_3') }}</option>
-                            <option value="4" @selected(old('rating') == 4)>★★★★ {{ __('review.rating_4') }}</option>
-                            <option value="5" @selected(old('rating') == 5)>★★★★★ {{ __('review.rating_5') }}</option>
+                            <option value="1" @selected(old('rating') == 1)> {{ __('review.rating_1') }}</option>
+                            <option value="2" @selected(old('rating') == 2)> {{ __('review.rating_2') }}</option>
+                            <option value="3" @selected(old('rating') == 3)> {{ __('review.rating_3') }}</option>
+                            <option value="4" @selected(old('rating') == 4)> {{ __('review.rating_4') }}</option>
+                            <option value="5" @selected(old('rating') == 5)> {{ __('review.rating_5') }}</option>
                         </select>
                         @error('rating')
                             <div class="invalid-feedback">{{ $message }}</div>

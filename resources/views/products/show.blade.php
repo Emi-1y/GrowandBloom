@@ -16,7 +16,7 @@
                      style="width:100%; height:100%; object-fit:cover;">
             @else
                 <div style="text-align:center; color:#7a7165; opacity:.4;">
-                    <div style="font-size:4rem; margin-bottom:.5rem;">🌿</div>
+                    <div style="font-size:4rem; margin-bottom:.5rem;"></div>
                     <div style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;">Sin imagen</div>
                 </div>
             @endif
@@ -148,9 +148,9 @@
                             <div style="font-size:.75rem; color:#7a7165;">{{ $review->getCreatedAt() }}</div>
                         </div>
                         <div style="color:#b8832a; font-size:.95rem; letter-spacing:.1em;">
-                            @for($i = 0; $i < $review->getRating(); $i++) ★ @endfor
+                            @for($i = 0; $i < $review->getRating(); $i++)  @endfor
                             @for($i = $review->getRating(); $i < 5; $i++)
-                                <span style="opacity:.2;">★</span>
+                                <span style="opacity:.2;"></span>
                             @endfor
                         </div>
                     </div>

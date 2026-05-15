@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 @section('title', 'Productos')
-@section('subtitle', '🌿 Nuestros productos')
+@section('subtitle', ' Nuestros productos')
 
 @section('content')
 {{-- FILTROS --}}
@@ -66,7 +66,7 @@
                         <img src="{{ asset('images/products/'.$product->getImage()) }}"
                              alt="{{ $product->getName() }}" style="height:100%; width:100%; object-fit:cover;">
                     @else
-                        <span style="font-size:3.5rem; opacity:.4;">🌿</span>
+                        <span style="font-size:3.5rem; opacity:.4;"></span>
                     @endif
                     @if($product->getExclusive())
                         <span class="badge position-absolute top-0 start-0 m-2"
@@ -115,7 +115,7 @@
     </div>
 @else
     <div class="text-center py-5">
-        <div style="font-size:4rem; opacity:.3;">🌿</div>
+        <div style="font-size:4rem; opacity:.3;"></div>
         <h4 class="mt-3 text-muted">No se encontraron productos</h4>
         <a href="{{ route('product.index') }}" class="btn btn-outline-success mt-3">Ver todos</a>
     </div>

@@ -26,7 +26,7 @@
                              style="width:100%; height:100%; object-fit:cover;">
                     @else
                         <div style="text-align:center; color:#4a7c59; opacity:.4;">
-                            <div style="font-size:3rem; margin-bottom:.5rem;">🌿</div>
+                            <div style="font-size:3rem; margin-bottom:.5rem;"></div>
                             <div style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;">Sin imagen</div>
                         </div>
                     @endif
@@ -62,7 +62,7 @@
                         <ul class="list-unstyled mb-3" style="font-size:.875rem;">
                             @foreach($service->getFeatures() as $feature)
                                 <li class="mb-1 d-flex align-items-start gap-2">
-                                    <span style="color:#4a7c59; font-weight:700; flex-shrink:0;">✓</span>
+                                    <span style="color:#4a7c59; font-weight:700; flex-shrink:0;"></span>
                                     <span class="text-muted">{{ $feature }}</span>
                                 </li>
                             @endforeach

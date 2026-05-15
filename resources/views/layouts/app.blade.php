@@ -108,7 +108,7 @@
 
 <footer class="bg-dark text-white py-4 mt-auto">
     <div class="container text-center">
-        <p class="mb-1" style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-style:italic;">🌿 Raíces</p>
+        <p class="mb-1" style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-style:italic;"> Raíces</p>
         <small class="text-secondary">Vivero & Jardinería — Todos los derechos reservados</small>
     </div>
 </footer>
