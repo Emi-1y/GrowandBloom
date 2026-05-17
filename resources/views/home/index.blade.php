@@ -1,11 +1,11 @@
 {{-- Author: Emily Cardona Castañeda --}}
 
 @extends('layouts.app')
-@section('title', 'Inicio')
+@section('title', __('layout.app_title'))
 
 @section('hero')
 <div style="background: linear-gradient(135deg, #1a3a2a 0%, #2d5a3d 60%, #4a7c59 100%); min-height: 75vh; display:flex; align-items:center; position:relative; overflow:hidden;">
-    {{-- Círculos decorativos --}}
+    {{-- Decorative circles --}}
     <div style="position:absolute; top:-80px; right:-80px; width:400px; height:400px; background:rgba(255,255,255,0.04); border-radius:50%;"></div>
     <div style="position:absolute; bottom:-60px; left:-60px; width:300px; height:300px; background:rgba(255,255,255,0.03); border-radius:50%;"></div>
 
@@ -14,7 +14,7 @@
             <div class="col-lg-6">
                 <span class="badge bg-success bg-opacity-50 text-white mb-3 px-3 py-2"
                       style="font-size:.75rem; letter-spacing:.15em; text-transform:uppercase;">
-                    Vivero & Jardinería
+                    {{ __('home.hero_badge') }}
                 </span>
                 <h1 class="display-3 fw-light text-white mb-3"
                     style="font-family:'Cormorant Garamond',serif; line-height:1.05;">
@@ -22,23 +22,22 @@
                     <em style="font-weight:600; color:#a8d5b5;">something beautiful</em>
                 </h1>
                 <p class="text-white mb-5" style="opacity:.8; font-size:1.05rem; max-width:480px; line-height:1.8;">
-                    Plantas, semillas, abonos y servicios de jardinería profesional.
-                    Todo lo que tu espacio verde necesita para florecer.
+                    {{ __('home.hero_description') }}
                 </p>
                 <div class="d-flex gap-3 flex-wrap">
                     @auth
                         <a href="{{ route('product.index') }}" class="btn btn-light btn-lg px-4" style="border-radius:8px; font-weight:600;">
-                            <i class="bi bi-grid me-2"></i>Ver productos
+                            <i class="bi bi-grid me-2"></i>{{ __('home.hero_browse_products') }}
                         </a>
                         <a href="{{ route('service.index') }}" class="btn btn-outline-light btn-lg px-4" style="border-radius:8px;">
-                            Ver servicios
+                            {{ __('home.hero_browse_services') }}
                         </a>
                     @else
                         <a href="{{ route('register') }}" class="btn btn-light btn-lg px-4" style="border-radius:8px; font-weight:600; color:#2d5a3d;">
-                            <i class="bi bi-person-plus me-2"></i>Comenzar
+                            <i class="bi bi-person-plus me-2"></i>{{ __('home.hero_get_started') }}
                         </a>
                         <a href="{{ route('login') }}" class="btn btn-outline-light btn-lg px-4" style="border-radius:8px;">
-                            Iniciar sesión
+                            {{ __('home.hero_login') }}
                         </a>
                     @endauth
                 </div>
@@ -54,23 +53,23 @@
 
 @section('content')
 
-{{-- PRODUCTOS DESTACADOS --}}
+{{-- FEATURED PRODUCTS --}}
 <div class="mb-5">
     <div class="d-flex justify-content-between align-items-end border-bottom pb-3 mb-4">
         <div>
             <h2 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:#2d5a3d;">
-                Colección <em>destacada</em>
+                {{ __('home.featured_title') }}
             </h2>
             <p class="text-muted mb-0" style="font-size:.85rem; letter-spacing:.08em; text-transform:uppercase;">
-                Plantas, semillas y suministros seleccionados
+                {{ __('home.featured_subtitle') }}
             </p>
         </div>
         <a href="{{ route('product.index') }}"
-           class="btn btn-outline-success btn-sm">Ver todos →</a>
+           class="btn btn-outline-success btn-sm">{{ __('home.featured_view_all') }}</a>
     </div>
 
     @if($viewData['featuredProducts']->isEmpty())
-        <div class="alert alert-info">No hay productos disponibles aún.</div>
+        <div class="alert alert-info">{{ __('home.featured_empty') }}</div>
     @else
         <div class="row g-3">
             @foreach($viewData['featuredProducts'] as $product)
@@ -79,7 +78,6 @@
                      onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.12)';"
                      onmouseout="this.style.transform='none';this.style.boxShadow='';">
 
-                    {{-- Imagen --}}
                     <div style="background:linear-gradient(135deg,#e8f5ec,#f0f7f2); height:180px; display:flex; align-items:center; justify-content:center; position:relative;">
                         @if($product->getImage())
                             <img src="{{ asset('images/products/'.$product->getImage()) }}"
@@ -90,12 +88,12 @@
                         @if($product->getExclusive())
                             <span class="badge position-absolute top-0 start-0 m-2"
                                   style="background:#8b5e3c; font-size:.62rem; letter-spacing:.08em;">
-                                EXCLUSIVO
+                                {{ __('home.badge_exclusive') }}
                             </span>
                         @endif
                         @if($product->getStock() === 0)
                             <span class="badge bg-secondary position-absolute top-0 end-0 m-2"
-                                  style="font-size:.62rem;">SIN STOCK</span>
+                                  style="font-size:.62rem;">{{ __('home.badge_out_of_stock') }}</span>
                         @endif
                     </div>
 
@@ -111,16 +109,16 @@
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span style="font-size:.95rem; font-weight:700; color:#2d5a3d;">
                                     ${{ number_format($product->getPrice(), 0, ',', '.') }}
-                                    <small class="text-muted fw-normal" style="font-size:.65rem;">COP</small>
+                                    <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('product.currency') }}</small>
                                 </span>
                                 @if($product->getStock() > 0)
                                     <span class="badge text-success"
-                                          style="background:rgba(45,90,61,.1); font-size:.62rem;">En stock</span>
+                                          style="background:rgba(45,90,61,.1); font-size:.62rem;">{{ __('home.badge_in_stock') }}</span>
                                 @endif
                             </div>
                             <a href="{{ route('product.show', $product->getId()) }}"
                                class="btn btn-outline-success btn-sm w-100" style="border-radius:8px; font-size:.8rem;">
-                                Ver detalle
+                                {{ __('home.card_view_detail') }}
                             </a>
                         </div>
                     </div>
@@ -131,35 +129,34 @@
     @endif
 </div>
 
-{{-- BANNER SERVICIOS --}}
+{{-- SERVICES BANNER --}}
 <div class="rounded-4 p-5 mb-5 d-flex justify-content-between align-items-center flex-wrap gap-4"
      style="background:linear-gradient(135deg,#e8f5ec,#d4eddf); border:1px solid #b8dfc6;">
     <div>
         <span style="font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:#4a7c59; font-weight:600;">
-            Servicios profesionales
+            {{ __('home.services_badge') }}
         </span>
         <h2 class="mt-1 mb-2" style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:#1a3a2a; font-weight:600;">
-            Jardinería experta, a tu puerta
+            {{ __('home.services_title') }}
         </h2>
         <p class="text-muted mb-0" style="max-width:460px; line-height:1.75;">
-            Desde poda y mantenimiento hasta diseño completo de jardines.
-            Nuestro equipo transforma cualquier espacio verde.
+            {{ __('home.services_description') }}
         </p>
     </div>
     <a href="{{ route('service.index') }}" class="btn btn-success btn-lg px-4" style="border-radius:10px; white-space:nowrap;">
-        Explorar servicios <i class="bi bi-arrow-right ms-2"></i>
+        {{ __('home.services_explore') }} <i class="bi bi-arrow-right ms-2"></i>
     </a>
 </div>
 
-{{-- CATEGORÍAS --}}
+{{-- CATEGORIES --}}
 @if(!$viewData['categories']->isEmpty())
 <div>
     <div class="d-flex justify-content-between align-items-end border-bottom pb-3 mb-4">
         <div>
             <h2 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:#2d5a3d;">
-                Categorías
+                {{ __('home.categories_title') }}
             </h2>
-            <p class="text-muted mb-0" style="font-size:.82rem;">Encuentra exactamente lo que necesitas</p>
+            <p class="text-muted mb-0" style="font-size:.82rem;">{{ __('home.categories_subtitle') }}</p>
         </div>
     </div>
     <div class="row g-3">
@@ -180,7 +177,7 @@
                     {{ $category->getName() }}
                 </div>
                 <div style="font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:#4a7c59; font-weight:600;">
-                    Explorar →
+                    {{ __('home.categories_explore') }}
                 </div>
             </a>
         </div>

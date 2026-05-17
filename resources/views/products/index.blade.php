@@ -1,27 +1,27 @@
 {{-- Author: Emily Cardona Castañeda --}}
 
 @extends('layouts.app')
-@section('title', 'Productos')
-@section('subtitle', ' Nuestros productos')
+@section('title', __('product.index_title'))
+@section('subtitle', __('product.index_title'))
 
 @section('content')
-{{-- FILTROS --}}
+{{-- FILTERS --}}
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-3">
         <form method="GET" action="{{ route('product.index') }}" class="row g-2 align-items-end">
             <div class="col-md-4">
                 <label class="form-label text-muted" style="font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600;">
-                    Buscar
+                    {{ __('product.filter_search') }}
                 </label>
                 <input type="text" name="search" class="form-control form-control-sm"
-                       placeholder="Nombre del producto…" value="{{ $viewData['search'] ?? '' }}">
+                       placeholder="{{ __('product.filter_search_placeholder') }}" value="{{ $viewData['search'] ?? '' }}">
             </div>
             <div class="col-md-3">
                 <label class="form-label text-muted" style="font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600;">
-                    Categoría
+                    {{ __('product.filter_category') }}
                 </label>
                 <select name="category" class="form-select form-select-sm">
-                    <option value="">Todas las categorías</option>
+                    <option value="">{{ __('product.filter_all_categories') }}</option>
                     @foreach($viewData['categories'] ?? [] as $cat)
                         <option value="{{ $cat->getId() }}"
                             {{ (string)($viewData['selectedCategory'] ?? '') === (string)$cat->getId() ? 'selected' : '' }}>
@@ -32,21 +32,21 @@
             </div>
             <div class="col-md-2">
                 <label class="form-label text-muted" style="font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600;">
-                    Tipo
+                    {{ __('product.filter_type') }}
                 </label>
                 <select name="exclusive" class="form-select form-select-sm">
-                    <option value="">Todos</option>
-                    <option value="1" {{ ($viewData['selectedExclusive'] ?? '') === '1' ? 'selected' : '' }}>Exclusivos</option>
-                    <option value="0" {{ ($viewData['selectedExclusive'] ?? '') === '0' ? 'selected' : '' }}>Estándar</option>
+                    <option value="">{{ __('product.filter_all') }}</option>
+                    <option value="1" {{ ($viewData['selectedExclusive'] ?? '') === '1' ? 'selected' : '' }}>{{ __('product.filter_exclusive') }}</option>
+                    <option value="0" {{ ($viewData['selectedExclusive'] ?? '') === '0' ? 'selected' : '' }}>{{ __('product.filter_standard') }}</option>
                 </select>
             </div>
             <div class="col-md-2 d-flex gap-2">
                 <button type="submit" class="btn btn-success btn-sm w-100">
-                    <i class="bi bi-search me-1"></i>Buscar
+                    <i class="bi bi-search me-1"></i>{{ __('product.filter_search') }}
                 </button>
             </div>
             <div class="col-md-1">
-                <a href="{{ route('product.index') }}" class="btn btn-outline-secondary btn-sm w-100" title="Limpiar">
+                <a href="{{ route('product.index') }}" class="btn btn-outline-secondary btn-sm w-100" title="Clear">
                     <i class="bi bi-x-lg"></i>
                 </a>
             </div>
@@ -70,7 +70,7 @@
                     @endif
                     @if($product->getExclusive())
                         <span class="badge position-absolute top-0 start-0 m-2"
-                              style="background:#8b5e3c; font-size:.6rem; letter-spacing:.08em;">EXCLUSIVO</span>
+                              style="background:#8b5e3c; font-size:.6rem; letter-spacing:.08em;">{{ __('product.badge_exclusive') }}</span>
                     @endif
                 </div>
                 <div class="card-body d-flex flex-column p-3">
@@ -90,19 +90,19 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span style="font-size:.95rem; font-weight:700; color:#2d5a3d;">
                                 ${{ number_format($product->getPrice(), 0, ',', '.') }}
-                                <small class="text-muted fw-normal" style="font-size:.65rem;">COP</small>
+                                <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('product.currency') }}</small>
                             </span>
                             @if($product->getStock() > 0)
                                 <span class="badge" style="background:rgba(45,90,61,.1); color:#2d5a3d; font-size:.62rem;">
-                                    En stock
+                                    {{ __('product.badge_in_stock') }}
                                 </span>
                             @else
-                                <span class="badge bg-secondary" style="font-size:.62rem;">Sin stock</span>
+                                <span class="badge bg-secondary" style="font-size:.62rem;">{{ __('product.badge_out_of_stock') }}</span>
                             @endif
                         </div>
                         <a href="{{ route('product.show', $product->getId()) }}"
                            class="btn btn-outline-success btn-sm w-100" style="border-radius:8px;">
-                            Ver detalle
+                            {{ __('product.view_detail') }}
                         </a>
                     </div>
                 </div>
@@ -116,8 +116,8 @@
 @else
     <div class="text-center py-5">
         <div style="font-size:4rem; opacity:.3;"></div>
-        <h4 class="mt-3 text-muted">No se encontraron productos</h4>
-        <a href="{{ route('product.index') }}" class="btn btn-outline-success mt-3">Ver todos</a>
+        <h4 class="mt-3 text-muted">{{ __('product.not_found') }}</h4>
+        <a href="{{ route('product.index') }}" class="btn btn-outline-success mt-3">{{ __('product.view_all') }}</a>
     </div>
 @endif
 @endsection

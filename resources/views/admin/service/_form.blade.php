@@ -4,55 +4,55 @@
 <div class="row g-3">
 
     <div class="col-md-12">
-        <label for="name" class="form-label">Nombre del servicio</label>
+        <label for="name" class="form-label">{{ __('service.form_name') }}</label>
         <input type="text" id="name" name="name" class="form-control"
-               placeholder="Ej: Mantenimiento de jardín"
+               placeholder="{{ __('service.form_name_placeholder') }}"
                value="{{ old('name', $service?->getName()) }}">
     </div>
 
     <div class="col-md-6">
-        <label for="price" class="form-label">Precio (COP)</label>
+        <label for="price" class="form-label">{{ __('service.form_price') }}</label>
         <input type="number" id="price" name="price" class="form-control" min="0"
                placeholder="180000"
                value="{{ old('price', $service?->getPrice()) }}">
     </div>
 
     <div class="col-md-6">
-        <label for="duration" class="form-label">Duración estimada</label>
+        <label for="duration" class="form-label">{{ __('service.form_duration') }}</label>
         <input type="text" id="duration" name="duration" class="form-control"
-               placeholder="Ej: 2–4 horas"
+               placeholder="{{ __('service.form_duration_placeholder') }}"
                value="{{ old('duration', $service?->getDuration()) }}">
     </div>
 
     <div class="col-md-12">
-        <label for="employee" class="form-label">Empleado asignado</label>
+        <label for="employee" class="form-label">{{ __('service.form_employee') }}</label>
         <input type="text" id="employee" name="employee" class="form-control"
-               placeholder="Nombre del jardinero asignado"
+               placeholder="{{ __('service.form_employee_placeholder') }}"
                value="{{ old('employee', $service?->getEmployee()) }}">
     </div>
 
     <div class="col-12">
-        <label for="description" class="form-label">Descripción</label>
+        <label for="description" class="form-label">{{ __('service.form_description') }}</label>
         <textarea id="description" name="description" class="form-control" rows="3"
-                  placeholder="Describe el servicio..."
+                  placeholder="{{ __('service.form_description_placeholder') }}"
         >{{ old('description', $service?->getDescription()) }}</textarea>
     </div>
 
     <div class="col-12">
-        <label for="features_text" class="form-label">Características incluidas</label>
+        <label for="features_text" class="form-label">{{ __('service.form_features') }}</label>
         <textarea id="features_text" name="features_text" class="form-control" rows="5"
-                  placeholder="Poda y corte de césped&#10;Fertilización&#10;Control de plagas"
+                  placeholder="{{ __('service.form_features_placeholder') }}"
         >{{ old('features_text', $service ? implode("\n", $service->getFeatures()) : '') }}</textarea>
-        <small class="text-muted" style="font-size:.78rem;">Una característica por línea.</small>
+        <small class="text-muted" style="font-size:.78rem;">{{ __('service.form_features_hint') }}</small>
     </div>
 
     <div class="col-12">
-        <label for="image" class="form-label">Nombre del archivo de imagen</label>
+        <label for="image" class="form-label">{{ __('service.form_image') }}</label>
         <input type="text" id="image" name="image" class="form-control"
-               placeholder="mantenimiento-jardin.jpg"
+               placeholder="{{ __('service.form_image_placeholder') }}"
                value="{{ old('image', $service?->getImage()) }}">
         <small class="text-muted" style="font-size:.78rem;">
-            Sube la imagen a <code>public/images/services/</code> y escribe el nombre aquí.
+            {!! __('service.form_image_hint') !!}
         </small>
     </div>
 
@@ -61,7 +61,7 @@
             <input type="checkbox" id="active" name="active" value="1"
                    class="form-check-input"
                    {{ old('active', $service?->getActive() ?? true) ? 'checked' : '' }}>
-            <label for="active" class="form-check-label">Servicio activo (visible en la tienda)</label>
+            <label for="active" class="form-check-label">{{ __('service.form_active') }}</label>
         </div>
     </div>
 
@@ -70,7 +70,7 @@
             {{ $submitText }}
         </button>
         <a href="{{ route('admin.service.index') }}" class="btn btn-outline-secondary" style="border-radius:8px;">
-            Volver al listado
+            {{ __('service.form_back') }}
         </a>
     </div>
 

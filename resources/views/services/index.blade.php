@@ -1,15 +1,15 @@
 {{-- Author: Emily Cardona Castañeda --}}
 @extends('layouts.app')
-@section('title', 'Servicios de Jardinería')
-@section('subtitle', 'Servicios de jardinería')
+@section('title', __('service.index_title'))
+@section('subtitle', __('service.index_subtitle'))
 
 @section('content')
 <p class="text-muted mb-4" style="max-width:600px; line-height:1.8;">
-    Servicios profesionales diseñados para mantener tu espacio verde hermoso durante todo el año.
+    {{ __('service.index_description') }}
 </p>
 
 @if($viewData['services']->isEmpty())
-    <div class="alert alert-info">No hay servicios disponibles aún.</div>
+    <div class="alert alert-info">{{ __('service.empty') }}</div>
 @else
     <div class="row g-4">
         @foreach($viewData['services'] as $service)
@@ -18,7 +18,6 @@
                  onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(45,90,61,.15)';"
                  onmouseout="this.style.transform='none';this.style.boxShadow='';">
 
-                {{-- Imagen --}}
                 <div style="height:200px; background:linear-gradient(135deg,#e8f5ec,#d4eddf); display:flex; align-items:center; justify-content:center; overflow:hidden;">
                     @if($service->getImage())
                         <img src="{{ asset('images/services/' . $service->getImage()) }}"
@@ -27,7 +26,7 @@
                     @else
                         <div style="text-align:center; color:#4a7c59; opacity:.4;">
                             <div style="font-size:3rem; margin-bottom:.5rem;"></div>
-                            <div style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;">Sin imagen</div>
+                            <div style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;">{{ __('service.no_image') }}</div>
                         </div>
                     @endif
                 </div>
@@ -42,7 +41,7 @@
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span style="font-size:1.15rem; font-weight:700; color:#2d5a3d;">
                             ${{ number_format($service->getPrice(), 0, ',', '.') }}
-                            <small class="text-muted fw-normal" style="font-size:.65rem;">COP</small>
+                            <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('product.currency') }}</small>
                         </span>
                         @if($service->getDuration())
                             <span class="badge"
@@ -72,7 +71,7 @@
                     @if($service->getEmployee())
                         <div class="mb-3 py-2 px-3 rounded-2"
                              style="background:#f0f7f2; font-size:.8rem; color:#4a7c59;">
-                            Jardinero asignado: <strong>{{ $service->getEmployee() }}</strong>
+                            {{ __('service.assigned_gardener') }} <strong>{{ $service->getEmployee() }}</strong>
                         </div>
                     @endif
 
@@ -84,12 +83,12 @@
                                 <input type="hidden" name="quantity" value="1">
                                 <input type="hidden" name="item_type" value="service">
                                 <button type="submit" class="btn btn-success w-100" style="border-radius:10px;">
-                                    Solicitar servicio
+                                    {{ __('service.request_service') }}
                                 </button>
                             </form>
                         @else
                             <a href="{{ route('login') }}" class="btn btn-outline-success w-100" style="border-radius:10px;">
-                                Inicia sesión para solicitar
+                                {{ __('service.login_to_request') }}
                             </a>
                         @endauth
                     </div>

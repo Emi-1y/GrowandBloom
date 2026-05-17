@@ -17,10 +17,10 @@
                     {{ $viewData['productsCount'] }}
                 </div>
                 <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7165; font-weight:600; margin-top:.4rem;">
-                    Total productos
+                    {{ __('admin.stat_total_products') }}
                 </div>
                 <div style="font-size:.8rem; color:#4a7c59; margin-top:.25rem;">
-                    {{ $viewData['activeProductsCount'] }} activos
+                    {{ $viewData['activeProductsCount'] }} {{ __('admin.stat_active') }}
                 </div>
             </div>
         </div>
@@ -33,10 +33,10 @@
                     {{ $viewData['servicesCount'] }}
                 </div>
                 <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7165; font-weight:600; margin-top:.4rem;">
-                    Servicios activos
+                    {{ __('admin.stat_active_services') }}
                 </div>
                 <div style="font-size:.8rem; color:#8b5e3c; margin-top:.25rem;">
-                    Jardinería profesional
+                    {{ __('admin.stat_professional_gardening') }}
                 </div>
             </div>
         </div>
@@ -49,10 +49,10 @@
                     {{ $viewData['ordersCount'] }}
                 </div>
                 <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7165; font-weight:600; margin-top:.4rem;">
-                    Total órdenes
+                    {{ __('admin.stat_total_orders') }}
                 </div>
                 <div style="font-size:.8rem; color:#2d5a3d; margin-top:.25rem;">
-                    {{ $viewData['pendingOrdersCount'] }} pendientes
+                    {{ $viewData['pendingOrdersCount'] }} {{ __('admin.stat_pending') }}
                 </div>
             </div>
         </div>
@@ -65,10 +65,10 @@
                     {{ $viewData['usersCount'] }}
                 </div>
                 <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7165; font-weight:600; margin-top:.4rem;">
-                    Usuarios registrados
+                    {{ __('admin.stat_registered_users') }}
                 </div>
                 <div style="font-size:.8rem; color:#4a7c59; margin-top:.25rem;">
-                    Clientes activos
+                    {{ __('admin.stat_active_clients') }}
                 </div>
             </div>
         </div>
@@ -88,13 +88,13 @@
                     </svg>
                 </div>
                 <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:#1a3a2a; margin-bottom:.4rem;">
-                    Productos
+                    {{ __('admin.module_products') }}
                 </h5>
                 <p style="font-size:.85rem; color:#7a7165; line-height:1.6; margin-bottom:1.25rem;">
-                    Gestiona el catálogo — crea, edita y elimina productos del vivero.
+                    {{ __('admin.module_products_desc') }}
                 </p>
                 <a href="{{ route('admin.product.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
-                    Ir a productos
+                    {{ __('admin.module_products_link') }}
                 </a>
             </div>
         </div>
@@ -111,13 +111,13 @@
                     </svg>
                 </div>
                 <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:#1a3a2a; margin-bottom:.4rem;">
-                    Categorías
+                    {{ __('admin.module_categories') }}
                 </h5>
                 <p style="font-size:.85rem; color:#7a7165; line-height:1.6; margin-bottom:1.25rem;">
-                    Organiza los productos por categorías para facilitar la navegación.
+                    {{ __('admin.module_categories_desc') }}
                 </p>
                 <a href="{{ route('admin.category.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
-                    Ir a categorías
+                    {{ __('admin.module_categories_link') }}
                 </a>
             </div>
         </div>
@@ -134,13 +134,13 @@
                     </svg>
                 </div>
                 <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:#1a3a2a; margin-bottom:.4rem;">
-                    Servicios
+                    {{ __('admin.module_services') }}
                 </h5>
                 <p style="font-size:.85rem; color:#7a7165; line-height:1.6; margin-bottom:1.25rem;">
-                    Administra los servicios de jardinería y asigna empleados a cada uno.
+                    {{ __('admin.module_services_desc') }}
                 </p>
                 <a href="{{ route('admin.service.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
-                    Ir a servicios
+                    {{ __('admin.module_services_link') }}
                 </a>
             </div>
         </div>
@@ -157,13 +157,13 @@
                     </svg>
                 </div>
                 <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:#1a3a2a; margin-bottom:.4rem;">
-                    Órdenes
+                    {{ __('admin.module_orders') }}
                 </h5>
                 <p style="font-size:.85rem; color:#7a7165; line-height:1.6; margin-bottom:1.25rem;">
-                    Visualiza, filtra y actualiza el estado de todas las órdenes.
+                    {{ __('admin.module_orders_desc') }}
                 </p>
                 <a href="{{ route('admin.order.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
-                    Ir a órdenes
+                    {{ __('admin.module_orders_link') }}
                 </a>
             </div>
         </div>
@@ -180,13 +180,13 @@
                     </svg>
                 </div>
                 <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:#1a3a2a; margin-bottom:.4rem;">
-                    Usuarios
+                    {{ __('admin.module_users') }}
                 </h5>
                 <p style="font-size:.85rem; color:#7a7165; line-height:1.6; margin-bottom:1.25rem;">
-                    Consulta los usuarios registrados y gestiona sus roles en la plataforma.
+                    {{ __('admin.module_users_desc') }}
                 </p>
                 <a href="{{ route('admin.user.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
-                    Ir a usuarios
+                    {{ __('admin.module_users_link') }}
                 </a>
             </div>
         </div>
@@ -197,10 +197,10 @@
 @if($viewData['recentOrders']->isNotEmpty())
 <div class="d-flex justify-content-between align-items-center mb-3 pb-2" style="border-bottom:1px solid #e2ddd4;">
     <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:#1a3a2a; margin:0;">
-        Órdenes recientes
+        {{ __('admin.recent_orders') }}
     </h5>
     <a href="{{ route('admin.order.index') }}" class="btn btn-outline-success btn-sm" style="border-radius:8px;">
-        Ver todas
+        {{ __('admin.view_all') }}
     </a>
 </div>
 
@@ -210,19 +210,19 @@
             <thead>
                 <tr style="background:#f2efe8;">
                     <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">
-                        Orden
+                        {{ __('admin.col_order') }}
                     </th>
                     <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">
-                        Cliente
+                        {{ __('admin.col_client') }}
                     </th>
                     <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">
-                        Total
+                        {{ __('admin.col_total') }}
                     </th>
                     <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">
-                        Estado
+                        {{ __('admin.col_status') }}
                     </th>
                     <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">
-                        Fecha
+                        {{ __('admin.col_date') }}
                     </th>
                     <th style="border:none;"></th>
                 </tr>
@@ -242,19 +242,19 @@
                     <td style="padding:1rem 1.25rem; border-color:#f2efe8;">
                         @if($order->getStatus() === 'pending')
                             <span style="background:#fff3cd; color:#856404; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(133,100,4,.2);">
-                                Pendiente
+                                {{ __('order.status_pending') }}
                             </span>
                         @elseif($order->getStatus() === 'paid')
                             <span style="background:#d4edda; color:#155724; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(21,87,36,.2);">
-                                Pagado
+                                {{ __('order.status_paid') }}
                             </span>
                         @elseif($order->getStatus() === 'delivered')
                             <span style="background:#d4edda; color:#155724; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(21,87,36,.2);">
-                                Entregado
+                                {{ __('order.status_delivered') }}
                             </span>
                         @elseif($order->getStatus() === 'cancelled')
                             <span style="background:#f8d7da; color:#721c24; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(114,28,36,.2);">
-                                Cancelado
+                                {{ __('order.status_cancelled') }}
                             </span>
                         @else
                             <span style="background:#e2ddd4; color:#7a7165; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px;">
@@ -268,7 +268,7 @@
                     <td style="padding:1rem 1.25rem; border-color:#f2efe8;">
                         <a href="{{ route('admin.order.edit', $order->getId()) }}"
                            class="btn btn-outline-success btn-sm" style="border-radius:8px; font-size:.75rem;">
-                            Editar
+                            {{ __('admin.action_edit') }}
                         </a>
                     </td>
                 </tr>

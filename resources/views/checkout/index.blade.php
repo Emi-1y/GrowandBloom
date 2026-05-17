@@ -1,8 +1,8 @@
 {{-- Author: Emily Cardona Castañeda  --}}
 
 @extends('layouts.app')
-@section('title', 'Finalizar pedido')
-@section('subtitle', 'Finalizar pedido')
+@section('title', __('order.checkout_title'))
+@section('subtitle', __('order.checkout_title'))
 
 @section('content')
 <div class="row g-4">
@@ -21,26 +21,25 @@
                     </div>
                 @endif
 
-                {{-- Datos del usuario (solo lectura) --}}
                 <h6 style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:#1a3a2a; margin-bottom:1rem;">
-                    Datos de entrega
+                    {{ __('order.delivery_data') }}
                 </h6>
                 <div style="background:#f2efe8; border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem; font-size:.9rem;">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:.5rem;">
                         <div>
-                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">Nombre</span>
+                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">{{ __('order.label_name') }}</span>
                             <div style="color:#1a3a2a; font-weight:500;">{{ $viewData['user']->getName() }}</div>
                         </div>
                         <div>
-                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">Teléfono</span>
+                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">{{ __('order.label_phone') }}</span>
                             <div style="color:#1a3a2a;">{{ $viewData['user']->getPhone() ?? '—' }}</div>
                         </div>
                         <div>
-                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">Dirección</span>
+                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">{{ __('order.label_address') }}</span>
                             <div style="color:#1a3a2a;">{{ $viewData['user']->getAddress() ?? '—' }}</div>
                         </div>
                         <div>
-                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">Ciudad</span>
+                            <span style="font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">{{ __('order.label_city') }}</span>
                             <div style="color:#1a3a2a;">{{ $viewData['user']->getCity() ?? '—' }}</div>
                         </div>
                     </div>
@@ -50,14 +49,14 @@
                     @csrf
 
                     <div style="margin-bottom:1.5rem;">
-                        <label for="payment_method" class="form-label">Método de pago</label>
+                        <label for="payment_method" class="form-label">{{ __('order.payment_method') }}</label>
                         <select name="payment_method" id="payment_method"
                                 class="form-select @error('payment_method') is-invalid @enderror" required>
-                            <option value="">Selecciona un método de pago</option>
-                            <option value="cash"     {{ old('payment_method') === 'cash'     ? 'selected' : '' }}>Efectivo contra entrega</option>
-                            <option value="card"     {{ old('payment_method') === 'card'     ? 'selected' : '' }}>Tarjeta de crédito / débito</option>
-                            <option value="transfer" {{ old('payment_method') === 'transfer' ? 'selected' : '' }}>Transferencia bancaria</option>
-                            <option value="nequi"    {{ old('payment_method') === 'nequi'    ? 'selected' : '' }}>Nequi</option>
+                            <option value="">{{ __('order.payment_select') }}</option>
+                            <option value="cash"     {{ old('payment_method') === 'cash'     ? 'selected' : '' }}>{{ __('order.payment_cash') }}</option>
+                            <option value="card"     {{ old('payment_method') === 'card'     ? 'selected' : '' }}>{{ __('order.payment_card') }}</option>
+                            <option value="transfer" {{ old('payment_method') === 'transfer' ? 'selected' : '' }}>{{ __('order.payment_transfer') }}</option>
+                            <option value="nequi"    {{ old('payment_method') === 'nequi'    ? 'selected' : '' }}>{{ __('order.payment_nequi') }}</option>
                         </select>
                         @error('payment_method')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -66,10 +65,10 @@
 
                     <div style="display:flex; gap:.75rem;">
                         <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary" style="border-radius:10px;">
-                            ← Volver al carrito
+                            {{ __('order.back_to_cart') }}
                         </a>
                         <button type="submit" class="btn btn-success btn-lg" style="border-radius:10px;">
-                            Confirmar pedido
+                            {{ __('order.confirm_order') }}
                         </button>
                     </div>
                 </form>
@@ -82,7 +81,7 @@
             <div style="height:5px; background:linear-gradient(90deg,#2d5a3d,#4a7c59);"></div>
             <div class="card-body p-4">
                 <h6 style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:#1a3a2a; margin-bottom:1rem;">
-                    Resumen del pedido
+                    {{ __('order.order_summary_label') }}
                 </h6>
                 @foreach($viewData['cartItems'] as $cartItem)
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; padding:.75rem 0; border-bottom:1px solid #e2ddd4; font-size:.88rem;">
@@ -97,9 +96,9 @@
                 @endforeach
 
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 0 0; border-top:1.5px solid #e2ddd4; margin-top:.5rem;">
-                    <span style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">Total</span>
+                    <span style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">{{ __('order.label_total') }}</span>
                     <span style="font-size:1.2rem; font-weight:700; color:#2d5a3d;">
-                        ${{ number_format($viewData['totalAmount'], 0, ',', '.') }} COP
+                        ${{ number_format($viewData['totalAmount'], 0, ',', '.') }} {{ __('product.currency') }}
                     </span>
                 </div>
             </div>

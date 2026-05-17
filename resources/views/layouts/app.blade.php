@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>@yield('title', 'Raíces') — Vivero</title>
+    <title>@yield('title', __('layout.app_title')) — {{ __('layout.footer_brand') }}</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
@@ -25,7 +25,7 @@
             alt="Logo"
             style="height:60px; margin-right:15px;">
 
-             Grow And Bloom
+             {{ __('layout.brand') }}
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -33,42 +33,42 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav ms-auto align-items-center gap-1">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home.index') }}">Inicio</a>
+                    <a class="nav-link" href="{{ route('home.index') }}">{{ __('layout.nav_home') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('product.index') }}">Productos</a>
+                    <a class="nav-link" href="{{ route('product.index') }}">{{ __('layout.nav_products') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('service.index') }}">Servicios</a>
+                    <a class="nav-link" href="{{ route('service.index') }}">{{ __('layout.nav_services') }}</a>
                 </li>
                 @auth
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('cart.index') }}">
-                            <i class="bi bi-cart3"></i> Carrito
+                            <i class="bi bi-cart3"></i> {{ __('layout.nav_cart') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('order.index') }}">Mis pedidos</a>
+                        <a class="nav-link" href="{{ route('order.index') }}">{{ __('layout.nav_my_orders') }}</a>
                     </li>
                     @if(auth()->user()->getRole() === 'admin')
                         <li class="nav-item">
                             <a class="nav-link text-warning fw-semibold" href="{{ route('admin.index') }}">
-                                <i class="bi bi-gear-fill"></i> Admin
+                                <i class="bi bi-gear-fill"></i> {{ __('layout.nav_admin') }}
                             </a>
                         </li>
                     @endif
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="btn btn-outline-success btn-sm ms-2">Salir</button>
+                            <button type="submit" class="btn btn-outline-success btn-sm ms-2">{{ __('layout.nav_logout') }}</button>
                         </form>
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Ingresar</a>
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('layout.nav_login') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-success btn-sm ms-2" href="{{ route('register') }}">Registrarse</a>
+                        <a class="btn btn-success btn-sm ms-2" href="{{ route('register') }}">{{ __('layout.nav_register') }}</a>
                     </li>
                 @endauth
             </ul>
@@ -108,8 +108,8 @@
 
 <footer class="bg-dark text-white py-4 mt-auto">
     <div class="container text-center">
-        <p class="mb-1" style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-style:italic;"> Raíces</p>
-        <small class="text-secondary">Vivero & Jardinería — Todos los derechos reservados</small>
+        <p class="mb-1" style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-style:italic;">{{ __('layout.footer_brand') }}</p>
+        <small class="text-secondary">{{ __('layout.footer_tagline') }}</small>
     </div>
 </footer>
 

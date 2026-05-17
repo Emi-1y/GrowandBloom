@@ -8,27 +8,27 @@
 @section('content')
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; padding-bottom:1.25rem; border-bottom:1px solid #e2ddd4;">
     <div style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#1a3a2a; font-weight:600;">
-        Gestión de productos
+        {{ __('product.manage_title') }}
     </div>
     <a href="{{ route('admin.product.create') }}" class="btn btn-success" style="border-radius:8px;">
-        + Crear producto
+        {{ __('product.create_btn') }}
     </a>
 </div>
 
 @if($viewData['products']->isEmpty())
-    <div class="alert alert-info">No hay productos creados aún.</div>
+    <div class="alert alert-info">{{ __('product.empty') }}</div>
 @else
     <div class="card border-0 shadow-sm" style="border-radius:14px; overflow:hidden;">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead>
                     <tr style="background:#f2efe8;">
-                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">ID</th>
-                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">Nombre</th>
-                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">Categoría</th>
-                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">Precio</th>
-                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">Stock</th>
-                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">Activo</th>
+                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">{{ __('product.col_id') }}</th>
+                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">{{ __('product.col_name') }}</th>
+                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">{{ __('product.col_category') }}</th>
+                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">{{ __('product.col_price') }}</th>
+                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">{{ __('product.col_stock') }}</th>
+                        <th style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; padding:1rem 1.25rem; font-weight:600; border:none;">{{ __('product.col_active') }}</th>
                         <th style="border:none;"></th>
                     </tr>
                 </thead>
@@ -66,11 +66,11 @@
                             <td style="padding:1rem 1.25rem; border-color:#f2efe8;">
                                 @if($product->getActive())
                                     <span style="background:#d4edda; color:#155724; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:3px 10px; border-radius:20px; border:1px solid rgba(21,87,36,.2);">
-                                        Activo
+                                        {{ __('product.status_active') }}
                                     </span>
                                 @else
                                     <span style="background:#f8d7da; color:#721c24; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:3px 10px; border-radius:20px; border:1px solid rgba(114,28,36,.2);">
-                                        Inactivo
+                                        {{ __('product.status_inactive') }}
                                     </span>
                                 @endif
                             </td>
@@ -78,15 +78,15 @@
                                 <div style="display:flex; gap:.5rem;">
                                     <a href="{{ route('admin.product.edit', $product->getId()) }}"
                                        class="btn btn-outline-success btn-sm" style="border-radius:8px; font-size:.75rem;">
-                                        Editar
+                                        {{ __('product.action_edit') }}
                                     </a>
                                     <form method="POST" action="{{ route('admin.product.destroy', $product->getId()) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm"
                                                 style="border-radius:8px; font-size:.75rem; background:transparent; border:1px solid rgba(155,44,44,.3); color:#9b2c2c;"
-                                                onclick="return confirm('¿Eliminar este producto?')">
-                                            Eliminar
+                                                onclick="return confirm('{{ __('product.confirm_delete') }}')">
+                                            {{ __('product.action_delete') }}
                                         </button>
                                     </form>
                                 </div>

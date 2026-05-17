@@ -65,7 +65,7 @@
     <div style="background:#fff; border-bottom:1px solid #e2ddd4; padding:1.25rem 0;">
     <div class="container">
         <h1 style="font-family:'Cormorant Garamond',serif; font-size:1.75rem; font-weight:600; color:#1a3a2a; margin:0;">
-            @yield('subtitle', 'Panel de administración')
+            @yield('subtitle', __('admin.dashboard_subtitle'))
         </h1>
     </div>
 </div>
