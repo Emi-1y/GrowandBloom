@@ -20,4 +20,14 @@ return [
     'register_btn'           => 'Create account',
     'already_have_account'   => 'Already have an account?',
     'login_link'             => 'Log in',
+    'register_link'          => 'Register',
+    // login form
+    'login_subtitle'         => 'Welcome back',
+    'email'                  => 'Email address',
+    'email_placeholder'      => 'you@example.com',
+    'password'               => 'Password',
+    'password_placeholder'   => 'Your password',
+    'remember_me'            => 'Remember me',
+    'login_button'           => 'Log in',
+    'no_account'             => 'Don\'t have an account?',
 ];

@@ -51,4 +51,6 @@ return [
     'action_edit'              => 'Edit',
     'action_delete'            => 'Delete',
     'confirm_delete'           => 'Delete this service?',
+    'save_button'              => 'Save',
+    'update_button'            => 'Update',
 ];

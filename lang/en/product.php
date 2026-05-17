@@ -77,4 +77,6 @@ return [
     'action_edit'              => 'Edit',
     'action_delete'            => 'Delete',
     'confirm_delete'           => 'Delete this product?',
+    'save_button'              => 'Save',
+    'update_button'            => 'Update',
 ];
