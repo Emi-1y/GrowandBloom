@@ -93,7 +93,6 @@ class Service extends Model
         $this->attributes['duration'] = $duration;
     }
 
-
     public function getActive(): bool
     {
         return (bool) ($this->attributes['active'] ?? true);
@@ -140,13 +139,14 @@ class Service extends Model
     {
         return number_format($this->getPrice(), 0, ',', '.').' '.__('product.currency');
     }
+
     public function getImage(): ?string
     {
-    return $this->attributes['image'] ?? null;
+        return $this->attributes['image'] ?? null;
     }
 
     public function setImage(?string $image): void
     {
-    $this->attributes['image'] = $image;
+        $this->attributes['image'] = $image;
     }
 }

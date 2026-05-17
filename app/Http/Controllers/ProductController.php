@@ -38,15 +38,14 @@ class ProductController extends Controller
             ->paginate(12)
             ->appends($request->query());
 
-        $viewData = [
-            'title' => __('product.index_title'),
-            'products' => $products,
-            'showPagination' => true,
-            'categories' => Category::orderBy('name')->get(),
-            'search' => $search,
-            'selectedCategory' => $categoryId,
-            'selectedExclusive' => $exclusive,
-        ];
+        $viewData = [];
+        $viewData['title'] = __('product.index_title');
+        $viewData['products'] = $products;
+        $viewData['showPagination'] = true;
+        $viewData['categories'] = Category::orderBy('name')->get();
+        $viewData['search'] = $search;
+        $viewData['selectedCategory'] = $categoryId;
+        $viewData['selectedExclusive'] = $exclusive;
 
         return view('products.index', ['viewData' => $viewData]);
     }
@@ -55,10 +54,9 @@ class ProductController extends Controller
     {
         $product->load('category', 'reviews.user');
 
-        $viewData = [
-            'title' => $product->getName(),
-            'product' => $product,
-        ];
+        $viewData = [];
+        $viewData['title'] = $product->getName();
+        $viewData['product'] = $product;
 
         return view('products.show', ['viewData' => $viewData]);
     }

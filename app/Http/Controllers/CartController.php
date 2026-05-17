@@ -23,12 +23,11 @@ class CartController extends Controller
     {
         $cartItems = $this->cartService->buildCartItems();
 
-        $viewData = [
-            'title'         => 'Carrito de compras',
-            'cartItems'     => $cartItems,
-            'totalQuantity' => $cartItems->sum(fn (Item $item) => $item->getQuantity()),
-            'totalAmount'   => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
-        ];
+        $viewData = [];
+        $viewData['title'] = __('cart.title');
+        $viewData['cartItems'] = $cartItems;
+        $viewData['totalQuantity'] = $cartItems->sum(fn (Item $item) => $item->getQuantity());
+        $viewData['totalAmount'] = $cartItems->sum(fn (Item $item) => $item->calculateSubTotal());
 
         return view('cart.index', ['viewData' => $viewData]);
     }
@@ -44,7 +43,7 @@ class CartController extends Controller
             $this->cartService->addService($service);
 
             return redirect()->route('cart.index')
-                ->with('success', 'Servicio agregado al carrito.');
+                ->with('success', __('cart.service_added'));
         }
 
         $productId = (int) $request->validated('product_id', 0);
@@ -52,7 +51,7 @@ class CartController extends Controller
         $this->cartService->addProduct($product, $quantity);
 
         return redirect()->route('cart.index')
-            ->with('success', 'Producto agregado al carrito.');
+            ->with('success', __('cart.product_added'));
     }
 
     public function update(UpdateCartItemRequest $request, Product $product): RedirectResponse|JsonResponse
@@ -84,7 +83,7 @@ class CartController extends Controller
         }
 
         return redirect()->route('cart.index')
-            ->with('success', 'Carrito actualizado.');
+            ->with('success', __('cart.updated'));
     }
 
     public function remove(RemoveFromCartRequest $request, Product $product): RedirectResponse
@@ -92,7 +91,7 @@ class CartController extends Controller
         $this->cartService->removeProduct($product->getId());
 
         return redirect()->route('cart.index')
-            ->with('success', 'Producto eliminado del carrito.');
+            ->with('success', __('cart.product_removed'));
     }
 
     public function removeService(int $serviceId): RedirectResponse
@@ -100,7 +99,7 @@ class CartController extends Controller
         $this->cartService->removeService($serviceId);
 
         return redirect()->route('cart.index')
-            ->with('success', 'Servicio eliminado del carrito.');
+            ->with('success', __('cart.service_removed'));
     }
 
     public function clear(): RedirectResponse
@@ -108,6 +107,6 @@ class CartController extends Controller
         $this->cartService->clear();
 
         return redirect()->route('cart.index')
-            ->with('success', 'Carrito vaciado.');
+            ->with('success', __('cart.cleared'));
     }
 }

@@ -15,10 +15,9 @@ class ReviewController extends Controller
 {
     public function create(Product $product): View
     {
-        $viewData = [
-            'product' => $product,
-            'title' => __('review.create_title'),
-        ];
+        $viewData = [];
+        $viewData['product'] = $product;
+        $viewData['title'] = __('review.create_title');
 
         return view('reviews.create', ['viewData' => $viewData]);
     }

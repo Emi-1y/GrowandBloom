@@ -29,13 +29,12 @@ class OrderController extends Controller
     {
         $authenticatedUserId = (int) Auth::id();
 
-        $viewData = [
-            'title'  => 'Mis pedidos',
-            'orders' => Order::with('items.product', 'items.service')
-                ->where('user_id', $authenticatedUserId)
-                ->orderByDesc('id')
-                ->get(),
-        ];
+        $viewData = [];
+        $viewData['title'] = __('order.my_orders_title');
+        $viewData['orders'] = Order::with('items.product', 'items.service')
+            ->where('user_id', $authenticatedUserId)
+            ->orderByDesc('id')
+            ->get();
 
         return view('orders.index', ['viewData' => $viewData]);
     }
@@ -45,10 +44,9 @@ class OrderController extends Controller
         $this->authorize('view', $order);
         $order->loadMissing('items.product', 'items.service');
 
-        $viewData = [
-            'title' => 'Detalle del pedido',
-            'order' => $order,
-        ];
+        $viewData = [];
+        $viewData['title'] = __('order.detail_title');
+        $viewData['order'] = $order;
 
         return view('orders.show', ['viewData' => $viewData]);
     }
@@ -60,18 +58,17 @@ class OrderController extends Controller
 
         if (count($cart) === 0 && count($cartServices) === 0) {
             return redirect()->route('cart.index')
-                ->with('error', 'Tu carrito está vacío.');
+                ->with('error', __('cart.empty'));
         }
 
         $cartItems = $this->cartService->buildCartItems();
 
-        $viewData = [
-            'title'         => 'Finalizar pedido',
-            'cartItems'     => $cartItems,
-            'totalQuantity' => $cartItems->sum(fn (Item $item) => $item->getQuantity()),
-            'totalAmount'   => $cartItems->sum(fn (Item $item) => $item->calculateSubTotal()),
-            'user'          => Auth::user(),
-        ];
+        $viewData = [];
+        $viewData['title'] = __('order.checkout_title');
+        $viewData['cartItems'] = $cartItems;
+        $viewData['totalQuantity'] = $cartItems->sum(fn (Item $item) => $item->getQuantity());
+        $viewData['totalAmount'] = $cartItems->sum(fn (Item $item) => $item->calculateSubTotal());
+        $viewData['user'] = Auth::user();
 
         return view('checkout.index', ['viewData' => $viewData]);
     }
@@ -83,7 +80,7 @@ class OrderController extends Controller
 
         if (count($cart) === 0 && count($cartServices) === 0) {
             return redirect()->route('cart.index')
-                ->with('error', 'Tu carrito está vacío.');
+                ->with('error', __('cart.empty'));
         }
 
         $paymentMethod       = (string) $request->validated('payment_method');
@@ -100,7 +97,7 @@ class OrderController extends Controller
 
         $total = 0;
 
-        // ── Productos ──────────────────────────────────────────────────────
+        // ── Products ──────────────────────────────────────────────────────
         foreach ($cart as $productId => $quantity) {
             $product = Product::where('active', true)->find((int) $productId);
 
@@ -123,7 +120,7 @@ class OrderController extends Controller
             $total += $item->calculateSubTotal();
         }
 
-        // ── Servicios ──────────────────────────────────────────────────────
+        // ── Services ──────────────────────────────────────────────────────
         foreach ($cartServices as $serviceId => $quantity) {
             $service = Service::where('active', true)->find((int) $serviceId);
 
@@ -150,6 +147,6 @@ class OrderController extends Controller
         Session::forget(self::CART_SERVICES_KEY);
 
         return redirect()->route('order.show', $order->getId())
-            ->with('success', 'Pedido realizado con éxito.');
+            ->with('success', __('order.placed_successfully'));
     }
 }

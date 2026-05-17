@@ -11,10 +11,9 @@ class ServiceController extends Controller
 {
     public function index(): View
     {
-        $viewData = [
-            'title' => __('service.index_title'),
-            'services' => Service::where('active', true)->orderBy('id')->get(),
-        ];
+        $viewData = [];
+        $viewData['title'] = __('service.index_title');
+        $viewData['services'] = Service::where('active', true)->orderBy('id')->get();
 
         return view('services.index', ['viewData' => $viewData]);
     }
