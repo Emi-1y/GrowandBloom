@@ -36,7 +36,7 @@
                     <a class="nav-link" href="{{ route('home.index') }}">{{ __('layout.nav_home') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('product.index') }}">{{ __('layout.nav_products') }}</a>
+                    <a class="nav-link" href="{{ route('plant.index') }}">{{ __('layout.nav_plants') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('service.index') }}">{{ __('layout.nav_services') }}</a>
@@ -71,6 +71,15 @@
                         <a class="btn btn-success btn-sm ms-2" href="{{ route('register') }}">{{ __('layout.nav_register') }}</a>
                     </li>
                 @endauth
+                <li class="nav-item ms-lg-2 d-flex align-items-center">
+                    <form method="POST" action="{{ route('locale.switch') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" name="locale" value="en"
+                            class="btn btn-sm {{ app()->getLocale() === 'en' ? 'btn-success' : 'btn-outline-success' }}">EN</button>
+                        <button type="submit" name="locale" value="es"
+                            class="btn btn-sm {{ app()->getLocale() === 'es' ? 'btn-success' : 'btn-outline-success' }}">ES</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

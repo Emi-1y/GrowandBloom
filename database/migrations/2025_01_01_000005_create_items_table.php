@@ -13,10 +13,9 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->integer('quantity');
-            $table->integer('price');
-            $table->string('item_type')->default('product');
+            $table->integer('unit_price');
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('plant_id')->nullable()->constrained('plants')->onDelete('set null');
             $table->foreignId('service_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });

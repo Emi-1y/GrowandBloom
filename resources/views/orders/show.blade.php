@@ -18,7 +18,7 @@
                     </div>
                     <div>
                         <div style="font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 3px;">{{ __('order.date') }}</div>
-                        <div style="font-size: 0.9rem; color: var(--c-text);">{{ $viewData['order']->getDate() }}</div>
+                        <div style="font-size: 0.9rem; color: var(--c-text);">{{ $viewData['order']->getFormattedDate() }}</div>
                     </div>
                     <div>
                         <div style="font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 3px;">{{ __('order.payment_method') }}</div>
@@ -29,14 +29,22 @@
                         <div>
                             @if($viewData['order']->getStatus() === 'pending')
                                 <span class="badge bg-warning">{{ __('order.status_pending') }}</span>
-                            @elseif($viewData['order']->getStatus() === 'paid')
-                                <span class="badge bg-success">{{ __('order.status_paid') }}</span>
-                            @elseif($viewData['order']->getStatus() === 'shipped')
-                                <span class="badge bg-primary">{{ __('order.status_shipped') }}</span>
-                            @elseif($viewData['order']->getStatus() === 'delivered')
-                                <span class="badge bg-success">{{ __('order.status_delivered') }}</span>
+                            @elseif($viewData['order']->getStatus() === 'completed')
+                                <span class="badge bg-success">{{ __('order.status_completed') }}</span>
                             @elseif($viewData['order']->getStatus() === 'cancelled')
                                 <span class="badge bg-danger">{{ __('order.status_cancelled') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 3px;">{{ __('order.payment_status') }}</div>
+                        <div>
+                            @if($viewData['order']->getPaymentStatus() === 'pending')
+                                <span class="badge bg-warning">{{ __('order.payment_status_pending') }}</span>
+                            @elseif($viewData['order']->getPaymentStatus() === 'paid')
+                                <span class="badge bg-success">{{ __('order.payment_status_paid') }}</span>
+                            @elseif($viewData['order']->getPaymentStatus() === 'failed')
+                                <span class="badge bg-danger">{{ __('order.payment_status_failed') }}</span>
                             @endif
                         </div>
                     </div>
@@ -62,14 +70,14 @@
                         <tr>
                             <td>
                                 <div style="font-weight: 600; font-size: 0.9rem;">{{ $item->getDisplayName() }}</div>
-                                @if($item->getItemType() === 'service')
+                                @if($item->isService())
                                     <span style="font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent); font-weight: 600;">
                                         {{ __('order.service_item') }}
                                     </span>
                                 @endif
                             </td>
                             <td>{{ $item->getQuantity() }}</td>
-                            <td style="font-family: var(--font-mono); font-size: 0.85rem;">{{ $item->getFormattedPrice() }}</td>
+                            <td style="font-family: var(--font-mono); font-size: 0.85rem;">{{ $item->getFormattedUnitPrice() }}</td>
                             <td style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--c-accent-dk);">{{ $item->getFormattedSubtotal() }}</td>
                         </tr>
                         @endforeach

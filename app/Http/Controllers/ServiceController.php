@@ -15,6 +15,6 @@ class ServiceController extends Controller
         $viewData['title'] = __('service.index_title');
         $viewData['services'] = Service::where('active', true)->orderBy('id')->get();
 
-        return view('services.index', ['viewData' => $viewData]);
+        return view('services.index')->with('viewData', $viewData);
     }
 }

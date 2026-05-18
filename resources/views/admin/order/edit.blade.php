@@ -53,6 +53,18 @@
                         </select>
                     </div>
 
+                    <div style="margin-bottom: 1.25rem;">
+                        <label for="payment_status" class="form-label">{{ __('order.payment_status') }}</label>
+                        <select id="payment_status" name="payment_status" class="form-select">
+                            @foreach($viewData['paymentStatuses'] as $statusKey => $statusLabel)
+                                <option value="{{ $statusKey }}"
+                                    {{ old('payment_status', $viewData['order']->getPaymentStatus()) === $statusKey ? 'selected' : '' }}>
+                                    {{ $statusLabel }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     @if($viewData['order']->getItems()->isNotEmpty())
                         <div style="margin-bottom: 1.25rem;">
                             <label class="form-label">{{ __('order.items') }}</label>
@@ -62,7 +74,7 @@
                                         <div>
                                             <span style="font-weight: 600;">{{ $item->getDisplayName() }}</span>
                                             <span style="color: var(--c-muted); margin-left: 0.5rem;">× {{ $item->getQuantity() }}</span>
-                                            @if($item->getItemType() === 'service')
+                                            @if($item->isService())
                                                 <span class="badge bg-info" style="margin-left: 0.5rem;">{{ __('order.service_item') }}</span>
                                             @endif
                                         </div>
@@ -71,21 +83,6 @@
                                 @endforeach
                             </div>
                         </div>
-
-                        @if($viewData['order']->getStatus() === 'pending' || $viewData['order']->getStatus() === 'paid')
-                            <div style="margin-bottom: 1.25rem;">
-                                <label for="assigned_worker" class="form-label">{{ __('order.assign_worker') }}</label>
-                                <select id="assigned_worker" name="assigned_worker" class="form-select">
-                                    <option value="">{{ __('order.no_worker_assigned') }}</option>
-                                    @foreach($viewData['workers'] ?? [] as $worker)
-                                        <option value="{{ $worker->getId() }}"
-                                            {{ old('assigned_worker', $viewData['order']->getAssignedWorkerId()) == $worker->getId() ? 'selected' : '' }}>
-                                            {{ $worker->getName() }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endif
                     @endif
 
                     <div style="display: flex; gap: 0.75rem;">

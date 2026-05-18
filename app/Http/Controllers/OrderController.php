@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Order\CheckoutRequest;
 use App\Models\Item;
 use App\Models\Order;
-use App\Models\Product;
+use App\Models\Plant;
 use App\Models\Service;
 use App\Services\CartService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -32,24 +32,24 @@ class OrderController extends Controller
 
         $viewData = [];
         $viewData['title'] = __('order.my_orders_title');
-        $viewData['orders'] = Order::with('items.product', 'items.service')
+        $viewData['orders'] = Order::with('items.plant', 'items.service')
             ->where('user_id', $authenticatedUserId)
             ->orderByDesc('id')
             ->get();
 
-        return view('orders.index', ['viewData' => $viewData]);
+        return view('orders.index')->with('viewData', $viewData);
     }
 
     public function show(Order $order): View
     {
         $this->authorize('view', $order);
-        $order->loadMissing('items.product', 'items.service');
+        $order->loadMissing('items.plant', 'items.service');
 
         $viewData = [];
         $viewData['title'] = __('order.detail_title');
         $viewData['order'] = $order;
 
-        return view('orders.show', ['viewData' => $viewData]);
+        return view('orders.show')->with('viewData', $viewData);
     }
 
     public function checkout(): View|RedirectResponse
@@ -71,7 +71,7 @@ class OrderController extends Controller
         $viewData['totalAmount'] = $cartItems->sum(fn (Item $item) => $item->calculateSubTotal());
         $viewData['user'] = Auth::user();
 
-        return view('checkout.index', ['viewData' => $viewData]);
+        return view('checkout.index')->with('viewData', $viewData);
     }
 
     public function store(CheckoutRequest $request): RedirectResponse
@@ -91,32 +91,30 @@ class OrderController extends Controller
         $order = new Order;
         $order->setUserId($authenticatedUserId);
         $order->setPaymentMethod($paymentMethod);
-        $order->setDate(date('Y-m-d'));
-        $order->setStatus('pending');
+        $order->placeOrder();
         $order->setTotal(0);
         $order->save();
 
         $total = 0;
 
-        // ── Products ──────────────────────────────────────────────────────
-        foreach ($cart as $productId => $quantity) {
-            $product = Product::where('active', true)->find((int) $productId);
+        // ── Plants ────────────────────────────────────────────────────────
+        foreach ($cart as $plantId => $quantity) {
+            $plant = Plant::where('active', true)->find((int) $plantId);
 
-            if (! $product || (int) $quantity <= 0) {
+            if (! $plant || (int) $quantity <= 0) {
                 continue;
             }
 
             $item = new Item;
             $item->setOrderId($order->getId());
-            $item->setProductId($product->getId());
+            $item->setPlantId($plant->getId());
             $item->setServiceId(null);
-            $item->setItemType('product');
             $item->setQuantity((int) $quantity);
-            $item->setPrice($product->getPrice());
+            $item->setUnitPrice($plant->getPrice());
             $item->save();
 
-            $product->setStock(max(0, $product->getStock() - (int) $quantity));
-            $product->save();
+            $plant->setStock(max(0, $plant->getStock() - (int) $quantity));
+            $plant->save();
 
             $total += $item->calculateSubTotal();
         }
@@ -131,11 +129,10 @@ class OrderController extends Controller
 
             $item = new Item;
             $item->setOrderId($order->getId());
-            $item->setProductId(null);
+            $item->setPlantId(null);
             $item->setServiceId($service->getId());
-            $item->setItemType('service');
             $item->setQuantity(1);
-            $item->setPrice($service->getPrice());
+            $item->setUnitPrice($service->getPrice());
             $item->save();
 
             $total += $item->calculateSubTotal();

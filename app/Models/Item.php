@@ -12,15 +12,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * ITEM ATTRIBUTES
  * $this->attributes['id'] - int - contains the item primary key (id)
  * $this->attributes['quantity'] - int - contains the item quantity
- * $this->attributes['price'] - int - contains the item unit price at time of purchase
+ * $this->attributes['unit_price'] - int - contains the item unit price at time of purchase
  * $this->attributes['order_id'] - int - contains the related order id
- * $this->attributes['product_id'] - int|null - contains the related product id
+ * $this->attributes['plant_id'] - int|null - contains the related plant id
  * $this->attributes['service_id'] - int|null - contains the related service id
- * $this->attributes['item_type'] - string - either 'product' or 'service'
  * $this->attributes['created_at'] - timestamp - contains item creation date
  * $this->attributes['updated_at'] - timestamp - contains item update date
  * $this->order - Order - contains the associated order
- * $this->product - Product|null - contains the associated product
+ * $this->plant - Plant|null - contains the associated plant
  * $this->service - Service|null - contains the associated service
  */
 class Item extends Model
@@ -29,11 +28,10 @@ class Item extends Model
 
     protected $fillable = [
         'quantity',
-        'price',
+        'unit_price',
         'order_id',
-        'product_id',
+        'plant_id',
         'service_id',
-        'item_type',
     ];
 
     public function getId(): int
@@ -51,14 +49,14 @@ class Item extends Model
         $this->attributes['quantity'] = $quantity;
     }
 
-    public function getPrice(): int
+    public function getUnitPrice(): int
     {
-        return $this->attributes['price'];
+        return $this->attributes['unit_price'];
     }
 
-    public function setPrice(int $price): void
+    public function setUnitPrice(int $unitPrice): void
     {
-        $this->attributes['price'] = $price;
+        $this->attributes['unit_price'] = $unitPrice;
     }
 
     public function getOrderId(): int
@@ -71,14 +69,14 @@ class Item extends Model
         $this->attributes['order_id'] = $orderId;
     }
 
-    public function getProductId(): ?int
+    public function getPlantId(): ?int
     {
-        return isset($this->attributes['product_id']) ? (int) $this->attributes['product_id'] : null;
+        return isset($this->attributes['plant_id']) ? (int) $this->attributes['plant_id'] : null;
     }
 
-    public function setProductId(?int $productId): void
+    public function setPlantId(?int $plantId): void
     {
-        $this->attributes['product_id'] = $productId;
+        $this->attributes['plant_id'] = $plantId;
     }
 
     public function getServiceId(): ?int
@@ -89,16 +87,6 @@ class Item extends Model
     public function setServiceId(?int $serviceId): void
     {
         $this->attributes['service_id'] = $serviceId;
-    }
-
-    public function getItemType(): string
-    {
-        return $this->attributes['item_type'] ?? 'product';
-    }
-
-    public function setItemType(string $itemType): void
-    {
-        $this->attributes['item_type'] = $itemType;
     }
 
     public function getCreatedAt(): string
@@ -121,14 +109,14 @@ class Item extends Model
         return $this->order;
     }
 
-    public function product(): BelongsTo
+    public function plant(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Plant::class);
     }
 
-    public function getProduct(): ?Product
+    public function getPlant(): ?Plant
     {
-        return $this->product;
+        return $this->plant;
     }
 
     public function service(): BelongsTo
@@ -141,14 +129,19 @@ class Item extends Model
         return $this->service;
     }
 
+    public function isService(): bool
+    {
+        return $this->getServiceId() !== null;
+    }
+
     public function getDisplayName(): string
     {
-        if ($this->getItemType() === 'service' && $this->getService()) {
+        if ($this->isService() && $this->getService()) {
             return $this->getService()->getName();
         }
 
-        if ($this->getProduct()) {
-            return $this->getProduct()->getName();
+        if ($this->getPlant()) {
+            return $this->getPlant()->getName();
         }
 
         return __('order.unknown_item');
@@ -156,16 +149,16 @@ class Item extends Model
 
     public function calculateSubTotal(): int
     {
-        return $this->getQuantity() * $this->getPrice();
+        return $this->getQuantity() * $this->getUnitPrice();
     }
 
-    public function getFormattedPrice(): string
+    public function getFormattedUnitPrice(): string
     {
-        return number_format($this->getPrice(), 0, ',', '.').' '.__('product.currency');
+        return number_format($this->getUnitPrice(), 0, ',', '.').' '.__('plant.currency');
     }
 
     public function getFormattedSubtotal(): string
     {
-        return number_format($this->calculateSubTotal(), 0, ',', '.').' '.__('product.currency');
+        return number_format($this->calculateSubTotal(), 0, ',', '.').' '.__('plant.currency');
     }
 }

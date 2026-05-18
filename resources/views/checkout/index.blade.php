@@ -98,7 +98,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 0 0; border-top:1.5px solid #e2ddd4; margin-top:.5rem;">
                     <span style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:#7a7165; font-weight:600;">{{ __('order.label_total') }}</span>
                     <span style="font-size:1.2rem; font-weight:700; color:#2d5a3d;">
-                        ${{ number_format($viewData['totalAmount'], 0, ',', '.') }} {{ __('product.currency') }}
+                        ${{ number_format($viewData['totalAmount'], 0, ',', '.') }} {{ __('plant.currency') }}
                     </span>
                 </div>
             </div>

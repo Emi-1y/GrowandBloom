@@ -5,7 +5,7 @@
 namespace App\Services;
 
 use App\Models\Item;
-use App\Models\Product;
+use App\Models\Plant;
 use App\Models\Service;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
@@ -16,50 +16,50 @@ class CartService
 
     private const CART_SERVICES_KEY = 'shopping_cart_services';
 
-    // ── PRODUCTOS ────────────────────────────────────────────────────────────
+    // ── PLANTS ───────────────────────────────────────────────────────────────
 
     public function getCart(): array
     {
         return Session::get(self::CART_KEY, []);
     }
 
-    public function addProduct(Product $product, int $requestedQuantity): void
+    public function addPlant(Plant $plant, int $requestedQuantity): void
     {
         $cart = $this->getCart();
-        $productId = $product->getId();
-        $current = (int) ($cart[$productId] ?? 0);
-        $newQuantity = min($product->getStock(), $current + max(1, $requestedQuantity));
+        $plantId = $plant->getId();
+        $current = (int) ($cart[$plantId] ?? 0);
+        $newQuantity = min($plant->getStock(), $current + max(1, $requestedQuantity));
 
         if ($newQuantity > 0) {
-            $cart[$productId] = $newQuantity;
+            $cart[$plantId] = $newQuantity;
             Session::put(self::CART_KEY, $cart);
         }
     }
 
-    public function updateProductQuantity(Product $product, int $quantity): void
+    public function updatePlantQuantity(Plant $plant, int $quantity): void
     {
         $cart = $this->getCart();
-        $productId = $product->getId();
+        $plantId = $plant->getId();
 
-        if (! array_key_exists($productId, $cart)) {
+        if (! array_key_exists($plantId, $cart)) {
             return;
         }
 
         if ($quantity <= 0) {
-            unset($cart[$productId]);
+            unset($cart[$plantId]);
         } else {
-            $cart[$productId] = min($product->getStock(), $quantity);
+            $cart[$plantId] = min($plant->getStock(), $quantity);
         }
 
         Session::put(self::CART_KEY, $cart);
     }
 
-    public function removeProduct(int $productId): void
+    public function removePlant(int $plantId): void
     {
         $cart = $this->getCart();
 
-        if (array_key_exists($productId, $cart)) {
-            unset($cart[$productId]);
+        if (array_key_exists($plantId, $cart)) {
+            unset($cart[$plantId]);
             Session::put(self::CART_KEY, $cart);
         }
     }
@@ -76,7 +76,6 @@ class CartService
         $cartServices = $this->getCartServices();
         $serviceId = $service->getId();
 
-        // Solo se permite un servicio del mismo tipo
         if (! isset($cartServices[$serviceId])) {
             $cartServices[$serviceId] = 1;
             Session::put(self::CART_SERVICES_KEY, $cartServices);
@@ -103,13 +102,13 @@ class CartService
 
     public function buildCartItems(): Collection
     {
-        $productItems = $this->buildProductItems();
+        $plantItems = $this->buildPlantItems();
         $serviceItems = $this->buildServiceItems();
 
-        return $productItems->merge($serviceItems)->values();
+        return $plantItems->merge($serviceItems)->values();
     }
 
-    private function buildProductItems(): Collection
+    private function buildPlantItems(): Collection
     {
         $cart = $this->getCart();
 
@@ -117,28 +116,37 @@ class CartService
             return collect();
         }
 
-        $products = Product::whereIn('id', array_keys($cart))
+        $plants = Plant::whereIn('id', array_keys($cart))
             ->where('active', true)
             ->get()
-            ->keyBy(fn (Product $p) => $p->getId());
+            ->keyBy(fn (Plant $p) => $p->getId());
 
         return collect($cart)
-            ->filter(fn (int $qty, int $pid) => $qty > 0 && isset($products[$pid]))
-            ->map(function (int $qty, int $pid) use ($products) {
-                $product = $products[$pid];
+            ->filter(fn (int $qty, int $pid) => $qty > 0 && isset($plants[$pid]))
+            ->map(function (int $qty, int $pid) use ($plants) {
+                $plant = $plants[$pid];
 
                 $item = new Item;
-                $item->setProductId($product->getId());
+                $item->setPlantId($plant->getId());
                 $item->setServiceId(null);
-                $item->setItemType('product');
                 $item->setQuantity($qty);
-                $item->setPrice($product->getPrice());
-                $item->setRelation('product', $product);
+                $item->setUnitPrice($this->applyDiscount($plant));
+                $item->setRelation('plant', $plant);
                 $item->setRelation('service', null);
 
                 return $item;
             })
             ->values();
+    }
+
+    private function applyDiscount(Plant $plant): int
+    {
+        $discount = $plant->getDiscount();
+        if ($discount <= 0) {
+            return $plant->getPrice();
+        }
+
+        return (int) round($plant->getPrice() * (1 - $discount / 100));
     }
 
     private function buildServiceItems(): Collection
@@ -160,13 +168,12 @@ class CartService
                 $service = $services[$sid];
 
                 $item = new Item;
-                $item->setProductId(null);
+                $item->setPlantId(null);
                 $item->setServiceId($service->getId());
-                $item->setItemType('service');
                 $item->setQuantity(1);
-                $item->setPrice($service->getPrice());
+                $item->setUnitPrice($service->getPrice());
                 $item->setRelation('service', $service);
-                $item->setRelation('product', null);
+                $item->setRelation('plant', null);
 
                 return $item;
             })

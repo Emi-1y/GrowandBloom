@@ -5,24 +5,26 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\PlantController as AdminPlantController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\PlantController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 // ─── PUBLIC ───────────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/{product}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/locale', [LocaleController::class, 'switch'])->name('locale.switch');
+
+Route::prefix('plants')->group(function () {
+    Route::get('/', [PlantController::class, 'index'])->name('plant.index');
+    Route::get('/{plant}', [PlantController::class, 'show'])->name('plant.show');
 });
 
 Route::prefix('services')->group(function () {
@@ -48,8 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');
         Route::post('/add', [CartController::class, 'add'])->name('cart.add');
-        Route::put('/update/{product}', [CartController::class, 'update'])->name('cart.update');
-        Route::delete('/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+        Route::put('/update/{plant}', [CartController::class, 'update'])->name('cart.update');
+        Route::delete('/remove/{plant}', [CartController::class, 'remove'])->name('cart.remove');
         Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
         Route::delete('/remove-service/{serviceId}', [CartController::class, 'removeService'])->name('cart.remove.service');
     });
@@ -61,12 +63,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/checkout', [OrderController::class, 'store'])->name('order.store');
         Route::get('/{order}', [OrderController::class, 'show'])->name('order.show');
     });
-
-    // Reviews
-    Route::prefix('reviews')->group(function () {
-        Route::get('/create/{product}', [ReviewController::class, 'create'])->name('review.create');
-        Route::post('/store/{product}', [ReviewController::class, 'store'])->name('review.store');
-    });
 });
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
@@ -76,14 +72,14 @@ Route::middleware(['auth', 'checkAdmin'])
 
         Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
-        // Products
-        Route::prefix('products')->group(function () {
-            Route::get('/', [AdminProductController::class, 'index'])->name('admin.product.index');
-            Route::get('/create', [AdminProductController::class, 'create'])->name('admin.product.create');
-            Route::post('/', [AdminProductController::class, 'store'])->name('admin.product.store');
-            Route::get('/{product}/edit', [AdminProductController::class, 'edit'])->name('admin.product.edit');
-            Route::put('/{product}', [AdminProductController::class, 'update'])->name('admin.product.update');
-            Route::delete('/{product}', [AdminProductController::class, 'destroy'])->name('admin.product.destroy');
+        // Plants
+        Route::prefix('plants')->group(function () {
+            Route::get('/', [AdminPlantController::class, 'index'])->name('admin.plant.index');
+            Route::get('/create', [AdminPlantController::class, 'create'])->name('admin.plant.create');
+            Route::post('/', [AdminPlantController::class, 'store'])->name('admin.plant.store');
+            Route::get('/{plant}/edit', [AdminPlantController::class, 'edit'])->name('admin.plant.edit');
+            Route::put('/{plant}', [AdminPlantController::class, 'update'])->name('admin.plant.update');
+            Route::delete('/{plant}', [AdminPlantController::class, 'destroy'])->name('admin.plant.destroy');
         });
 
         // Categories

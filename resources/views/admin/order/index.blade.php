@@ -61,12 +61,8 @@
                             @php $statusKey = $order->getStatus(); @endphp
                             @if($statusKey === 'pending')
                                 <span class="badge bg-warning">{{ __('order.status_pending') }}</span>
-                            @elseif($statusKey === 'paid')
-                                <span class="badge bg-success">{{ __('order.status_paid') }}</span>
-                            @elseif($statusKey === 'shipped')
-                                <span class="badge bg-primary">{{ __('order.status_shipped') }}</span>
-                            @elseif($statusKey === 'delivered')
-                                <span class="badge bg-success">{{ __('order.status_delivered') }}</span>
+                            @elseif($statusKey === 'completed')
+                                <span class="badge bg-success">{{ __('order.status_completed') }}</span>
                             @elseif($statusKey === 'cancelled')
                                 <span class="badge bg-danger">{{ __('order.status_cancelled') }}</span>
                             @else
@@ -74,7 +70,7 @@
                             @endif
                         </td>
                         <td style="font-size: 0.85rem;">{{ $order->getPaymentMethod() }}</td>
-                        <td style="font-size: 0.82rem; color: var(--c-muted);">{{ $order->getDate() }}</td>
+                        <td style="font-size: 0.82rem; color: var(--c-muted);">{{ $order->getFormattedDate() }}</td>
                         <td>
                             <a href="{{ route('admin.order.edit', $order->getId()) }}" class="icon-btn">
                                 {{ __('order.edit_button') }}

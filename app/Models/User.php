@@ -28,7 +28,6 @@ use Illuminate\Notifications\Notifiable;
  * $this->attributes['created_at'] - timestamp - contains user creation date
  * $this->attributes['updated_at'] - timestamp - contains user update date
  * $this->orders - Order[] - contains the associated orders
- * $this->reviews - Review[] - contains the associated reviews
  */
 class User extends Authenticatable
 {
@@ -176,16 +175,6 @@ class User extends Authenticatable
     public function setPostalCode(?string $postalCode): void
     {
         $this->attributes['postal_code'] = $postalCode;
-    }
-
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
     }
 
     public function orders(): HasMany

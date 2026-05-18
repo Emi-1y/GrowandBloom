@@ -13,7 +13,7 @@
             {{ __('order.no_orders') }}
         </h2>
         <p style="color: var(--c-muted); margin-bottom: 2rem;">{{ __('order.no_orders_desc') }}</p>
-        <a href="{{ route('product.index') }}" class="btn btn-primary">{{ __('order.browse_products') }}</a>
+        <a href="{{ route('plant.index') }}" class="btn btn-primary">{{ __('order.browse_products') }}</a>
     </div>
 @else
     <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -31,7 +31,7 @@
                             <div style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 2px;">
                                 {{ __('order.date') }}
                             </div>
-                            <div style="font-size: 0.88rem;">{{ $order->getDate() }}</div>
+                            <div style="font-size: 0.88rem;">{{ $order->getFormattedDate() }}</div>
                         </div>
                         <div>
                             <div style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 2px;">
@@ -45,12 +45,8 @@
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         @if($order->getStatus() === 'pending')
                             <span class="badge bg-warning">{{ __('order.status_pending') }}</span>
-                        @elseif($order->getStatus() === 'paid')
-                            <span class="badge bg-success">{{ __('order.status_paid') }}</span>
-                        @elseif($order->getStatus() === 'shipped')
-                            <span class="badge bg-primary">{{ __('order.status_shipped') }}</span>
-                        @elseif($order->getStatus() === 'delivered')
-                            <span class="badge bg-success">{{ __('order.status_delivered') }}</span>
+                        @elseif($order->getStatus() === 'completed')
+                            <span class="badge bg-success">{{ __('order.status_completed') }}</span>
                         @elseif($order->getStatus() === 'cancelled')
                             <span class="badge bg-danger">{{ __('order.status_cancelled') }}</span>
                         @endif

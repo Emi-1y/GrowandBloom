@@ -14,13 +14,13 @@
             <div style="height:5px; background:linear-gradient(90deg,#2d5a3d,#4a7c59);"></div>
             <div class="card-body p-4">
                 <div style="font-size:2.5rem; font-weight:700; color:#2d5a3d; font-family:'Cormorant Garamond',serif; line-height:1;">
-                    {{ $viewData['productsCount'] }}
+                    {{ $viewData['plantsCount'] }}
                 </div>
                 <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7165; font-weight:600; margin-top:.4rem;">
-                    {{ __('admin.stat_total_products') }}
+                    {{ __('admin.stat_total_plants') }}
                 </div>
                 <div style="font-size:.8rem; color:#4a7c59; margin-top:.25rem;">
-                    {{ $viewData['activeProductsCount'] }} {{ __('admin.stat_active') }}
+                    {{ $viewData['activePlantsCount'] }} {{ __('admin.stat_active') }}
                 </div>
             </div>
         </div>
@@ -88,13 +88,13 @@
                     </svg>
                 </div>
                 <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:#1a3a2a; margin-bottom:.4rem;">
-                    {{ __('admin.module_products') }}
+                    {{ __('admin.module_plants') }}
                 </h5>
                 <p style="font-size:.85rem; color:#7a7165; line-height:1.6; margin-bottom:1.25rem;">
-                    {{ __('admin.module_products_desc') }}
+                    {{ __('admin.module_plants_desc') }}
                 </p>
-                <a href="{{ route('admin.product.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
-                    {{ __('admin.module_products_link') }}
+                <a href="{{ route('admin.plant.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
+                    {{ __('admin.module_plants_link') }}
                 </a>
             </div>
         </div>
@@ -244,13 +244,9 @@
                             <span style="background:#fff3cd; color:#856404; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(133,100,4,.2);">
                                 {{ __('order.status_pending') }}
                             </span>
-                        @elseif($order->getStatus() === 'paid')
+                        @elseif($order->getStatus() === 'completed')
                             <span style="background:#d4edda; color:#155724; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(21,87,36,.2);">
-                                {{ __('order.status_paid') }}
-                            </span>
-                        @elseif($order->getStatus() === 'delivered')
-                            <span style="background:#d4edda; color:#155724; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(21,87,36,.2);">
-                                {{ __('order.status_delivered') }}
+                                {{ __('order.status_completed') }}
                             </span>
                         @elseif($order->getStatus() === 'cancelled')
                             <span style="background:#f8d7da; color:#721c24; font-size:.65rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid rgba(114,28,36,.2);">
@@ -263,7 +259,7 @@
                         @endif
                     </td>
                     <td style="padding:1rem 1.25rem; font-size:.82rem; color:#7a7165; border-color:#f2efe8;">
-                        {{ $order->getDate() }}
+                        {{ $order->getFormattedDate() }}
                     </td>
                     <td style="padding:1rem 1.25rem; border-color:#f2efe8;">
                         <a href="{{ route('admin.order.edit', $order->getId()) }}"

@@ -137,7 +137,7 @@ class Service extends Model
 
     public function getFormattedPrice(): string
     {
-        return number_format($this->getPrice(), 0, ',', '.').' '.__('product.currency');
+        return number_format($this->getPrice(), 0, ',', '.').' '.__('plant.currency');
     }
 
     public function getImage(): ?string

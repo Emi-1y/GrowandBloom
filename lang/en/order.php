@@ -6,12 +6,15 @@ return [
     'checkout_title' => 'Checkout',
     'placed_successfully' => 'Order placed successfully.',
     'unknown_item' => 'Unknown item',
-    // statuses
+    // workflow statuses
     'status_pending' => 'Pending',
-    'status_paid' => 'Paid',
-    'status_shipped' => 'Shipped',
-    'status_delivered' => 'Delivered',
+    'status_completed' => 'Completed',
     'status_cancelled' => 'Cancelled',
+    // payment statuses
+    'payment_status' => 'Payment status',
+    'payment_status_pending' => 'Payment pending',
+    'payment_status_paid' => 'Paid',
+    'payment_status_failed' => 'Payment failed',
     // admin
     'admin_list_title' => 'Orders',
     'admin_list_subtitle' => 'Manage all orders',
@@ -19,8 +22,8 @@ return [
     'edit_subtitle' => 'Update order status',
     'updated_successfully' => 'Order updated successfully.',
     // cart view
-    'product' => 'Product',
-    'price' => 'Price',
+    'product' => 'Item',
+    'price' => 'Unit price',
     'quantity' => 'Quantity',
     'subtotal' => 'Subtotal',
     'service_item' => 'Service',
@@ -32,8 +35,8 @@ return [
     'total' => 'Total',
     'place_order' => 'Place order',
     'cart_empty_title' => 'Your cart is empty',
-    'cart_empty' => 'You have not added any products or services yet.',
-    'browse_products' => 'Browse products',
+    'cart_empty' => 'You have not added any plants or services yet.',
+    'browse_products' => 'Browse plants',
     'browse_services' => 'Browse services',
     'remove' => 'Remove',
     // checkout
@@ -57,8 +60,6 @@ return [
     'user' => 'User',
     'status' => 'Status',
     'items' => 'Items',
-    'assign_worker' => 'Assigned worker',
-    'no_worker_assigned' => 'Not assigned',
     'update_button' => 'Update',
     'back_button' => 'Back',
     'search' => 'Search',
@@ -71,7 +72,7 @@ return [
     'edit_button' => 'Edit',
     // user orders list
     'no_orders' => 'You have no orders yet',
-    'no_orders_desc' => 'Browse our products and place your first order.',
+    'no_orders_desc' => 'Browse our plants and place your first order.',
     'order_id' => 'Order #',
     'view' => 'View',
     'item_count' => 'items',

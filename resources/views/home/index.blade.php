@@ -26,7 +26,7 @@
                 </p>
                 <div class="d-flex gap-3 flex-wrap">
                     @auth
-                        <a href="{{ route('product.index') }}" class="btn btn-light btn-lg px-4" style="border-radius:8px; font-weight:600;">
+                        <a href="{{ route('plant.index') }}" class="btn btn-light btn-lg px-4" style="border-radius:8px; font-weight:600;">
                             <i class="bi bi-grid me-2"></i>{{ __('home.hero_browse_products') }}
                         </a>
                         <a href="{{ route('service.index') }}" class="btn btn-outline-light btn-lg px-4" style="border-radius:8px;">
@@ -64,34 +64,34 @@
                 {{ __('home.featured_subtitle') }}
             </p>
         </div>
-        <a href="{{ route('product.index') }}"
+        <a href="{{ route('plant.index') }}"
            class="btn btn-outline-success btn-sm">{{ __('home.featured_view_all') }}</a>
     </div>
 
-    @if($viewData['featuredProducts']->isEmpty())
+    @if($viewData['featuredPlants']->isEmpty())
         <div class="alert alert-info">{{ __('home.featured_empty') }}</div>
     @else
         <div class="row g-3">
-            @foreach($viewData['featuredProducts'] as $product)
+            @foreach($viewData['featuredPlants'] as $plant)
             <div class="col-6 col-md-3">
                 <div class="card h-100 border-0 shadow-sm" style="border-radius:12px; overflow:hidden; transition: transform .2s, box-shadow .2s;"
                      onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.12)';"
                      onmouseout="this.style.transform='none';this.style.boxShadow='';">
 
                     <div style="background:linear-gradient(135deg,#e8f5ec,#f0f7f2); height:180px; display:flex; align-items:center; justify-content:center; position:relative;">
-                        @if($product->getImage())
-                            <img src="{{ asset('images/products/'.$product->getImage()) }}"
-                                 alt="{{ $product->getName() }}" style="height:100%; width:100%; object-fit:cover;">
+                        @if($plant->getImage())
+                            <img src="{{ asset('images/plants/'.$plant->getImage()) }}"
+                                 alt="{{ $plant->getName() }}" style="height:100%; width:100%; object-fit:cover;">
                         @else
                             <span style="font-size:3.5rem; opacity:.4;"></span>
                         @endif
-                        @if($product->getExclusive())
+                        @if($plant->getExclusive())
                             <span class="badge position-absolute top-0 start-0 m-2"
                                   style="background:#8b5e3c; font-size:.62rem; letter-spacing:.08em;">
                                 {{ __('home.badge_exclusive') }}
                             </span>
                         @endif
-                        @if($product->getStock() === 0)
+                        @if($plant->getStock() === 0)
                             <span class="badge bg-secondary position-absolute top-0 end-0 m-2"
                                   style="font-size:.62rem;">{{ __('home.badge_out_of_stock') }}</span>
                         @endif
@@ -100,23 +100,23 @@
                     <div class="card-body d-flex flex-column p-3">
                         <span class="text-success mb-1"
                               style="font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;">
-                            {{ $product->getCategory()->getName() }}
+                            {{ $plant->getCategory()->getName() }}
                         </span>
                         <h6 class="card-title mb-2" style="font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:600; color:#1a3a2a; line-height:1.25;">
-                            {{ $product->getName() }}
+                            {{ $plant->getName() }}
                         </h6>
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span style="font-size:.95rem; font-weight:700; color:#2d5a3d;">
-                                    ${{ number_format($product->getPrice(), 0, ',', '.') }}
-                                    <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('product.currency') }}</small>
+                                    ${{ number_format($plant->getPrice(), 0, ',', '.') }}
+                                    <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('plant.currency') }}</small>
                                 </span>
-                                @if($product->getStock() > 0)
+                                @if($plant->getStock() > 0)
                                     <span class="badge text-success"
                                           style="background:rgba(45,90,61,.1); font-size:.62rem;">{{ __('home.badge_in_stock') }}</span>
                                 @endif
                             </div>
-                            <a href="{{ route('product.show', $product->getId()) }}"
+                            <a href="{{ route('plant.show', $plant->getId()) }}"
                                class="btn btn-outline-success btn-sm w-100" style="border-radius:8px; font-size:.8rem;">
                                 {{ __('home.card_view_detail') }}
                             </a>
@@ -162,7 +162,7 @@
     <div class="row g-3">
         @foreach($viewData['categories'] as $category)
         <div class="col-6 col-md-4 col-lg-3">
-            <a href="{{ route('product.index') }}"
+            <a href="{{ route('plant.index') }}"
                class="text-decoration-none d-block text-center p-4 rounded-3 border h-100"
                style="background:#fff; border-color:#d4eddf !important; transition:all .2s;"
                onmouseover="this.style.borderColor='#4a7c59';this.style.background='#e8f5ec';this.style.transform='translateY(-2px)';"
