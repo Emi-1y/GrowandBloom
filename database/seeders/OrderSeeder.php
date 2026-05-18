@@ -12,14 +12,14 @@ class OrderSeeder extends Seeder
 {
     public function run(): void
     {
-        $users    = User::where('role', User::ROLE_USER)->get();
+        $users = User::where('role', User::ROLE_USER)->get();
         $products = Product::where('active', true)->get();
 
         if ($users->isEmpty() || $products->isEmpty()) {
             return;
         }
 
-        $statuses       = ['pending', 'paid', 'shipped', 'delivered', 'cancelled'];
+        $statuses = ['pending', 'paid', 'shipped', 'delivered', 'cancelled'];
         $paymentMethods = ['credit_card', 'debit_card', 'cash', 'transfer'];
 
         for ($i = 0; $i < 15; $i++) {
@@ -28,12 +28,12 @@ class OrderSeeder extends Seeder
             $order = new Order;
             $order->setUserId($user->getId());
             $order->setPaymentMethod($paymentMethods[array_rand($paymentMethods)]);
-            $order->setDate(date('Y-m-d', strtotime('-' . rand(0, 180) . ' days')));
+            $order->setDate(date('Y-m-d', strtotime('-'.rand(0, 180).' days')));
             $order->setStatus($statuses[array_rand($statuses)]);
             $order->setTotal(0);
             $order->save();
 
-            $total           = 0;
+            $total = 0;
             $selectedProducts = $products->random(min(rand(1, 3), $products->count()));
 
             foreach ($selectedProducts as $product) {

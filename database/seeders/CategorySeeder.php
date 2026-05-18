@@ -1,6 +1,6 @@
 <?php
 
-// Author: Emily Cardona Castañeda 
+// Author: Emily Cardona Castañeda
 
 namespace Database\Seeders;
 
@@ -13,23 +13,23 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name'        => 'Plantas',
+                'name' => 'Plantas',
                 'description' => 'Plantas ornamentales, de interior y exterior.',
             ],
             [
-                'name'        => 'Semillas',
+                'name' => 'Semillas',
                 'description' => 'Semillas certificadas de hortalizas, flores y hierbas aromáticas.',
             ],
             [
-                'name'        => 'Abonos y Fertilizantes',
+                'name' => 'Abonos y Fertilizantes',
                 'description' => 'Compost orgánico, fertilizantes líquidos y sustratos.',
             ],
             [
-                'name'        => 'Herramientas',
+                'name' => 'Herramientas',
                 'description' => 'Tijeras de poda, palas, regaderas y accesorios de jardinería.',
             ],
             [
-                'name'        => 'Macetas y Decoración',
+                'name' => 'Macetas y Decoración',
                 'description' => 'Macetas de barro, cerámica, madera y accesorios decorativos.',
             ],
         ];

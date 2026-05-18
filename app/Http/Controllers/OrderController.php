@@ -20,7 +20,8 @@ class OrderController extends Controller
 {
     use AuthorizesRequests;
 
-    private const CART_KEY          = 'shopping_cart';
+    private const CART_KEY = 'shopping_cart';
+
     private const CART_SERVICES_KEY = 'shopping_cart_services';
 
     public function __construct(private readonly CartService $cartService) {}
@@ -53,7 +54,7 @@ class OrderController extends Controller
 
     public function checkout(): View|RedirectResponse
     {
-        $cart         = Session::get(self::CART_KEY, []);
+        $cart = Session::get(self::CART_KEY, []);
         $cartServices = Session::get(self::CART_SERVICES_KEY, []);
 
         if (count($cart) === 0 && count($cartServices) === 0) {
@@ -75,7 +76,7 @@ class OrderController extends Controller
 
     public function store(CheckoutRequest $request): RedirectResponse
     {
-        $cart         = Session::get(self::CART_KEY, []);
+        $cart = Session::get(self::CART_KEY, []);
         $cartServices = Session::get(self::CART_SERVICES_KEY, []);
 
         if (count($cart) === 0 && count($cartServices) === 0) {
@@ -83,8 +84,8 @@ class OrderController extends Controller
                 ->with('error', __('cart.empty'));
         }
 
-        $paymentMethod       = (string) $request->validated('payment_method');
-        $authenticatedUser   = Auth::user();
+        $paymentMethod = (string) $request->validated('payment_method');
+        $authenticatedUser = Auth::user();
         $authenticatedUserId = (int) $authenticatedUser->getId();
 
         $order = new Order;

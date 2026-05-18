@@ -11,13 +11,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name'        => 'Administrador',
-            'email'       => 'admin@growandbloom.com',
-            'password'    => Hash::make('password'),
-            'role'        => User::ROLE_ADMIN,
-            'phone'       => '3001234567',
-            'address'     => 'Calle 1 # 1-1',
-            'city'        => 'Medellín',
+            'name' => 'Administrador',
+            'email' => 'admin@growandbloom.com',
+            'password' => Hash::make('password'),
+            'role' => User::ROLE_ADMIN,
+            'phone' => '3001234567',
+            'address' => 'Calle 1 # 1-1',
+            'city' => 'Medellín',
             'postal_code' => '050001',
         ]);
 
@@ -36,13 +36,13 @@ class UserSeeder extends Seeder
 
         foreach ($users as $index => $userData) {
             User::create([
-                'name'        => $userData['name'],
-                'email'       => $userData['email'],
-                'password'    => Hash::make('password'),
-                'role'        => User::ROLE_USER,
-                'phone'       => '300' . str_pad((string) ($index + 1000000), 7, '0', STR_PAD_LEFT),
-                'address'     => 'Calle ' . (($index + 1) * 10) . ' # ' . ($index + 1) . '-' . (($index + 1) * 5),
-                'city'        => $userData['city'],
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'password' => Hash::make('password'),
+                'role' => User::ROLE_USER,
+                'phone' => '300'.str_pad((string) ($index + 1000000), 7, '0', STR_PAD_LEFT),
+                'address' => 'Calle '.(($index + 1) * 10).' # '.($index + 1).'-'.(($index + 1) * 5),
+                'city' => $userData['city'],
                 'postal_code' => (string) (50000 + $index * 100),
             ]);
         }

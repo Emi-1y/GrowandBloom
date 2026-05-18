@@ -11,7 +11,7 @@ class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        $users    = User::where('role', User::ROLE_USER)->get();
+        $users = User::where('role', User::ROLE_USER)->get();
         $products = Product::where('active', true)->get();
 
         if ($users->isEmpty() || $products->isEmpty()) {
@@ -32,15 +32,15 @@ class ReviewSeeder extends Seeder
         ];
 
         foreach ($products->take(8) as $product) {
-            $reviewCount   = rand(2, 4);
+            $reviewCount = rand(2, 4);
             $selectedUsers = $users->random(min($reviewCount, $users->count()));
 
             foreach ($selectedUsers as $user) {
                 Review::create([
-                    'user_id'    => $user->getId(),
+                    'user_id' => $user->getId(),
                     'product_id' => $product->getId(),
-                    'rating'     => rand(3, 5),
-                    'comment'    => $comments[array_rand($comments)],
+                    'rating' => rand(3, 5),
+                    'comment' => $comments[array_rand($comments)],
                 ]);
             }
         }

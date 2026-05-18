@@ -1,6 +1,6 @@
 <?php
 
-// Author: Emily Cardona Castañeda 
+// Author: Emily Cardona Castañeda
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;

@@ -148,4 +148,33 @@
     </a>
 </div>
 
+{{-- CATEGORIES --}}
+@if(!$viewData['categories']->isEmpty())
+<div>
+    <div class="d-flex justify-content-between align-items-end border-bottom pb-3 mb-4">
+        <div>
+            <h2 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:#2d5a3d;">
+                {{ __('home.categories_title') }}
+            </h2>
+            <p class="text-muted mb-0" style="font-size:.82rem;">{{ __('home.categories_subtitle') }}</p>
+        </div>
+    </div>
+    <div class="row g-3">
+        @foreach($viewData['categories'] as $category)
+        <div class="col-6 col-md-4 col-lg-3">
+            <a href="{{ route('product.index') }}"
+               class="text-decoration-none d-block text-center p-4 rounded-3 border h-100"
+               style="background:#fff; border-color:#d4eddf !important; transition:all .2s;"
+               onmouseover="this.style.borderColor='#4a7c59';this.style.background='#e8f5ec';this.style.transform='translateY(-2px)';"
+               onmouseout="this.style.borderColor='#d4eddf';this.style.background='#fff';this.style.transform='none';">
+                <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:#1a3a2a; margin-bottom:.25rem;">
+                    {{ $category->getName() }}
+                </div>
+            </a>
+        </div>
+        @endforeach
+    </div>
+</div>
+@endif
+
 @endsection

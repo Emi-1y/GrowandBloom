@@ -1,23 +1,23 @@
 <?php
 
-// Author: Emily Cardona Castañeda 
+// Author: Emily Cardona Castañeda
 
 namespace App\Providers;
 
 use App\Models\Order;
-use App\Policies\OrderPolicy;
 use App\Models\Review;
+use App\Policies\OrderPolicy;
 use App\Policies\ReviewPolicy;
 use App\Services\CartService;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->app->singleton(CartService::class, function ($app) {
-            return new CartService();
+            return new CartService;
         });
     }
 

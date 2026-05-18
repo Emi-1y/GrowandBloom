@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Session;
 
 class CartService
 {
-    private const CART_KEY          = 'shopping_cart';
+    private const CART_KEY = 'shopping_cart';
+
     private const CART_SERVICES_KEY = 'shopping_cart_services';
 
     // ── PRODUCTOS ────────────────────────────────────────────────────────────
@@ -24,9 +25,9 @@ class CartService
 
     public function addProduct(Product $product, int $requestedQuantity): void
     {
-        $cart        = $this->getCart();
-        $productId   = $product->getId();
-        $current     = (int) ($cart[$productId] ?? 0);
+        $cart = $this->getCart();
+        $productId = $product->getId();
+        $current = (int) ($cart[$productId] ?? 0);
         $newQuantity = min($product->getStock(), $current + max(1, $requestedQuantity));
 
         if ($newQuantity > 0) {
@@ -37,7 +38,7 @@ class CartService
 
     public function updateProductQuantity(Product $product, int $quantity): void
     {
-        $cart      = $this->getCart();
+        $cart = $this->getCart();
         $productId = $product->getId();
 
         if (! array_key_exists($productId, $cart)) {
@@ -73,7 +74,7 @@ class CartService
     public function addService(Service $service): void
     {
         $cartServices = $this->getCartServices();
-        $serviceId    = $service->getId();
+        $serviceId = $service->getId();
 
         // Solo se permite un servicio del mismo tipo
         if (! isset($cartServices[$serviceId])) {

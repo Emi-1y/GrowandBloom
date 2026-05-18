@@ -13,12 +13,12 @@ class ItemFactory extends Factory
         $product = Product::where('active', true)->inRandomOrder()->first();
 
         return [
-            'quantity'   => fake()->numberBetween(1, 5),
-            'price'      => $product?->getPrice() ?? fake()->numberBetween(5000, 200000),
-            'order_id'   => Order::inRandomOrder()->first()?->getId() ?? Order::factory(),
+            'quantity' => fake()->numberBetween(1, 5),
+            'price' => $product?->getPrice() ?? fake()->numberBetween(5000, 200000),
+            'order_id' => Order::inRandomOrder()->first()?->getId() ?? Order::factory(),
             'product_id' => $product?->getId(),
             'service_id' => null,
-            'item_type'  => 'product',
+            'item_type' => 'product',
         ];
     }
 }

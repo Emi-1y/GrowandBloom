@@ -34,12 +34,12 @@ class CartController extends Controller
 
     public function add(AddToCartRequest $request): RedirectResponse
     {
-        $itemType  = $request->input('item_type', 'product');
-        $quantity  = (int) $request->validated('quantity', 1);
+        $itemType = $request->input('item_type', 'product');
+        $quantity = (int) $request->validated('quantity', 1);
 
         if ($itemType === 'service') {
             $serviceId = (int) $request->input('service_id');
-            $service   = Service::where('active', true)->findOrFail($serviceId);
+            $service = Service::where('active', true)->findOrFail($serviceId);
             $this->cartService->addService($service);
 
             return redirect()->route('cart.index')
@@ -47,7 +47,7 @@ class CartController extends Controller
         }
 
         $productId = (int) $request->validated('product_id', 0);
-        $product   = Product::where('active', true)->findOrFail($productId);
+        $product = Product::where('active', true)->findOrFail($productId);
         $this->cartService->addProduct($product, $quantity);
 
         return redirect()->route('cart.index')
@@ -57,13 +57,13 @@ class CartController extends Controller
     public function update(UpdateCartItemRequest $request, Product $product): RedirectResponse|JsonResponse
     {
         $activeProduct = Product::where('active', true)->findOrFail($product->getId());
-        $quantity      = (int) $request->validated('quantity');
+        $quantity = (int) $request->validated('quantity');
 
         $this->cartService->updateProductQuantity($activeProduct, $quantity);
 
         if ($request->expectsJson()) {
             $cartItems = $this->cartService->buildCartItems();
-            $cartItem  = $cartItems->first(
+            $cartItem = $cartItems->first(
                 fn (Item $item) => $item->getItemType() === 'product'
                     && $item->getProductId() === $activeProduct->getId()
             );
@@ -73,12 +73,12 @@ class CartController extends Controller
             }
 
             return response()->json([
-                'success'       => true,
-                'price'         => $cartItem->getPrice(),
-                'quantity'      => $cartItem->getQuantity(),
-                'subtotal'      => $cartItem->calculateSubTotal(),
+                'success' => true,
+                'price' => $cartItem->getPrice(),
+                'quantity' => $cartItem->getQuantity(),
+                'subtotal' => $cartItem->calculateSubTotal(),
                 'totalQuantity' => $cartItems->sum(fn (Item $i) => $i->getQuantity()),
-                'totalAmount'   => $cartItems->sum(fn (Item $i) => $i->calculateSubTotal()),
+                'totalAmount' => $cartItems->sum(fn (Item $i) => $i->calculateSubTotal()),
             ]);
         }
 
