@@ -2,6 +2,7 @@
 
 return [
     'hero_badge'          => 'Nursery & Gardening',
+    'hero_emphasis'         => 'something beautiful',
     'hero_description'    => 'Plants, seeds, fertilizers, and professional gardening services. Everything your green space needs to thrive.',
     'hero_browse_products' => 'Browse products',
     'hero_browse_services' => 'Browse services',

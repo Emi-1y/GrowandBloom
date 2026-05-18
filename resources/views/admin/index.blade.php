@@ -75,7 +75,7 @@
     </div>
 </div>
 
-{{-- MÓDULOS --}}
+{{-- MODULES --}}
 <div class="row g-3 mb-5">
     <div class="col-md-6 col-lg-4">
         <div class="card border-0 shadow-sm h-100" style="border-radius:14px; overflow:hidden; transition:transform .2s, box-shadow .2s;"
@@ -193,7 +193,7 @@
     </div>
 </div>
 
-{{-- ÓRDENES RECIENTES --}}
+{{-- RECENT ORDERS --}}
 @if($viewData['recentOrders']->isNotEmpty())
 <div class="d-flex justify-content-between align-items-center mb-3 pb-2" style="border-bottom:1px solid #e2ddd4;">
     <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:#1a3a2a; margin:0;">

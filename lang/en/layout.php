@@ -1,8 +1,6 @@
 <?php
 
 return [
-    'app_title'     => 'Grow and Bloom',
-    'brand'         => 'Grow And Bloom',
     'nav_home'      => 'Home',
     'nav_products'  => 'Products',
     'nav_services'  => 'Services',
@@ -12,12 +10,9 @@ return [
     'nav_logout'    => 'Log out',
     'nav_login'     => 'Log in',
     'nav_register'  => 'Register',
-    'page_title'    => '@yield(\'title\', \'Grow and Bloom\') — Nursery',
-    'footer_brand'  => 'Grow and Bloom',
-    'footer_tagline'        => 'Nursery & Gardening — All rights reserved',
+    'footer_tagline' => 'Nursery & Gardening — All rights reserved',
     // admin layout
     'admin_title'           => 'Admin',
-    'admin_brand'           => 'Grow And Bloom · Admin',
     'toggle_navigation'     => 'Toggle navigation',
     'admin_panel'           => 'Dashboard',
     'admin_products'        => 'Products',
@@ -27,5 +22,4 @@ return [
     'admin_users'           => 'Users',
     'back_to_store'         => '← Back to store',
     'logout'                => 'Log out',
-    'footer_admin'          => 'Grow and Bloom · Admin Panel',
 ];

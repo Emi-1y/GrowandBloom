@@ -1,7 +1,7 @@
 {{-- Author: Emily Cardona Castañeda --}}
 
 @extends('layouts.app')
-@section('title', __('layout.app_title'))
+@section('title', 'Grow and Bloom')
 
 @section('hero')
 <div style="background: linear-gradient(135deg, #1a3a2a 0%, #2d5a3d 60%, #4a7c59 100%); min-height: 75vh; display:flex; align-items:center; position:relative; overflow:hidden;">
@@ -19,7 +19,7 @@
                 <h1 class="display-3 fw-light text-white mb-3"
                     style="font-family:'Cormorant Garamond',serif; line-height:1.05;">
                     Grow<br>
-                    <em style="font-weight:600; color:#a8d5b5;">something beautiful</em>
+                    <em style="font-weight:600; color:#a8d5b5;">{{ __('home.hero_emphasis') }}</em>
                 </h1>
                 <p class="text-white mb-5" style="opacity:.8; font-size:1.05rem; max-width:480px; line-height:1.8;">
                     {{ __('home.hero_description') }}
@@ -169,7 +169,13 @@
                onmouseout="this.style.borderColor='#d4eddf';this.style.background='#fff';this.style.transform='none';">
                 <div style="font-size:2rem; margin-bottom:.5rem;">
                     @php
-                        $icons = ['Plantas','Semillas','Abonos y Fertilizantes','Herramientas','Macetas y Decoración'];
+                        $icons = [
+                            'Plantas' => '🌿',
+                            'Semillas' => '🌱',
+                            'Abonos y Fertilizantes' => '💧',
+                            'Herramientas' => '🔧',
+                            'Macetas y Decoración' => '🪴',
+                        ];
                         echo $icons[$category->getName()] ?? '';
                     @endphp
                 </div>

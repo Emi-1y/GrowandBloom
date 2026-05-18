@@ -6,7 +6,7 @@
 @section('content')
 <div class="auth-wrap">
     <div class="auth-card" style="max-width:540px;">
-        <div class="auth-logo"> {{ __('layout.brand') }}</div>
+        <div class="auth-logo"> Grow and Bloom</div>
         <div class="auth-subtitle">{{ __('auth.register_subtitle') }}</div>
 
         @if ($errors->any())

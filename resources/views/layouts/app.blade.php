@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>@yield('title', __('layout.app_title')) — {{ __('layout.footer_brand') }}</title>
+    <title>@yield('title', 'Grow and Bloom') — Grow and Bloom</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
@@ -25,7 +25,7 @@
             alt="Logo"
             style="height:60px; margin-right:15px;">
 
-             {{ __('layout.brand') }}
+             Grow and Bloom
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -108,7 +108,7 @@
 
 <footer class="bg-dark text-white py-4 mt-auto">
     <div class="container text-center">
-        <p class="mb-1" style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-style:italic;">{{ __('layout.footer_brand') }}</p>
+        <p class="mb-1" style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-style:italic;">Grow and Bloom</p>
         <small class="text-secondary">{{ __('layout.footer_tagline') }}</small>
     </div>
 </footer>

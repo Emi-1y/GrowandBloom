@@ -19,7 +19,7 @@
                value="{{ old('name', $product?->getName()) }}">
     </div>
 
-    {{-- Descripción --}}
+    {{-- Description --}}
     <div class="col-12">
         <label for="description" class="form-label">{{ __('product.form_description') }}</label>
         <textarea id="description" name="description" class="form-control" rows="3"
@@ -27,7 +27,7 @@
         >{{ old('description', $product?->getDescription()) }}</textarea>
     </div>
 
-    {{-- Precio y Stock --}}
+    {{-- Price and Stock --}}
     <div class="col-md-4">
         <label for="price" class="form-label">{{ __('product.form_price') }}</label>
         <input type="number" id="price" name="price" class="form-control" min="0"
@@ -45,7 +45,7 @@
                value="{{ old('stock', $product?->getStock() ?? 0) }}">
     </div>
 
-    {{-- Categoría --}}
+    {{-- Category --}}
     <div class="col-md-6">
         <label for="category_id" class="form-label">{{ __('product.form_category') }}</label>
         <select id="category_id" name="category_id" class="form-select">
@@ -59,7 +59,7 @@
         </select>
     </div>
 
-    {{-- Variedad / Color --}}
+    {{-- Variety / Color --}}
     <div class="col-md-6">
         <label for="color" class="form-label">{{ __('product.form_color') }}</label>
         <input type="text" id="color" name="color" class="form-control"
@@ -67,7 +67,7 @@
                value="{{ old('color', $product?->getColor()) }}">
     </div>
 
-    {{-- Presentación --}}
+    {{-- Size / Presentation --}}
     <div class="col-md-6">
         <label for="size" class="form-label">{{ __('product.form_size') }}</label>
         <input type="text" id="size" name="size" class="form-control"

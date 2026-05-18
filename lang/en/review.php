@@ -18,4 +18,12 @@ return [
     'comment_help'         => 'Between :min and :max characters.',
     'submit'               => 'Submit review',
     'cancel'               => 'Cancel',
+    // validation messages
+    'product_required'     => 'The product is required.',
+    'product_not_found'    => 'The selected product does not exist.',
+    'rating_required'      => 'Please select a rating.',
+    'rating_min'           => 'The rating must be at least 1.',
+    'rating_max'           => 'The rating cannot exceed 5.',
+    'comment_min'          => 'The comment must have at least :min characters.',
+    'comment_max'          => 'The comment cannot exceed :max characters.',
 ];

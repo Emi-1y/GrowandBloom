@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>@yield('title', __('layout.admin_title')) — {{ __('layout.admin_brand') }}</title>
+    <title>@yield('title', 'Admin') — Grow and Bloom · Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     @stack('styles')
@@ -17,7 +17,7 @@
         <div class="container">
             @if(Route::has('admin.index'))
                 <a class="navbar-brand" href="{{ route('admin.index') }}">
-                    {{ __('layout.admin_brand') }}
+                    Grow and Bloom · Admin
                 </a>
             @endif
 
@@ -83,7 +83,7 @@
 
     <footer>
         <div class="container">
-            <small>{{ __('layout.footer_admin') }}</small>
+            <small>Grow and Bloom · Admin Panel</small>
         </div>
     </footer>
 
