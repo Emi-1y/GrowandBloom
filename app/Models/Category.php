@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * $this->attributes['description'] - string - contains the category description
  * $this->attributes['created_at'] - timestamp - contains category creation date
  * $this->attributes['updated_at'] - timestamp - contains category update date
- * $this->products - Product[] - contains the associated products
+ * $this->plants - Plant[] - contains the associated plants
  */
 class Category extends Model
 {
@@ -59,13 +59,13 @@ class Category extends Model
         return $this->attributes['updated_at'];
     }
 
-    public function products(): HasMany
+    public function plants(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Plant::class);
     }
 
-    public function getProducts(): Collection
+    public function getPlants(): Collection
     {
-        return $this->products;
+        return $this->plants;
     }
 }

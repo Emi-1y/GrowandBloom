@@ -19,11 +19,11 @@
                         </ul>
                     </div>
                 @endif
-                <form method="POST" action="{{ route('admin.product.store') }}">
+                <form method="POST" action="{{ route('admin.plant.store') }}">
                     @csrf
-                    @include('admin.product._form', [
-                        'product' => null,
-                        'submitText' => __('product.save_button'),
+                    @include('admin.plant._form', [
+                        'plant' => null,
+                        'submitText' => __('plant.save_button'),
                     ])
                 </form>
             </div>

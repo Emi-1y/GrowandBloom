@@ -2,11 +2,11 @@
 
 // Author: Emily Cardona Castañeda
 
-namespace App\Http\Requests\Product;
+namespace App\Http\Requests\Plant;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class StorePlantRequest extends FormRequest
 {
     public function authorize(): bool
     {

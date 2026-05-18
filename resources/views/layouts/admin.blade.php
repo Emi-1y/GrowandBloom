@@ -31,8 +31,8 @@
                     @if(Route::has('admin.index'))
                         <a class="nav-link" href="{{ route('admin.index') }}">{{ __('layout.admin_panel') }}</a>
                     @endif
-                    @if(Route::has('admin.product.index'))
-                        <a class="nav-link" href="{{ route('admin.product.index') }}">{{ __('layout.admin_products') }}</a>
+                    @if(Route::has('admin.plant.index'))
+                        <a class="nav-link" href="{{ route('admin.plant.index') }}">{{ __('layout.admin_products') }}</a>
                     @endif
                     @if(Route::has('admin.category.index'))
                         <a class="nav-link" href="{{ route('admin.category.index') }}">{{ __('layout.admin_categories') }}</a>

@@ -17,6 +17,7 @@ class OrderController extends Controller
     {
         $search = $request->query('search');
         $status = $request->query('status');
+        $paymentStatus = $request->query('payment_status');
 
         $query = Order::with('user')->orderByDesc('id');
 
@@ -34,19 +35,19 @@ class OrderController extends Controller
             $query->where('status', $status);
         }
 
+        if (! empty($paymentStatus)) {
+            $query->where('payment_status', $paymentStatus);
+        }
+
         $viewData = [];
         $viewData['title'] = __('order.admin_list_title');
         $viewData['subtitle'] = __('order.admin_list_subtitle');
         $viewData['orders'] = $query->paginate(30)->appends($request->query());
         $viewData['search'] = $search;
         $viewData['status'] = $status;
-        $viewData['statuses'] = [
-            'pending' => __('order.status_pending'),
-            'paid' => __('order.status_paid'),
-            'shipped' => __('order.status_shipped'),
-            'delivered' => __('order.status_delivered'),
-            'cancelled' => __('order.status_cancelled'),
-        ];
+        $viewData['paymentStatus'] = $paymentStatus;
+        $viewData['statuses'] = $this->statusOptions();
+        $viewData['paymentStatuses'] = $this->paymentStatusOptions();
 
         return view('admin.order.index')->with('viewData', $viewData);
     }
@@ -56,14 +57,9 @@ class OrderController extends Controller
         $viewData = [];
         $viewData['title'] = __('order.edit_title');
         $viewData['subtitle'] = __('order.edit_subtitle');
-        $viewData['order'] = $order->load('user', 'items.product');
-        $viewData['statuses'] = [
-            'pending' => __('order.status_pending'),
-            'paid' => __('order.status_paid'),
-            'shipped' => __('order.status_shipped'),
-            'delivered' => __('order.status_delivered'),
-            'cancelled' => __('order.status_cancelled'),
-        ];
+        $viewData['order'] = $order->load('user', 'items.plant', 'items.service');
+        $viewData['statuses'] = $this->statusOptions();
+        $viewData['paymentStatuses'] = $this->paymentStatusOptions();
 
         return view('admin.order.edit')->with('viewData', $viewData);
     }
@@ -75,5 +71,23 @@ class OrderController extends Controller
         return redirect()
             ->route('admin.order.index')
             ->with('success', __('order.updated_successfully'));
+    }
+
+    private function statusOptions(): array
+    {
+        return [
+            Order::STATUS_PENDING => __('order.status_pending'),
+            Order::STATUS_COMPLETED => __('order.status_completed'),
+            Order::STATUS_CANCELLED => __('order.status_cancelled'),
+        ];
+    }
+
+    private function paymentStatusOptions(): array
+    {
+        return [
+            Order::PAYMENT_PENDING => __('order.payment_status_pending'),
+            Order::PAYMENT_PAID => __('order.payment_status_paid'),
+            Order::PAYMENT_FAILED => __('order.payment_status_failed'),
+        ];
     }
 }

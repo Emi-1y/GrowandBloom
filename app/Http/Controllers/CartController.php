@@ -5,13 +5,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Cart\AddToCartRequest;
-use App\Http\Requests\Cart\RemoveFromCartRequest;
 use App\Http\Requests\Cart\UpdateCartItemRequest;
 use App\Models\Item;
-use App\Models\Product;
+use App\Models\Plant;
 use App\Models\Service;
 use App\Services\CartService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -29,12 +27,12 @@ class CartController extends Controller
         $viewData['totalQuantity'] = $cartItems->sum(fn (Item $item) => $item->getQuantity());
         $viewData['totalAmount'] = $cartItems->sum(fn (Item $item) => $item->calculateSubTotal());
 
-        return view('cart.index', ['viewData' => $viewData]);
+        return view('cart.index')->with('viewData', $viewData);
     }
 
     public function add(AddToCartRequest $request): RedirectResponse
     {
-        $itemType = $request->input('item_type', 'product');
+        $itemType = $request->input('item_type', 'plant');
         $quantity = (int) $request->validated('quantity', 1);
 
         if ($itemType === 'service') {
@@ -46,52 +44,31 @@ class CartController extends Controller
                 ->with('success', __('cart.service_added'));
         }
 
-        $productId = (int) $request->validated('product_id', 0);
-        $product = Product::where('active', true)->findOrFail($productId);
-        $this->cartService->addProduct($product, $quantity);
+        $plantId = (int) $request->validated('plant_id', 0);
+        $plant = Plant::where('active', true)->findOrFail($plantId);
+        $this->cartService->addPlant($plant, $quantity);
 
         return redirect()->route('cart.index')
-            ->with('success', __('cart.product_added'));
+            ->with('success', __('cart.plant_added'));
     }
 
-    public function update(UpdateCartItemRequest $request, Product $product): RedirectResponse|JsonResponse
+    public function update(UpdateCartItemRequest $request, Plant $plant): RedirectResponse
     {
-        $activeProduct = Product::where('active', true)->findOrFail($product->getId());
+        $activePlant = Plant::where('active', true)->findOrFail($plant->getId());
         $quantity = (int) $request->validated('quantity');
 
-        $this->cartService->updateProductQuantity($activeProduct, $quantity);
-
-        if ($request->expectsJson()) {
-            $cartItems = $this->cartService->buildCartItems();
-            $cartItem = $cartItems->first(
-                fn (Item $item) => $item->getItemType() === 'product'
-                    && $item->getProductId() === $activeProduct->getId()
-            );
-
-            if ($cartItem === null) {
-                return response()->json(['success' => false], 404);
-            }
-
-            return response()->json([
-                'success' => true,
-                'price' => $cartItem->getPrice(),
-                'quantity' => $cartItem->getQuantity(),
-                'subtotal' => $cartItem->calculateSubTotal(),
-                'totalQuantity' => $cartItems->sum(fn (Item $i) => $i->getQuantity()),
-                'totalAmount' => $cartItems->sum(fn (Item $i) => $i->calculateSubTotal()),
-            ]);
-        }
+        $this->cartService->updatePlantQuantity($activePlant, $quantity);
 
         return redirect()->route('cart.index')
             ->with('success', __('cart.updated'));
     }
 
-    public function remove(RemoveFromCartRequest $request, Product $product): RedirectResponse
+    public function remove(Plant $plant): RedirectResponse
     {
-        $this->cartService->removeProduct($product->getId());
+        $this->cartService->removePlant($plant->getId());
 
         return redirect()->route('cart.index')
-            ->with('success', __('cart.product_removed'));
+            ->with('success', __('cart.plant_removed'));
     }
 
     public function removeService(int $serviceId): RedirectResponse

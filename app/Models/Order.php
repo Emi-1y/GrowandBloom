@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * $this->attributes['id'] - int - contains the order primary key (id)
  * $this->attributes['total'] - int - contains the order total
  * $this->attributes['payment_method'] - string - contains the payment method
- * $this->attributes['date'] - string - contains the order date
- * $this->attributes['status'] - string - contains the order status
+ * $this->attributes['status'] - string - contains the order workflow status (pending|completed|cancelled)
+ * $this->attributes['payment_status'] - string - contains the payment status (pending|paid|failed)
  * $this->attributes['user_id'] - int - contains the related user id
  * $this->attributes['created_at'] - timestamp - contains order creation date
  * $this->attributes['updated_at'] - timestamp - contains order update date
@@ -28,11 +28,23 @@ class Order extends Model
 {
     use HasFactory;
 
+    public const STATUS_PENDING = 'pending';
+
+    public const STATUS_COMPLETED = 'completed';
+
+    public const STATUS_CANCELLED = 'cancelled';
+
+    public const PAYMENT_PENDING = 'pending';
+
+    public const PAYMENT_PAID = 'paid';
+
+    public const PAYMENT_FAILED = 'failed';
+
     protected $fillable = [
         'total',
         'payment_method',
-        'date',
         'status',
+        'payment_status',
         'user_id',
     ];
 
@@ -61,16 +73,6 @@ class Order extends Model
         $this->attributes['payment_method'] = $paymentMethod;
     }
 
-    public function getDate(): string
-    {
-        return $this->attributes['date'];
-    }
-
-    public function setDate(string $date): void
-    {
-        $this->attributes['date'] = $date;
-    }
-
     public function getStatus(): string
     {
         return $this->attributes['status'];
@@ -79,6 +81,16 @@ class Order extends Model
     public function setStatus(string $status): void
     {
         $this->attributes['status'] = $status;
+    }
+
+    public function getPaymentStatus(): string
+    {
+        return $this->attributes['payment_status'];
+    }
+
+    public function setPaymentStatus(string $paymentStatus): void
+    {
+        $this->attributes['payment_status'] = $paymentStatus;
     }
 
     public function getUserId(): int
@@ -123,12 +135,13 @@ class Order extends Model
 
     public function placeOrder(): void
     {
-        $this->setStatus('pending');
+        $this->setStatus(self::STATUS_PENDING);
+        $this->setPaymentStatus(self::PAYMENT_PENDING);
     }
 
     public function cancelOrder(): void
     {
-        $this->setStatus('cancelled');
+        $this->setStatus(self::STATUS_CANCELLED);
     }
 
     public function calculateTotal(): int
@@ -146,21 +159,21 @@ class Order extends Model
 
     public function pay(): void
     {
-        $this->setStatus('paid');
+        $this->setPaymentStatus(self::PAYMENT_PAID);
     }
 
     public function getFormattedTotal(): string
     {
-        return number_format($this->getTotal(), 0, ',', '.').' '.__('product.currency');
-    }
-
-    public function getFormattedDate(): string
-    {
-        return Carbon::parse($this->getDate())->format('d/m/Y');
+        return number_format($this->getTotal(), 0, ',', '.').' '.__('plant.currency');
     }
 
     public function getFormattedCreatedAt(): string
     {
         return Carbon::parse($this->getCreatedAt())->format('d/m/Y H:i');
+    }
+
+    public function getFormattedDate(): string
+    {
+        return Carbon::parse($this->getCreatedAt())->format('d/m/Y');
     }
 }

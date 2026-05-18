@@ -5,71 +5,71 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Requests\Plant\StorePlantRequest;
+use App\Http\Requests\Plant\UpdatePlantRequest;
 use App\Models\Category;
-use App\Models\Product;
+use App\Models\Plant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ProductController extends Controller
+class PlantController extends Controller
 {
     public function index(): View
     {
         $viewData = [];
-        $viewData['title'] = __('product.admin_list_title');
-        $viewData['subtitle'] = __('product.admin_list_subtitle');
-        $viewData['products'] = Product::with('category')->orderBy('id', 'desc')->get();
+        $viewData['title'] = __('plant.admin_list_title');
+        $viewData['subtitle'] = __('plant.admin_list_subtitle');
+        $viewData['plants'] = Plant::with('category')->orderBy('id', 'desc')->get();
 
-        return view('admin.product.index')->with('viewData', $viewData);
+        return view('admin.plant.index')->with('viewData', $viewData);
     }
 
     public function create(): View
     {
         $viewData = [];
-        $viewData['title'] = __('product.create_title');
-        $viewData['subtitle'] = __('product.create_subtitle');
+        $viewData['title'] = __('plant.create_title');
+        $viewData['subtitle'] = __('plant.create_subtitle');
         $viewData['categories'] = Category::orderBy('name')->get();
         $viewData['exclusiveCategory'] = Category::whereRaw('LOWER(name) = ?', ['exclusive'])->first();
 
-        return view('admin.product.create')->with('viewData', $viewData);
+        return view('admin.plant.create')->with('viewData', $viewData);
     }
 
-    public function store(StoreProductRequest $request): RedirectResponse
+    public function store(StorePlantRequest $request): RedirectResponse
     {
         $data = $this->normalizeExclusiveData($request->validated());
 
-        Product::create($data);
+        Plant::create($data);
 
-        return redirect()->route('admin.product.index')->with('success', __('product.created_successfully'));
+        return redirect()->route('admin.plant.index')->with('success', __('plant.created_successfully'));
     }
 
-    public function edit(Product $product): View
+    public function edit(Plant $plant): View
     {
         $viewData = [];
-        $viewData['title'] = __('product.edit_title');
-        $viewData['subtitle'] = __('product.edit_subtitle');
-        $viewData['product'] = $product;
+        $viewData['title'] = __('plant.edit_title');
+        $viewData['subtitle'] = __('plant.edit_subtitle');
+        $viewData['plant'] = $plant;
         $viewData['categories'] = Category::orderBy('name')->get();
         $viewData['exclusiveCategory'] = Category::whereRaw('LOWER(name) = ?', ['exclusive'])->first();
 
-        return view('admin.product.edit')->with('viewData', $viewData);
+        return view('admin.plant.edit')->with('viewData', $viewData);
     }
 
-    public function update(UpdateProductRequest $request, Product $product): RedirectResponse
+    public function update(UpdatePlantRequest $request, Plant $plant): RedirectResponse
     {
         $data = $this->normalizeExclusiveData($request->validated());
 
-        $product->update($data);
+        $plant->update($data);
 
-        return redirect()->route('admin.product.index')->with('success', __('product.updated_successfully'));
+        return redirect()->route('admin.plant.index')->with('success', __('plant.updated_successfully'));
     }
 
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(Plant $plant): RedirectResponse
     {
-        $product->delete();
+        $plant->delete();
 
-        return redirect()->route('admin.product.index')->with('success', __('product.deleted_successfully'));
+        return redirect()->route('admin.plant.index')->with('success', __('plant.deleted_successfully'));
     }
 
     private function normalizeExclusiveData(array $data): array

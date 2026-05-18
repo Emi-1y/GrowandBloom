@@ -4,18 +4,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Plant;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ProductController extends Controller
+class PlantController extends Controller
 {
     public function index(Request $request): View
     {
         $search = $request->query('search');
         $exclusive = $request->query('exclusive');
 
-        $query = Product::query()
+        $query = Plant::query()
             ->with('category')
             ->where('active', true);
 
@@ -27,29 +27,29 @@ class ProductController extends Controller
             $query->where('exclusive', (bool) $exclusive);
         }
 
-        $products = $query
+        $plants = $query
             ->orderByDesc('id')
             ->paginate(12)
             ->appends($request->query());
 
         $viewData = [];
-        $viewData['title'] = __('product.index_title');
-        $viewData['products'] = $products;
+        $viewData['title'] = __('plant.index_title');
+        $viewData['plants'] = $plants;
         $viewData['showPagination'] = true;
         $viewData['search'] = $search;
         $viewData['selectedExclusive'] = $exclusive;
 
-        return view('products.index', ['viewData' => $viewData]);
+        return view('plants.index')->with('viewData', $viewData);
     }
 
-    public function show(Product $product): View
+    public function show(Plant $plant): View
     {
-        $product->load('category', 'reviews.user');
+        $plant->load('category');
 
         $viewData = [];
-        $viewData['title'] = $product->getName();
-        $viewData['product'] = $product;
+        $viewData['title'] = $plant->getName();
+        $viewData['plant'] = $plant;
 
-        return view('products.show', ['viewData' => $viewData]);
+        return view('plants.show')->with('viewData', $viewData);
     }
 }

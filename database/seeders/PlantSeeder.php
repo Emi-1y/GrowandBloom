@@ -5,10 +5,10 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use App\Models\Product;
+use App\Models\Plant;
 use Illuminate\Database\Seeder;
 
-class ProductSeeder extends Seeder
+class PlantSeeder extends Seeder
 {
     public function run(): void
     {
@@ -18,7 +18,7 @@ class ProductSeeder extends Seeder
         $herramientas = Category::where('name', 'Herramientas')->first();
         $macetas = Category::where('name', 'Macetas y Decoración')->first();
 
-        $products = [
+        $plants = [
             // Plantas
             [
                 'name' => 'Orquídea Phalaenopsis Blanca',
@@ -208,8 +208,8 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        foreach ($products as $product) {
-            Product::create($product);
+        foreach ($plants as $plant) {
+            Plant::create($plant);
         }
     }
 }

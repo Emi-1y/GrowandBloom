@@ -11,27 +11,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * PRODUCT ATTRIBUTES
- * $this->attributes['id'] - int - contains the product primary key (id)
- * $this->attributes['name'] - string - contains the product name
- * $this->attributes['size'] - string - contains the product size or presentation
- * $this->attributes['brand'] - string - contains the product brand
- * $this->attributes['price'] - int - contains the product price
- * $this->attributes['exclusive'] - bool - indicates whether the product is exclusive
- * $this->attributes['image'] - string - contains the product image filename
- * $this->attributes['description'] - string - contains the product description
- * $this->attributes['color'] - string - contains the product color or variety
- * $this->attributes['discount'] - int - contains the product discount percentage
- * $this->attributes['active'] - bool - indicates whether the product is active
- * $this->attributes['stock'] - int - contains the product stock quantity
+ * PLANT ATTRIBUTES
+ * $this->attributes['id'] - int - contains the plant primary key (id)
+ * $this->attributes['name'] - string - contains the plant name
+ * $this->attributes['size'] - string - contains the plant size or presentation
+ * $this->attributes['brand'] - string - contains the plant brand
+ * $this->attributes['price'] - int - contains the plant price
+ * $this->attributes['exclusive'] - bool - indicates whether the plant is exclusive
+ * $this->attributes['image'] - string - contains the plant image filename
+ * $this->attributes['description'] - string - contains the plant description
+ * $this->attributes['color'] - string - contains the plant color or variety
+ * $this->attributes['discount'] - int - contains the plant discount percentage
+ * $this->attributes['active'] - bool - indicates whether the plant is active
+ * $this->attributes['stock'] - int - contains the plant stock quantity
  * $this->attributes['category_id'] - int - contains the associated category id
- * $this->attributes['created_at'] - timestamp - contains product creation date
- * $this->attributes['updated_at'] - timestamp - contains product update date
+ * $this->attributes['created_at'] - timestamp - contains plant creation date
+ * $this->attributes['updated_at'] - timestamp - contains plant update date
  * $this->category - Category - contains the associated category
- * $this->reviews - Review[] - contains the associated reviews
  * $this->items - Item[] - contains the associated order items
  */
-class Product extends Model
+class Plant extends Model
 {
     use HasFactory;
 
@@ -195,16 +194,6 @@ class Product extends Model
         return $this->category;
     }
 
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
-    }
-
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);
@@ -217,6 +206,6 @@ class Product extends Model
 
     public function getFormattedPrice(): string
     {
-        return number_format($this->getPrice(), 0, ',', '.').' '.__('product.currency');
+        return number_format($this->getPrice(), 0, ',', '.').' '.__('plant.currency');
     }
 }

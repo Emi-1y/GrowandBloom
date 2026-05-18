@@ -41,7 +41,7 @@
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span style="font-size:1.15rem; font-weight:700; color:#2d5a3d;">
                             ${{ number_format($service->getPrice(), 0, ',', '.') }}
-                            <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('product.currency') }}</small>
+                            <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('plant.currency') }}</small>
                         </span>
                         @if($service->getDuration())
                             <span class="badge"

@@ -58,7 +58,7 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): RedirectResponse
     {
-        if ($category->getProducts()->count() > 0) {
+        if ($category->getPlants()->count() > 0) {
             return redirect()
                 ->route('admin.category.index')
                 ->with('error', __('category.delete_blocked'));

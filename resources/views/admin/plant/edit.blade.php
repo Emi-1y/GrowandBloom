@@ -19,12 +19,12 @@
                         </ul>
                     </div>
                 @endif
-                <form method="POST" action="{{ route('admin.product.update', $viewData['product']->getId()) }}">
+                <form method="POST" action="{{ route('admin.plant.update', $viewData['plant']->getId()) }}">
                     @csrf
                     @method('PUT')
-                    @include('admin.product._form', [
-                        'product'    => $viewData['product'],
-                        'submitText' => __('product.update_button'),
+                    @include('admin.plant._form', [
+                        'plant'    => $viewData['plant'],
+                        'submitText' => __('plant.update_button'),
                     ])
                 </form>
             </div>

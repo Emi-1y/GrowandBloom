@@ -5,7 +5,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Product;
+use App\Models\Plant;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -14,13 +14,13 @@ class HomeController extends Controller
     {
         $viewData = [];
         $viewData['title'] = 'Grow and Bloom';
-        $viewData['featuredProducts'] = Product::with('category')
+        $viewData['featuredPlants'] = Plant::with('category')
             ->where('active', true)
             ->orderByDesc('id')
             ->limit(8)
             ->get();
         $viewData['categories'] = Category::orderBy('name')->get();
 
-        return view('home.index', ['viewData' => $viewData]);
+        return view('home.index')->with('viewData', $viewData);
     }
 }

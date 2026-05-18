@@ -20,7 +20,7 @@ class AuthController extends Controller
         $viewData = [];
         $viewData['title'] = __('auth.login_title');
 
-        return view('auth.login', ['viewData' => $viewData]);
+        return view('auth.login')->with('viewData', $viewData);
     }
 
     public function login(LoginRequest $request): RedirectResponse
@@ -45,7 +45,7 @@ class AuthController extends Controller
         $viewData = [];
         $viewData['title'] = __('auth.register_title');
 
-        return view('auth.register', ['viewData' => $viewData]);
+        return view('auth.register')->with('viewData', $viewData);
     }
 
     public function register(RegisterRequest $request): RedirectResponse

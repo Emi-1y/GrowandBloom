@@ -36,7 +36,7 @@
                     <a class="nav-link" href="{{ route('home.index') }}">{{ __('layout.nav_home') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('product.index') }}">{{ __('layout.nav_products') }}</a>
+                    <a class="nav-link" href="{{ route('plant.index') }}">{{ __('layout.nav_products') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('service.index') }}">{{ __('layout.nav_services') }}</a>
