@@ -20,7 +20,4 @@ return [
     'services_title'      => 'Expert gardening, at your door',
     'services_description' => 'From pruning and maintenance to full garden design. Our team transforms any green space.',
     'services_explore'    => 'Explore services',
-    'categories_title'    => 'Categories',
-    'categories_subtitle' => 'Find exactly what you need',
-    'categories_explore'  => 'Explore →',
 ];
