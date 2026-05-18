@@ -16,20 +16,6 @@
                 <input type="text" name="search" class="form-control form-control-sm"
                        placeholder="{{ __('product.filter_search_placeholder') }}" value="{{ $viewData['search'] ?? '' }}">
             </div>
-            <div class="col-md-3">
-                <label class="form-label text-muted" style="font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600;">
-                    {{ __('product.filter_category') }}
-                </label>
-                <select name="category" class="form-select form-select-sm">
-                    <option value="">{{ __('product.filter_all_categories') }}</option>
-                    @foreach($viewData['categories'] ?? [] as $cat)
-                        <option value="{{ $cat->getId() }}"
-                            {{ (string)($viewData['selectedCategory'] ?? '') === (string)$cat->getId() ? 'selected' : '' }}>
-                            {{ $cat->getName() }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
             <div class="col-md-2">
                 <label class="form-label text-muted" style="font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600;">
                     {{ __('product.filter_type') }}

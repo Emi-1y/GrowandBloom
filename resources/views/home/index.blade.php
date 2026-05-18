@@ -162,7 +162,7 @@
     <div class="row g-3">
         @foreach($viewData['categories'] as $category)
         <div class="col-6 col-md-4 col-lg-3">
-            <a href="{{ route('product.index', ['category' => $category->getId()]) }}"
+            <a href="{{ route('product.index') }}"
                class="text-decoration-none d-block text-center p-4 rounded-3 border h-100"
                style="background:#fff; border-color:#d4eddf !important; transition:all .2s;"
                onmouseover="this.style.borderColor='#4a7c59';this.style.background='#e8f5ec';this.style.transform='translateY(-2px)';"

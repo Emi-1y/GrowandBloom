@@ -14,7 +14,6 @@ class ProductController extends Controller
     public function index(Request $request): View
     {
         $search = $request->query('search');
-        $categoryId = $request->query('category');
         $exclusive = $request->query('exclusive');
 
         $query = Product::query()
@@ -23,10 +22,6 @@ class ProductController extends Controller
 
         if (! empty($search)) {
             $query->where('name', 'like', '%'.$search.'%');
-        }
-
-        if (! empty($categoryId)) {
-            $query->where('category_id', $categoryId);
         }
 
         if ($exclusive !== null && $exclusive !== '') {
@@ -42,9 +37,7 @@ class ProductController extends Controller
         $viewData['title'] = __('product.index_title');
         $viewData['products'] = $products;
         $viewData['showPagination'] = true;
-        $viewData['categories'] = Category::orderBy('name')->get();
         $viewData['search'] = $search;
-        $viewData['selectedCategory'] = $categoryId;
         $viewData['selectedExclusive'] = $exclusive;
 
         return view('products.index', ['viewData' => $viewData]);

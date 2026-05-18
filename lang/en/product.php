@@ -15,8 +15,6 @@ return [
     // index filters
     'filter_search'            => 'Search',
     'filter_search_placeholder' => 'Product name…',
-    'filter_category'          => 'Category',
-    'filter_all_categories'    => 'All categories',
     'filter_type'              => 'Type',
     'filter_all'               => 'All',
     'filter_exclusive'         => 'Exclusive',
