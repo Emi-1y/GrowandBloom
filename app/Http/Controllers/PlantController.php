@@ -13,7 +13,6 @@ class PlantController extends Controller
     public function index(Request $request): View
     {
         $search = $request->query('search');
-        $exclusive = $request->query('exclusive');
 
         $query = Plant::query()
             ->with('category')
@@ -21,10 +20,6 @@ class PlantController extends Controller
 
         if (! empty($search)) {
             $query->where('name', 'like', '%'.$search.'%');
-        }
-
-        if ($exclusive !== null && $exclusive !== '') {
-            $query->where('exclusive', (bool) $exclusive);
         }
 
         $plants = $query
@@ -37,7 +32,6 @@ class PlantController extends Controller
         $viewData['plants'] = $plants;
         $viewData['showPagination'] = true;
         $viewData['search'] = $search;
-        $viewData['selectedExclusive'] = $exclusive;
 
         return view('plants.index')->with('viewData', $viewData);
     }

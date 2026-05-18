@@ -85,12 +85,6 @@
                         @else
                             <span style="font-size:3.5rem; opacity:.4;"></span>
                         @endif
-                        @if($plant->getExclusive())
-                            <span class="badge position-absolute top-0 start-0 m-2"
-                                  style="background:#8b5e3c; font-size:.62rem; letter-spacing:.08em;">
-                                {{ __('home.badge_exclusive') }}
-                            </span>
-                        @endif
                         @if($plant->getStock() === 0)
                             <span class="badge bg-secondary position-absolute top-0 end-0 m-2"
                                   style="font-size:.62rem;">{{ __('home.badge_out_of_stock') }}</span>

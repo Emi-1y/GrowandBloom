@@ -15,13 +15,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * $this->attributes['id'] - int - contains the plant primary key (id)
  * $this->attributes['name'] - string - contains the plant name
  * $this->attributes['size'] - string - contains the plant size or presentation
- * $this->attributes['brand'] - string - contains the plant brand
  * $this->attributes['price'] - int - contains the plant price
- * $this->attributes['exclusive'] - bool - indicates whether the plant is exclusive
  * $this->attributes['image'] - string - contains the plant image filename
  * $this->attributes['description'] - string - contains the plant description
  * $this->attributes['color'] - string - contains the plant color or variety
- * $this->attributes['discount'] - int - contains the plant discount percentage
  * $this->attributes['active'] - bool - indicates whether the plant is active
  * $this->attributes['stock'] - int - contains the plant stock quantity
  * $this->attributes['category_id'] - int - contains the associated category id
@@ -37,13 +34,10 @@ class Plant extends Model
     protected $fillable = [
         'name',
         'size',
-        'brand',
         'price',
-        'exclusive',
         'image',
         'description',
         'color',
-        'discount',
         'active',
         'stock',
         'category_id',
@@ -74,16 +68,6 @@ class Plant extends Model
         $this->attributes['size'] = $size;
     }
 
-    public function getBrand(): string
-    {
-        return $this->attributes['brand'];
-    }
-
-    public function setBrand(string $brand): void
-    {
-        $this->attributes['brand'] = $brand;
-    }
-
     public function getPrice(): int
     {
         return $this->attributes['price'];
@@ -92,16 +76,6 @@ class Plant extends Model
     public function setPrice(int $price): void
     {
         $this->attributes['price'] = $price;
-    }
-
-    public function getExclusive(): bool
-    {
-        return (bool) $this->attributes['exclusive'];
-    }
-
-    public function setExclusive(bool $exclusive): void
-    {
-        $this->attributes['exclusive'] = $exclusive;
     }
 
     public function getImage(): ?string
@@ -132,16 +106,6 @@ class Plant extends Model
     public function setColor(string $color): void
     {
         $this->attributes['color'] = $color;
-    }
-
-    public function getDiscount(): int
-    {
-        return $this->attributes['discount'];
-    }
-
-    public function setDiscount(int $discount): void
-    {
-        $this->attributes['discount'] = $discount;
     }
 
     public function getActive(): bool

@@ -130,23 +130,13 @@ class CartService
                 $item->setPlantId($plant->getId());
                 $item->setServiceId(null);
                 $item->setQuantity($qty);
-                $item->setUnitPrice($this->applyDiscount($plant));
+                $item->setUnitPrice($plant->getPrice());
                 $item->setRelation('plant', $plant);
                 $item->setRelation('service', null);
 
                 return $item;
             })
             ->values();
-    }
-
-    private function applyDiscount(Plant $plant): int
-    {
-        $discount = $plant->getDiscount();
-        if ($discount <= 0) {
-            return $plant->getPrice();
-        }
-
-        return (int) round($plant->getPrice() * (1 - $discount / 100));
     }
 
     private function buildServiceItems(): Collection

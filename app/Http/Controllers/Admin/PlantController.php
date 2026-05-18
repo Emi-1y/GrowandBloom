@@ -30,16 +30,13 @@ class PlantController extends Controller
         $viewData['title'] = __('plant.create_title');
         $viewData['subtitle'] = __('plant.create_subtitle');
         $viewData['categories'] = Category::orderBy('name')->get();
-        $viewData['exclusiveCategory'] = Category::whereRaw('LOWER(name) = ?', ['exclusive'])->first();
 
         return view('admin.plant.create')->with('viewData', $viewData);
     }
 
     public function store(StorePlantRequest $request): RedirectResponse
     {
-        $data = $this->normalizeExclusiveData($request->validated());
-
-        Plant::create($data);
+        Plant::create($request->validated());
 
         return redirect()->route('admin.plant.index')->with('success', __('plant.created_successfully'));
     }
@@ -51,16 +48,13 @@ class PlantController extends Controller
         $viewData['subtitle'] = __('plant.edit_subtitle');
         $viewData['plant'] = $plant;
         $viewData['categories'] = Category::orderBy('name')->get();
-        $viewData['exclusiveCategory'] = Category::whereRaw('LOWER(name) = ?', ['exclusive'])->first();
 
         return view('admin.plant.edit')->with('viewData', $viewData);
     }
 
     public function update(UpdatePlantRequest $request, Plant $plant): RedirectResponse
     {
-        $data = $this->normalizeExclusiveData($request->validated());
-
-        $plant->update($data);
+        $plant->update($request->validated());
 
         return redirect()->route('admin.plant.index')->with('success', __('plant.updated_successfully'));
     }
@@ -70,29 +64,5 @@ class PlantController extends Controller
         $plant->delete();
 
         return redirect()->route('admin.plant.index')->with('success', __('plant.deleted_successfully'));
-    }
-
-    private function normalizeExclusiveData(array $data): array
-    {
-        $exclusiveCategory = Category::whereRaw('LOWER(name) = ?', ['exclusive'])->first();
-
-        if (! $exclusiveCategory) {
-            return $data;
-        }
-
-        $exclusiveCategoryId = $exclusiveCategory->getId();
-        $isExclusiveChecked = (bool) $data['exclusive'];
-        $selectedCategoryId = (int) $data['category_id'];
-
-        if ($isExclusiveChecked || $selectedCategoryId === $exclusiveCategoryId) {
-            $data['exclusive'] = true;
-            $data['category_id'] = $exclusiveCategoryId;
-
-            return $data;
-        }
-
-        $data['exclusive'] = false;
-
-        return $data;
     }
 }

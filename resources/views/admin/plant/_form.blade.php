@@ -1,12 +1,10 @@
 {{-- Author: Emily Cardona Castañeda --}}
 
 @php
-    $exclusiveCategory   = $viewData['exclusiveCategory'] ?? null;
-    $exclusiveCategoryId = $exclusiveCategory ? $exclusiveCategory->getId() : null;
-    $plant               = $viewData['plant'] ?? null;
-    $categories          = $viewData['categories'] ?? collect();
-    $selectedCategoryId  = old('category_id', $plant ? $plant->getCategoryId() : '');
-    $isActive            = old('active', $plant ? $plant->getActive() : true);
+    $plant              = $viewData['plant'] ?? null;
+    $categories         = $viewData['categories'] ?? collect();
+    $selectedCategoryId = old('category_id', $plant ? $plant->getCategoryId() : '');
+    $isActive           = old('active', $plant ? $plant->getActive() : true);
 @endphp
 
 <div class="row g-3">
@@ -28,18 +26,13 @@
     </div>
 
     {{-- Price and Stock --}}
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="price" class="form-label">{{ __('plant.form_price') }}</label>
         <input type="number" id="price" name="price" class="form-control" min="0"
                placeholder="25000"
                value="{{ old('price', $plant?->getPrice()) }}">
     </div>
-    <div class="col-md-4">
-        <label for="discount" class="form-label">{{ __('plant.form_discount') }}</label>
-        <input type="number" id="discount" name="discount" class="form-control" min="0" max="100"
-               value="{{ old('discount', $plant?->getDiscount() ?? 0) }}">
-    </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="stock" class="form-label">{{ __('plant.form_stock') }}</label>
         <input type="number" id="stock" name="stock" class="form-control" min="0"
                value="{{ old('stock', $plant?->getStock() ?? 0) }}">
@@ -75,14 +68,6 @@
                value="{{ old('size', $plant?->getSize()) }}">
     </div>
 
-    {{-- Marca / Origen --}}
-    <div class="col-md-6">
-        <label for="brand" class="form-label">{{ __('plant.form_brand') }}</label>
-        <input type="text" id="brand" name="brand" class="form-control"
-               placeholder="{{ __('plant.form_brand_placeholder') }}"
-               value="{{ old('brand', $plant?->getBrand()) }}">
-    </div>
-
     {{-- Imagen --}}
     <div class="col-12">
         <label for="image" class="form-label">{{ __('plant.form_image') }}</label>
@@ -100,8 +85,6 @@
                    class="form-check-input" {{ $isActive ? 'checked' : '' }}>
             <label for="active" class="form-check-label">{{ __('plant.form_active') }}</label>
         </div>
-        {{-- Campo oculto para exclusive — requerido por el controlador --}}
-        <input type="hidden" name="exclusive" value="0">
     </div>
 
     {{-- Botones --}}

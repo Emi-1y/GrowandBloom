@@ -37,11 +37,6 @@
         <div style="font-size:1.6rem; font-weight:700; color:#2d5a3d; margin-bottom:1.5rem;">
             ${{ number_format($viewData['plant']->getPrice(), 0, ',', '.') }}
             <small style="font-size:.75rem; color:#7a7165; font-weight:400;">{{ __('plant.currency') }}</small>
-            @if($viewData['plant']->getDiscount() > 0)
-                <span style="font-size:.85rem; background:#f5ece4; color:#8b5e3c; padding:3px 10px; border-radius:20px; margin-left:.5rem; font-weight:600;">
-                    -{{ $viewData['plant']->getDiscount() }}%
-                </span>
-            @endif
         </div>
 
         @if($viewData['plant']->getDescription())

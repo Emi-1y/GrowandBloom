@@ -16,16 +16,6 @@
                 <input type="text" name="search" class="form-control form-control-sm"
                        placeholder="{{ __('plant.filter_search_placeholder') }}" value="{{ $viewData['search'] ?? '' }}">
             </div>
-            <div class="col-md-2">
-                <label class="form-label text-muted" style="font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600;">
-                    {{ __('plant.filter_type') }}
-                </label>
-                <select name="exclusive" class="form-select form-select-sm">
-                    <option value="">{{ __('plant.filter_all') }}</option>
-                    <option value="1" {{ ($viewData['selectedExclusive'] ?? '') === '1' ? 'selected' : '' }}>{{ __('plant.filter_exclusive') }}</option>
-                    <option value="0" {{ ($viewData['selectedExclusive'] ?? '') === '0' ? 'selected' : '' }}>{{ __('plant.filter_standard') }}</option>
-                </select>
-            </div>
             <div class="col-md-2 d-flex gap-2">
                 <button type="submit" class="btn btn-success btn-sm w-100">
                     <i class="bi bi-search me-1"></i>{{ __('plant.filter_search') }}
@@ -54,10 +44,7 @@
                     @else
                         <span style="font-size:3.5rem; opacity:.4;"></span>
                     @endif
-                    @if($plant->getExclusive())
-                        <span class="badge position-absolute top-0 start-0 m-2"
-                              style="background:#8b5e3c; font-size:.6rem; letter-spacing:.08em;">{{ __('plant.badge_exclusive') }}</span>
-                    @endif
+
                 </div>
                 <div class="card-body d-flex flex-column p-3">
                     <span class="text-success mb-1"
