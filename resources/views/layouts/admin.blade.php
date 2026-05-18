@@ -32,7 +32,7 @@
                         <a class="nav-link" href="{{ route('admin.index') }}">{{ __('layout.admin_panel') }}</a>
                     @endif
                     @if(Route::has('admin.plant.index'))
-                        <a class="nav-link" href="{{ route('admin.plant.index') }}">{{ __('layout.admin_products') }}</a>
+                        <a class="nav-link" href="{{ route('admin.plant.index') }}">{{ __('layout.admin_plants') }}</a>
                     @endif
                     @if(Route::has('admin.category.index'))
                         <a class="nav-link" href="{{ route('admin.category.index') }}">{{ __('layout.admin_categories') }}</a>
@@ -57,6 +57,13 @@
                             </form>
                         @endif
                     @endauth
+                    <form method="POST" action="{{ route('locale.switch') }}" class="d-inline ms-lg-2">
+                        @csrf
+                        <button type="submit" name="locale" value="en"
+                            class="btn btn-sm {{ app()->getLocale() === 'en' ? 'btn-success' : 'btn-outline-success' }}">EN</button>
+                        <button type="submit" name="locale" value="es"
+                            class="btn btn-sm {{ app()->getLocale() === 'es' ? 'btn-success' : 'btn-outline-success' }}">ES</button>
+                    </form>
                 </div>
             </div>
         </div>

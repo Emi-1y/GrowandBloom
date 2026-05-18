@@ -2,7 +2,7 @@
 
 return [
     'nav_home' => 'Home',
-    'nav_products' => 'Plants',
+    'nav_plants' => 'Plants',
     'nav_services' => 'Services',
     'nav_cart' => 'Cart',
     'nav_my_orders' => 'My Orders',
@@ -15,7 +15,7 @@ return [
     'admin_title' => 'Admin',
     'toggle_navigation' => 'Toggle navigation',
     'admin_panel' => 'Dashboard',
-    'admin_products' => 'Plants',
+    'admin_plants' => 'Plants',
     'admin_categories' => 'Categories',
     'admin_services' => 'Services',
     'admin_orders' => 'Orders',

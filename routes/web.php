@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlantController;
 use App\Http\Controllers\ServiceController;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 // ─── PUBLIC ───────────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+Route::post('/locale', [LocaleController::class, 'switch'])->name('locale.switch');
 
 Route::prefix('plants')->group(function () {
     Route::get('/', [PlantController::class, 'index'])->name('plant.index');

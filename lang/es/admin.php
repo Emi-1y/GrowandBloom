@@ -1,0 +1,40 @@
+<?php
+
+return [
+    'dashboard_title' => 'Panel de control',
+    'dashboard_subtitle' => 'Bienvenido al panel de administración',
+    // stats
+    'stat_total_plants' => 'Total de plantas',
+    'stat_active' => 'activas',
+    'stat_active_services' => 'Servicios activos',
+    'stat_professional_gardening' => 'Jardinería profesional',
+    'stat_total_orders' => 'Pedidos totales',
+    'stat_pending' => 'pendientes',
+    'stat_registered_users' => 'Usuarios registrados',
+    'stat_active_clients' => 'Clientes activos',
+    // modules
+    'module_plants' => 'Plantas',
+    'module_plants_desc' => 'Administra el catálogo: crea, edita y elimina las plantas del vivero.',
+    'module_plants_link' => 'Ir a plantas',
+    'module_categories' => 'Categorías',
+    'module_categories_desc' => 'Organiza las plantas por categoría para una navegación más fácil.',
+    'module_categories_link' => 'Ir a categorías',
+    'module_services' => 'Servicios',
+    'module_services_desc' => 'Administra los servicios de jardinería y asigna empleados a cada uno.',
+    'module_services_link' => 'Ir a servicios',
+    'module_orders' => 'Pedidos',
+    'module_orders_desc' => 'Visualiza, filtra y actualiza el estado de todos los pedidos.',
+    'module_orders_link' => 'Ir a pedidos',
+    'module_users' => 'Usuarios',
+    'module_users_desc' => 'Visualiza los usuarios registrados y administra sus roles en la plataforma.',
+    'module_users_link' => 'Ir a usuarios',
+    // recent orders
+    'recent_orders' => 'Pedidos recientes',
+    'view_all' => 'Ver todos',
+    'col_order' => 'Pedido',
+    'col_client' => 'Cliente',
+    'col_total' => 'Total',
+    'col_status' => 'Estado',
+    'col_date' => 'Fecha',
+    'action_edit' => 'Editar',
+];

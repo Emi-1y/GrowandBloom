@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'hero_badge' => 'Vivero y jardinería',
+    'hero_emphasis' => 'algo hermoso',
+    'hero_description' => 'Plantas, semillas, fertilizantes y servicios profesionales de jardinería. Todo lo que tu espacio verde necesita para prosperar.',
+    'hero_browse_products' => 'Ver plantas',
+    'hero_browse_services' => 'Ver servicios',
+    'hero_get_started' => 'Comenzar',
+    'hero_login' => 'Iniciar sesión',
+    'featured_title' => 'Colección destacada',
+    'featured_subtitle' => 'Plantas, semillas e insumos seleccionados',
+    'featured_view_all' => 'Ver todo →',
+    'featured_empty' => 'Aún no hay plantas disponibles.',
+    'badge_exclusive' => 'EXCLUSIVO',
+    'badge_out_of_stock' => 'AGOTADO',
+    'badge_in_stock' => 'En stock',
+    'card_view_detail' => 'Ver detalle',
+    'services_badge' => 'Servicios profesionales',
+    'services_title' => 'Jardinería experta, en tu puerta',
+    'services_description' => 'Desde podas y mantenimiento hasta diseño integral de jardines. Nuestro equipo transforma cualquier espacio verde.',
+    'services_explore' => 'Explorar servicios',
+    'categories_title' => 'Categorías',
+    'categories_subtitle' => 'Encuentra exactamente lo que necesitas',
+];

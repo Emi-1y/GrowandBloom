@@ -17,7 +17,7 @@
                     {{ $viewData['plantsCount'] }}
                 </div>
                 <div style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7165; font-weight:600; margin-top:.4rem;">
-                    {{ __('admin.stat_total_products') }}
+                    {{ __('admin.stat_total_plants') }}
                 </div>
                 <div style="font-size:.8rem; color:#4a7c59; margin-top:.25rem;">
                     {{ $viewData['activePlantsCount'] }} {{ __('admin.stat_active') }}
@@ -88,13 +88,13 @@
                     </svg>
                 </div>
                 <h5 style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:#1a3a2a; margin-bottom:.4rem;">
-                    {{ __('admin.module_products') }}
+                    {{ __('admin.module_plants') }}
                 </h5>
                 <p style="font-size:.85rem; color:#7a7165; line-height:1.6; margin-bottom:1.25rem;">
-                    {{ __('admin.module_products_desc') }}
+                    {{ __('admin.module_plants_desc') }}
                 </p>
                 <a href="{{ route('admin.plant.index') }}" class="btn btn-success btn-sm px-4" style="border-radius:8px;">
-                    {{ __('admin.module_products_link') }}
+                    {{ __('admin.module_plants_link') }}
                 </a>
             </div>
         </div>
