@@ -1,0 +1,258 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor WhiteSmoke
+    ArrowColor #2d5a3d
+    BorderColor #1a3a2a
+}
+
+skinparam stereotypeCBackgroundColor #e8f5ec
+skinparam stereotypeCBorderColor #2d5a3d
+
+skinparam package {
+    BackgroundColor #f0f7f2
+    BorderColor #2d5a3d
+}
+
+package "Models" {
+
+    class Plant {
+        + id: int
+        + name: string
+        + size: string
+        + brand: string
+        + price: int
+        + exclusive: bool
+        + image: ?string
+        + description: ?string
+        + color: string
+        + discount: int
+        + active: bool
+        + stock: int
+        + category_id: int
+        + created_at: timestamp
+        + updated_at: timestamp
+        --
+        + getId(): int
+        + getName(): string
+        + setName(string): void
+        + getSize(): string
+        + setSize(string): void
+        + getBrand(): string
+        + setBrand(string): void
+        + getPrice(): int
+        + setPrice(int): void
+        + getExclusive(): bool
+        + setExclusive(bool): void
+        + getImage(): ?string
+        + setImage(?string): void
+        + getDescription(): ?string
+        + setDescription(?string): void
+        + getColor(): string
+        + setColor(string): void
+        + getDiscount(): int
+        + setDiscount(int): void
+        + getActive(): bool
+        + setActive(bool): void
+        + getStock(): int
+        + setStock(int): void
+        + getCategoryId(): int
+        + setCategoryId(int): void
+        + getCreatedAt(): string
+        + getUpdatedAt(): string
+        + category(): BelongsTo
+        + getCategory(): Category
+        + items(): HasMany
+        + getItems(): Collection
+        + getFormattedPrice(): string
+    }
+
+    class Service {
+        + id: int
+        + name: string
+        + employee: ?string
+        + description: ?string
+        + price: int
+        + duration: ?string
+        + active: bool
+        + features: string {JSON}
+        + image: ?string
+        + created_at: timestamp
+        + updated_at: timestamp
+        --
+        + getId(): int
+        + getName(): string
+        + setName(string): void
+        + getEmployee(): ?string
+        + setEmployee(?string): void
+        + getDescription(): ?string
+        + setDescription(?string): void
+        + getPrice(): int
+        + setPrice(int): void
+        + getDuration(): ?string
+        + setDuration(?string): void
+        + getActive(): bool
+        + setActive(bool): void
+        + getFeatures(): array
+        + setFeatures(array): void
+        + getImage(): ?string
+        + setImage(?string): void
+        + getCreatedAt(): string
+        + getUpdatedAt(): string
+        + items(): HasMany
+        + getItems(): Collection
+        + getFormattedPrice(): string
+    }
+
+    class Item {
+        + id: int
+        + quantity: int
+        + unit_price: int
+        + order_id: int
+        + plant_id: ?int
+        + service_id: ?int
+        + created_at: timestamp
+        + updated_at: timestamp
+        --
+        + getId(): int
+        + getQuantity(): int
+        + setQuantity(int): void
+        + getUnitPrice(): int
+        + setUnitPrice(int): void
+        + getOrderId(): int
+        + setOrderId(int): void
+        + getPlantId(): ?int
+        + setPlantId(?int): void
+        + getServiceId(): ?int
+        + setServiceId(?int): void
+        + getCreatedAt(): string
+        + getUpdatedAt(): string
+        + order(): BelongsTo
+        + getOrder(): Order
+        + plant(): BelongsTo
+        + getPlant(): ?Plant
+        + service(): BelongsTo
+        + getService(): ?Service
+        + isService(): bool
+        + getDisplayName(): string
+        + calculateSubTotal(): int
+        + getFormattedUnitPrice(): string
+        + getFormattedSubtotal(): string
+    }
+
+    class Order {
+        + STATUS_PENDING: string = "pending"
+        + STATUS_COMPLETED: string = "completed"
+        + STATUS_CANCELLED: string = "cancelled"
+        + PAYMENT_PENDING: string = "pending"
+        + PAYMENT_PAID: string = "paid"
+        + PAYMENT_FAILED: string = "failed"
+        --
+        + id: int
+        + total: int
+        + payment_method: string
+        + status: string
+        + payment_status: string
+        + user_id: int
+        + created_at: timestamp
+        + updated_at: timestamp
+        --
+        + getId(): int
+        + getTotal(): int
+        + setTotal(int): void
+        + getPaymentMethod(): string
+        + setPaymentMethod(string): void
+        + getStatus(): string
+        + setStatus(string): void
+        + getPaymentStatus(): string
+        + setPaymentStatus(string): void
+        + getUserId(): int
+        + setUserId(int): void
+        + getCreatedAt(): string
+        + getUpdatedAt(): string
+        + user(): BelongsTo
+        + getUser(): User
+        + items(): HasMany
+        + getItems(): Collection
+        + placeOrder(): void
+        + cancelOrder(): void
+        + calculateTotal(): int
+        + pay(): void
+        + getFormattedTotal(): string
+        + getFormattedCreatedAt(): string
+        + getFormattedDate(): string
+    }
+
+    class User {
+        + ROLE_ADMIN: string = "admin"
+        + ROLE_USER: string = "user"
+        --
+        + id: int
+        + name: string
+        + email: string
+        + email_verified_at: timestamp
+        + password: string
+        + role: string
+        + phone: ?string
+        + address: ?string
+        + city: ?string
+        + postal_code: ?string
+        + remember_token: string
+        + created_at: timestamp
+        + updated_at: timestamp
+        --
+        + getId(): int
+        + getName(): string
+        + setName(string): void
+        + getEmail(): string
+        + setEmail(string): void
+        + getPassword(): string
+        + setPassword(string): void
+        + getRole(): string
+        + setRole(string): void
+        + getPhone(): ?string
+        + setPhone(?string): void
+        + getAddress(): ?string
+        + setAddress(?string): void
+        + getCity(): ?string
+        + setCity(?string): void
+        + getPostalCode(): ?string
+        + setPostalCode(?string): void
+        + getEmailVerifiedAt(): ?string
+        + getCreatedAt(): string
+        + getUpdatedAt(): string
+        + reviews(): HasMany
+        + getReviews(): Collection
+        + orders(): HasMany
+        + getOrders(): Collection
+    }
+
+    class Category {
+        + id: int
+        + name: string
+        + description: ?string
+        + created_at: timestamp
+        + updated_at: timestamp
+        --
+        + getId(): int
+        + getName(): string
+        + setName(string): void
+        + getDescription(): ?string
+        + setDescription(?string): void
+        + getCreatedAt(): string
+        + getUpdatedAt(): string
+        + plants(): HasMany
+        + getPlants(): Collection
+    }
+}
+
+' ── RELACIONES ─────────────────────────────────────────────────────────────
+
+Plant "1" -- "0..*" Item : contains >
+Service "1" -- "0..*" Item : contains >
+Order "1" -- "0..*" Item : contains >
+User "1" -- "0..*" Order : places >
+Category "1" -- "0..*" Plant : categorizes >
+
+@enduml
