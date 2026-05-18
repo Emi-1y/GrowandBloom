@@ -22,4 +22,8 @@ return [
     'services_explore' => 'Explorar servicios',
     'categories_title' => 'Categorías',
     'categories_subtitle' => 'Encuentra exactamente lo que necesitas',
+    'allied_badge' => 'Tienda aliada',
+    'allied_title' => 'Orelia',
+    'allied_description' => 'Descubre la exclusiva colección de joyería de nuestra tienda aliada — anillos, collares, pulseras y más.',
+    'allied_btn' => 'Visitar Orelia',
 ];

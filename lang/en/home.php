@@ -22,4 +22,8 @@ return [
     'services_explore' => 'Explore services',
     'categories_title' => 'Categories',
     'categories_subtitle' => 'Find exactly what you need',
+    'allied_badge' => 'Allied Store',
+    'allied_title' => 'Orelia',
+    'allied_description' => "Discover our partner's exclusive jewellery collection — rings, necklaces, bracelets and more.",
+    'allied_btn' => 'Visit Orelia',
 ];

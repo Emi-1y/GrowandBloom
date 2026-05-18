@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PlantController as AdminPlantController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\AlliedPieceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
@@ -30,6 +31,8 @@ Route::prefix('plants')->group(function () {
 Route::prefix('services')->group(function () {
     Route::get('/', [ServiceController::class, 'index'])->name('service.index');
 });
+
+Route::get('/allied-pieces', [AlliedPieceController::class, 'index'])->name('allied-piece.index');
 
 // ─── AUTH ─────────────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {

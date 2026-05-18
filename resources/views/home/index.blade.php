@@ -171,4 +171,24 @@
 </div>
 @endif
 
+{{-- ALLIED STORE --}}
+<div class="rounded-4 p-5 mt-5 d-flex justify-content-between align-items-center flex-wrap gap-4"
+     style="background:linear-gradient(135deg,#f5ece4,#f0e6da); border:1px solid #e8d5c4;">
+    <div>
+        <span style="font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:#8b5e3c; font-weight:600;">
+            {{ __('home.allied_badge') }}
+        </span>
+        <h2 class="mt-1 mb-2" style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:#1a3a2a; font-weight:600;">
+            {{ __('home.allied_title') }}
+        </h2>
+        <p class="text-muted mb-0" style="max-width:460px; line-height:1.75;">
+            {{ __('home.allied_description') }}
+        </p>
+    </div>
+    <a href="{{ route('allied-piece.index') }}" class="btn btn-lg px-4"
+       style="border-radius:10px; white-space:nowrap; background:#8b5e3c; color:#fff; border:none;">
+        {{ __('home.allied_btn') }} <i class="bi bi-arrow-right ms-2"></i>
+    </a>
+</div>
+
 @endsection
