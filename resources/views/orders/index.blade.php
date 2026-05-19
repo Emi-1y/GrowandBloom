@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div style="padding: 1rem 1.5rem; font-size: 0.85rem; color: var(--c-muted);">
-                    {{ __('order.payment_method') }}: <span style="color: var(--c-text); font-weight: 500;">{{ $order->getPaymentMethod() }}</span>
+                    {{ __('order.payment_method') }}: <span style="color: var(--c-text); font-weight: 500;">{{ __('order.payment_' . $order->getPaymentMethod()) }}</span>
                     &nbsp;·&nbsp; {{ $order->getItems()->count() }} {{ __('order.item_count') }}
                 </div>
             </div>

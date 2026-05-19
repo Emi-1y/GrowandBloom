@@ -4,7 +4,6 @@
 
 namespace App\Http\Requests\Cart;
 
-use App\Models\Plant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCartItemRequest extends FormRequest
@@ -16,10 +15,8 @@ class UpdateCartItemRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $plant = $this->route('plant');
-
         $this->merge([
-            'plant_id' => $plant instanceof Plant ? $plant->getId() : null,
+            'plant_id' => (int) $this->route('id'),
         ]);
     }
 

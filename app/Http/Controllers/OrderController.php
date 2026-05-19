@@ -9,11 +9,10 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Plant;
 use App\Models\Service;
-use App\Services\CartService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class OrderController extends Controller
@@ -23,8 +22,6 @@ class OrderController extends Controller
     private const CART_KEY = 'shopping_cart';
 
     private const CART_SERVICES_KEY = 'shopping_cart_services';
-
-    public function __construct(private readonly CartService $cartService) {}
 
     public function index(): View
     {
@@ -40,8 +37,9 @@ class OrderController extends Controller
         return view('orders.index')->with('viewData', $viewData);
     }
 
-    public function show(Order $order): View
+    public function show(int $id): View
     {
+        $order = Order::findOrFail($id);
         $this->authorize('view', $order);
         $order->loadMissing('items.plant', 'items.service');
 
@@ -52,17 +50,53 @@ class OrderController extends Controller
         return view('orders.show')->with('viewData', $viewData);
     }
 
-    public function checkout(): View|RedirectResponse
+    public function checkout(Request $request): View|RedirectResponse
     {
-        $cart = Session::get(self::CART_KEY, []);
-        $cartServices = Session::get(self::CART_SERVICES_KEY, []);
+        $cart = $request->session()->get(self::CART_KEY, []);
+        $cartServices = $request->session()->get(self::CART_SERVICES_KEY, []);
 
         if (count($cart) === 0 && count($cartServices) === 0) {
             return redirect()->route('cart.index')
                 ->with('error', __('cart.empty'));
         }
 
-        $cartItems = $this->cartService->buildCartItems();
+        $cartItems = collect();
+
+        if (! empty($cart)) {
+            $plants = Plant::with('category')->whereIn('id', array_keys($cart))->where('active', true)->get()->keyBy(fn (Plant $p) => $p->getId());
+            foreach ($cart as $plantId => $qty) {
+                if (! isset($plants[$plantId])) {
+                    continue;
+                }
+                $plant = $plants[$plantId];
+                $item = new Item;
+                $item->setPlantId($plant->getId());
+                $item->setServiceId(null);
+                $item->setQuantity((int) $qty);
+                $item->setUnitPrice($plant->getPrice());
+                $item->setRelation('plant', $plant);
+                $item->setRelation('service', null);
+                $cartItems->push($item);
+            }
+        }
+
+        if (! empty($cartServices)) {
+            $services = Service::whereIn('id', array_keys($cartServices))->where('active', true)->get()->keyBy(fn (Service $s) => $s->getId());
+            foreach ($cartServices as $serviceId => $qty) {
+                if (! isset($services[$serviceId])) {
+                    continue;
+                }
+                $service = $services[$serviceId];
+                $item = new Item;
+                $item->setPlantId(null);
+                $item->setServiceId($service->getId());
+                $item->setQuantity(1);
+                $item->setUnitPrice($service->getPrice());
+                $item->setRelation('service', $service);
+                $item->setRelation('plant', null);
+                $cartItems->push($item);
+            }
+        }
 
         $viewData = [];
         $viewData['title'] = __('order.checkout_title');
@@ -76,8 +110,8 @@ class OrderController extends Controller
 
     public function store(CheckoutRequest $request): RedirectResponse
     {
-        $cart = Session::get(self::CART_KEY, []);
-        $cartServices = Session::get(self::CART_SERVICES_KEY, []);
+        $cart = $request->session()->get(self::CART_KEY, []);
+        $cartServices = $request->session()->get(self::CART_SERVICES_KEY, []);
 
         if (count($cart) === 0 && count($cartServices) === 0) {
             return redirect()->route('cart.index')
@@ -97,7 +131,6 @@ class OrderController extends Controller
 
         $total = 0;
 
-        // ── Plants ────────────────────────────────────────────────────────
         foreach ($cart as $plantId => $quantity) {
             $plant = Plant::where('active', true)->find((int) $plantId);
 
@@ -119,7 +152,6 @@ class OrderController extends Controller
             $total += $item->calculateSubTotal();
         }
 
-        // ── Services ──────────────────────────────────────────────────────
         foreach ($cartServices as $serviceId => $quantity) {
             $service = Service::where('active', true)->find((int) $serviceId);
 
@@ -141,8 +173,8 @@ class OrderController extends Controller
         $order->setTotal($total);
         $order->save();
 
-        Session::forget(self::CART_KEY);
-        Session::forget(self::CART_SERVICES_KEY);
+        $request->session()->forget(self::CART_KEY);
+        $request->session()->forget(self::CART_SERVICES_KEY);
 
         return redirect()->route('order.show', $order->getId())
             ->with('success', __('order.placed_successfully'));

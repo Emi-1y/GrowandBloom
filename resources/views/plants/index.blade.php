@@ -61,10 +61,17 @@
                     @endif
                     <div class="mt-auto">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span style="font-size:.95rem; font-weight:700; color:#2d5a3d;">
-                                ${{ number_format($plant->getPrice(), 0, ',', '.') }}
-                                <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('plant.currency') }}</small>
-                            </span>
+                            <div>
+                                <span style="font-size:.95rem; font-weight:700; color:#2d5a3d;">
+                                    ${{ number_format($plant->getPrice(), 0, ',', '.') }}
+                                    <small class="text-muted fw-normal" style="font-size:.65rem;">{{ __('plant.currency') }}</small>
+                                </span>
+                                @if(($viewData['usdRate'] ?? 0) > 0)
+                                    <div style="font-size:.68rem; color:#7a7165; margin-top:1px;">
+                                        {{ __('plant.usd_approx', ['amount' => number_format($plant->getPrice() * $viewData['usdRate'], 2)]) }}
+                                    </div>
+                                @endif
+                            </div>
                             @if($plant->getStock() > 0)
                                 <span class="badge" style="background:rgba(45,90,61,.1); color:#2d5a3d; font-size:.62rem;">
                                     {{ __('plant.badge_in_stock') }}

@@ -6,18 +6,12 @@ namespace App\Providers;
 
 use App\Models\Order;
 use App\Policies\OrderPolicy;
-use App\Services\CartService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        $this->app->singleton(CartService::class, function ($app) {
-            return new CartService;
-        });
-    }
+    public function register(): void {}
 
     public function boot(): void
     {

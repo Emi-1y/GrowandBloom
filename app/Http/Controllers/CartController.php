@@ -9,17 +9,20 @@ use App\Http\Requests\Cart\UpdateCartItemRequest;
 use App\Models\Item;
 use App\Models\Plant;
 use App\Models\Service;
-use App\Services\CartService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class CartController extends Controller
 {
-    public function __construct(private readonly CartService $cartService) {}
+    private const CART_KEY = 'shopping_cart';
 
-    public function index(): View
+    private const CART_SERVICES_KEY = 'shopping_cart_services';
+
+    public function index(Request $request): View
     {
-        $cartItems = $this->cartService->buildCartItems();
+        $cartItems = $this->buildCartItems($request);
 
         $viewData = [];
         $viewData['title'] = __('cart.title');
@@ -33,57 +36,139 @@ class CartController extends Controller
     public function add(AddToCartRequest $request): RedirectResponse
     {
         $itemType = $request->input('item_type', 'plant');
-        $quantity = (int) $request->validated('quantity', 1);
 
         if ($itemType === 'service') {
             $serviceId = (int) $request->input('service_id');
-            $service = Service::where('active', true)->findOrFail($serviceId);
-            $this->cartService->addService($service);
+            Service::where('active', true)->findOrFail($serviceId);
 
-            return redirect()->route('cart.index')
-                ->with('success', __('cart.service_added'));
+            $cartServices = $request->session()->get(self::CART_SERVICES_KEY, []);
+            $cartServices[$serviceId] = 1;
+            $request->session()->put(self::CART_SERVICES_KEY, $cartServices);
+
+            return redirect()->route('cart.index')->with('success', __('cart.service_added'));
         }
 
         $plantId = (int) $request->validated('plant_id', 0);
         $plant = Plant::where('active', true)->findOrFail($plantId);
-        $this->cartService->addPlant($plant, $quantity);
 
-        return redirect()->route('cart.index')
-            ->with('success', __('cart.plant_added'));
+        $cart = $request->session()->get(self::CART_KEY, []);
+        $current = (int) ($cart[$plantId] ?? 0);
+        $newQuantity = min($plant->getStock(), $current + max(1, (int) $request->validated('quantity', 1)));
+
+        if ($newQuantity > 0) {
+            $cart[$plantId] = $newQuantity;
+            $request->session()->put(self::CART_KEY, $cart);
+        }
+
+        return redirect()->route('cart.index')->with('success', __('cart.plant_added'));
     }
 
-    public function update(UpdateCartItemRequest $request, Plant $plant): RedirectResponse
+    public function update(UpdateCartItemRequest $request, int $id): RedirectResponse
     {
-        $activePlant = Plant::where('active', true)->findOrFail($plant->getId());
+        $activePlant = Plant::where('active', true)->findOrFail($id);
         $quantity = (int) $request->validated('quantity');
+        $plantId = $activePlant->getId();
 
-        $this->cartService->updatePlantQuantity($activePlant, $quantity);
+        $cart = $request->session()->get(self::CART_KEY, []);
 
-        return redirect()->route('cart.index')
-            ->with('success', __('cart.updated'));
+        if (! array_key_exists($plantId, $cart)) {
+            return redirect()->route('cart.index');
+        }
+
+        if ($quantity <= 0) {
+            unset($cart[$plantId]);
+        } else {
+            $cart[$plantId] = min($activePlant->getStock(), $quantity);
+        }
+
+        $request->session()->put(self::CART_KEY, $cart);
+
+        return redirect()->route('cart.index')->with('success', __('cart.updated'));
     }
 
-    public function remove(Plant $plant): RedirectResponse
+    public function remove(int $id, Request $request): RedirectResponse
     {
-        $this->cartService->removePlant($plant->getId());
+        $cart = $request->session()->get(self::CART_KEY, []);
 
-        return redirect()->route('cart.index')
-            ->with('success', __('cart.plant_removed'));
+        if (array_key_exists($id, $cart)) {
+            unset($cart[$id]);
+            $request->session()->put(self::CART_KEY, $cart);
+        }
+
+        return redirect()->route('cart.index')->with('success', __('cart.plant_removed'));
     }
 
-    public function removeService(int $serviceId): RedirectResponse
+    public function removeService(int $serviceId, Request $request): RedirectResponse
     {
-        $this->cartService->removeService($serviceId);
+        $cartServices = $request->session()->get(self::CART_SERVICES_KEY, []);
 
-        return redirect()->route('cart.index')
-            ->with('success', __('cart.service_removed'));
+        if (array_key_exists($serviceId, $cartServices)) {
+            unset($cartServices[$serviceId]);
+            $request->session()->put(self::CART_SERVICES_KEY, $cartServices);
+        }
+
+        return redirect()->route('cart.index')->with('success', __('cart.service_removed'));
     }
 
-    public function clear(): RedirectResponse
+    public function clear(Request $request): RedirectResponse
     {
-        $this->cartService->clear();
+        $request->session()->forget(self::CART_KEY);
+        $request->session()->forget(self::CART_SERVICES_KEY);
 
-        return redirect()->route('cart.index')
-            ->with('success', __('cart.cleared'));
+        return redirect()->route('cart.index')->with('success', __('cart.cleared'));
+    }
+
+    private function buildCartItems(Request $request): Collection
+    {
+        $cart = $request->session()->get(self::CART_KEY, []);
+        $cartServices = $request->session()->get(self::CART_SERVICES_KEY, []);
+        $cartItems = collect();
+
+        if (! empty($cart)) {
+            $plants = Plant::with('category')
+                ->whereIn('id', array_keys($cart))
+                ->where('active', true)
+                ->get()
+                ->keyBy(fn (Plant $p) => $p->getId());
+
+            foreach ($cart as $plantId => $qty) {
+                if (! isset($plants[$plantId]) || (int) $qty <= 0) {
+                    continue;
+                }
+                $plant = $plants[$plantId];
+                $item = new Item;
+                $item->setPlantId($plant->getId());
+                $item->setServiceId(null);
+                $item->setQuantity((int) $qty);
+                $item->setUnitPrice($plant->getPrice());
+                $item->setRelation('plant', $plant);
+                $item->setRelation('service', null);
+                $cartItems->push($item);
+            }
+        }
+
+        if (! empty($cartServices)) {
+            $services = Service::whereIn('id', array_keys($cartServices))
+                ->where('active', true)
+                ->get()
+                ->keyBy(fn (Service $s) => $s->getId());
+
+            foreach ($cartServices as $serviceId => $qty) {
+                if (! isset($services[$serviceId])) {
+                    continue;
+                }
+                $service = $services[$serviceId];
+                $item = new Item;
+                $item->setPlantId(null);
+                $item->setServiceId($service->getId());
+                $item->setQuantity(1);
+                $item->setUnitPrice($service->getPrice());
+                $item->setRelation('service', $service);
+                $item->setRelation('plant', null);
+                $cartItems->push($item);
+            }
+        }
+
+        return $cartItems;
     }
 }

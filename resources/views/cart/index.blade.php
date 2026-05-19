@@ -15,7 +15,7 @@
                         <tr>
                             <th>{{ __('order.product') }}</th>
                             <th>{{ __('order.price') }}</th>
-                            <th style="min-width: 160px;">{{ __('order.quantity') }}</th>
+                            <th>{{ __('order.quantity') }}</th>
                             <th>{{ __('order.subtotal') }}</th>
                             <th></th>
                         </tr>
@@ -41,23 +41,7 @@
                                 {{ $cartItem->getFormattedUnitPrice() }}
                             </td>
                             <td>
-                                @if(! $cartItem->isService())
-                                    <form method="POST" action="{{ route('cart.update', $cartItem->getPlantId()) }}" style="display: flex; align-items: center; gap: 0.4rem;">
-                                        @csrf
-                                        @method('PUT')
-                                        <input
-                                            type="number"
-                                            name="quantity"
-                                            class="form-control"
-                                            style="max-width: 70px;"
-                                            min="1"
-                                            max="{{ $cartItem->getPlant()->getStock() }}"
-                                            value="{{ $cartItem->getQuantity() }}">
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">↺</button>
-                                    </form>
-                                @else
-                                    <span style="font-size: 0.9rem; color: var(--c-muted);">1</span>
-                                @endif
+                                <span style="font-size: 0.9rem; color: var(--c-text);">{{ $cartItem->getQuantity() }}</span>
                             </td>
                             <td style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 600; color: var(--c-accent-dk);">
                                 {{ $cartItem->getFormattedSubtotal() }}

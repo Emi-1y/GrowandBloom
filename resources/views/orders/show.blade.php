@@ -22,7 +22,7 @@
                     </div>
                     <div>
                         <div style="font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 3px;">{{ __('order.payment_method') }}</div>
-                        <div style="font-size: 0.9rem; color: var(--c-text);">{{ $viewData['order']->getPaymentMethod() }}</div>
+                        <div style="font-size: 0.9rem; color: var(--c-text);">{{ __('order.payment_' . $viewData['order']->getPaymentMethod()) }}</div>
                     </div>
                     <div>
                         <div style="font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 3px;">{{ __('order.status') }}</div>
@@ -100,7 +100,11 @@
                     <span class="cart-total-label">{{ __('order.total') }}</span>
                     <span class="cart-total-value">{{ $viewData['order']->getFormattedTotal() }}</span>
                 </div>
-                <a href="{{ route('order.index') }}" class="btn btn-outline-secondary w-100" style="margin-top: 1rem;">
+                <a href="{{ route('payment.show', $viewData['order']->getId()) }}"
+                   class="btn btn-success w-100" style="margin-top: 1rem; border-radius:8px;">
+                    {{ __('payment.simulate_payment') }}
+                </a>
+                <a href="{{ route('order.index') }}" class="btn btn-outline-secondary w-100" style="margin-top: 0.6rem;">
                     ← {{ __('order.back_to_orders') }}
                 </a>
             </div>

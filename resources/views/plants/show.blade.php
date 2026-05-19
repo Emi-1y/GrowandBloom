@@ -34,9 +34,16 @@
             {{ $viewData['plant']->getName() }}
         </h1>
 
-        <div style="font-size:1.6rem; font-weight:700; color:#2d5a3d; margin-bottom:1.5rem;">
-            ${{ number_format($viewData['plant']->getPrice(), 0, ',', '.') }}
-            <small style="font-size:.75rem; color:#7a7165; font-weight:400;">{{ __('plant.currency') }}</small>
+        <div style="margin-bottom:1.5rem;">
+            <div style="font-size:1.6rem; font-weight:700; color:#2d5a3d;">
+                ${{ number_format($viewData['plant']->getPrice(), 0, ',', '.') }}
+                <small style="font-size:.75rem; color:#7a7165; font-weight:400;">{{ __('plant.currency') }}</small>
+            </div>
+            @if(($viewData['usdRate'] ?? 0) > 0)
+                <div style="font-size:.82rem; color:#7a7165; margin-top:3px;">
+                    {{ __('plant.usd_approx', ['amount' => number_format($viewData['plant']->getPrice() * $viewData['usdRate'], 2)]) }}
+                </div>
+            @endif
         </div>
 
         @if($viewData['plant']->getDescription())
