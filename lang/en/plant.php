@@ -3,6 +3,8 @@
 return [
     'index_title' => 'Our Plants',
     'currency' => 'COP',
+    'usd_approx' => '≈ :amount USD',
+    'exchange_rate_note' => 'Rate updated every 6 hours',
     'admin_list_title' => 'Plants',
     'admin_list_subtitle' => 'Manage the plant catalogue',
     'create_title' => 'Create Plant',

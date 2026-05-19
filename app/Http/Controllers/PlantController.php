@@ -5,11 +5,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plant;
+use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PlantController extends Controller
 {
+    public function __construct(private readonly CurrencyService $currencyService) {}
+
     public function index(Request $request): View
     {
         $search = $request->query('search');
@@ -32,17 +35,19 @@ class PlantController extends Controller
         $viewData['plants'] = $plants;
         $viewData['showPagination'] = true;
         $viewData['search'] = $search;
+        $viewData['usdRate'] = $this->currencyService->getUsdRate();
 
         return view('plants.index')->with('viewData', $viewData);
     }
 
-    public function show(Plant $plant): View
+    public function show(int $id): View
     {
-        $plant->load('category');
+        $plant = Plant::with('category')->where('active', true)->findOrFail($id);
 
         $viewData = [];
         $viewData['title'] = $plant->getName();
         $viewData['plant'] = $plant;
+        $viewData['usdRate'] = $this->currencyService->getUsdRate();
 
         return view('plants.show')->with('viewData', $viewData);
     }

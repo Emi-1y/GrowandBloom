@@ -3,6 +3,8 @@
 return [
     'index_title' => 'Nuestras plantas',
     'currency' => 'COP',
+    'usd_approx' => '≈ :amount USD',
+    'exchange_rate_note' => 'Tasa actualizada cada 6 horas',
     'admin_list_title' => 'Plantas',
     'admin_list_subtitle' => 'Administra el catálogo de plantas',
     'create_title' => 'Crear planta',
