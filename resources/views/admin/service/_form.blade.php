@@ -51,9 +51,6 @@
         <input type="text" id="image" name="image" class="form-control"
                placeholder="{{ __('service.form_image_placeholder') }}"
                value="{{ old('image', $service?->getImage()) }}">
-        <small class="text-muted" style="font-size:.78rem;">
-            {!! __('service.form_image_hint') !!}
-        </small>
     </div>
 
     <div class="col-12">

@@ -6,10 +6,7 @@
 @section('subtitle', $viewData['subtitle'])
 
 @section('content')
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; padding-bottom:1.25rem; border-bottom:1px solid #e2ddd4;">
-    <div style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#1a3a2a; font-weight:600;">
-        {{ __('plant.manage_title') }}
-    </div>
+<div style="display:flex; justify-content:flex-end; margin-bottom:1.5rem;">
     <a href="{{ route('admin.plant.create') }}" class="btn btn-success" style="border-radius:8px;">
         {{ __('plant.create_btn') }}
     </a>
