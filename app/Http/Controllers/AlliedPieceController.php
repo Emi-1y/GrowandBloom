@@ -10,7 +10,7 @@ use Illuminate\View\View;
 
 class AlliedPieceController extends Controller
 {
-    private const API_URL = 'http://34.10.104.133/public/api/pieces';
+    private const API_URL = 'http://34.67.107.26/api/pieces';
 
     public function index(): View
     {

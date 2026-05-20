@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'title' => 'Orelia — Joyería Aliada',
+    'subtitle' => 'Descubre la colección de nuestro comercio aliado',
+    'error_fetch' => 'No se pudieron cargar los productos de Orelia. Intenta más tarde.',
+    'error_connection' => 'No se pudo conectar con la tienda aliada. Intenta más tarde.',
+    'empty' => 'No hay piezas disponibles en este momento.',
+    'badge_in_stock' => 'Disponible',
+    'badge_no_stock' => 'Agotado',
+    'label_collection' => 'Colección',
+    'label_type' => 'Tipo',
+    'label_size' => 'Talla',
+    'label_weight' => 'Peso',
+    'label_stock' => 'Stock',
+    'view_in_orelia' => 'Ver en Orelia',
+    'type_ring' => 'Anillo',
+    'type_necklace' => 'Collar',
+    'type_earring' => 'Aretes',
+    'type_bracelet' => 'Pulsera',
+    'type_pendant' => 'Dije',
+    'partner_note' => 'Estos productos pertenecen a Orelia. Al hacer clic en "Ver en Orelia" serás redirigido a su tienda.',
+    'section_title' => 'De nuestra tienda aliada',
+    'section_subtitle' => 'Una selección de productos en stock de Orelia.',
+    'stock_label' => 'EN STOCK',
+    'view_product' => 'Ver producto',
+];
